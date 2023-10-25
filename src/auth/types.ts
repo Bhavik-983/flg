@@ -1,4 +1,3 @@
-import { LogoutOptions, PopupLoginOptions, RedirectLoginOptions } from '@auth0/auth0-react';
 
 // ----------------------------------------------------------------------
 
@@ -36,8 +35,6 @@ type CanRemove = {
   loginWithGithub?: () => Promise<void>;
   loginWithTwitter?: () => Promise<void>;
   //
-  loginWithPopup?: (options?: PopupLoginOptions) => Promise<void>;
-  loginWithRedirect?: (options?: RedirectLoginOptions) => Promise<void>;
   //
   confirmRegister?: (email: string, code: string) => Promise<void>;
   forgotPassword?: (email: string) => Promise<void>;
@@ -93,13 +90,4 @@ export type AmplifyContextType = CanRemove & {
 
 // ----------------------------------------------------------------------
 
-export type Auth0ContextType = CanRemove & {
-  user: AuthUserType;
-  method: string;
-  loading: boolean;
-  authenticated: boolean;
-  unauthenticated: boolean;
-  loginWithPopup: (options?: PopupLoginOptions) => Promise<void>;
-  loginWithRedirect: (options?: RedirectLoginOptions) => Promise<void>;
-  logout: (options?: LogoutOptions) => Promise<void>;
-};
+

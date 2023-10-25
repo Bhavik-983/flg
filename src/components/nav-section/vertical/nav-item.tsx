@@ -148,7 +148,7 @@ const StyledNavItem = styled(ListItemButton, {
 
   const opened = open && !active;
 
-  const deepSubItem = Number(depth) > 2;
+  const deepSubItem = Number(depth) > 2; 
 
   const noWrapStyles = {
     width: '100%',
@@ -156,14 +156,14 @@ const StyledNavItem = styled(ListItemButton, {
     display: 'block',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
+    textOverflow: 'ellipsis',   
   } as const;
 
   const baseStyles = {
     item: {
       marginBottom: 4,
       borderRadius: 8,
-      color: theme.palette.text.secondary,
+      color: theme.palette.text.primary,
       padding: theme.spacing(0.5, 1, 0.5, 1.5),
     },
     icon: {

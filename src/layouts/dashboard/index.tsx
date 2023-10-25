@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }: Props) {
   const settings = useSettingsContext();
 
   const lgUp = useResponsive('up', 'lg');
-
+  
   const nav = useBoolean();
 
   const isHorizontal = settings.themeLayout === 'horizontal';

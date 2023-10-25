@@ -15,6 +15,7 @@ export default defineConfig({
       },
     }),
   ],
+
   resolve: {
     alias: [
       {
@@ -33,4 +34,6 @@ export default defineConfig({
   preview: {
     port: 8081,
   },
+  
+
 });

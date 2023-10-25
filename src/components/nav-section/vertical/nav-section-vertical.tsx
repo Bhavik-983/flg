@@ -1,4 +1,4 @@
-import { memo, useState, useCallback } from 'react';
+import { memo } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Collapse from '@mui/material/Collapse';
@@ -14,8 +14,8 @@ function NavSectionVertical({ data, slotProps, ...other }: NavProps) {
     <Stack component="nav" id="nav-section-vertical" {...other}>
       {data.map((group, index) => (
         <Group
-          key={group.subheader || index}
-          subheader={group.subheader}
+          key={group.subheader || index} 
+          subheader={group.subheader}   
           items={group.items}
           slotProps={slotProps}
         />
@@ -29,11 +29,6 @@ export default memo(NavSectionVertical);
 // ----------------------------------------------------------------------
 
 function Group({ subheader, items, slotProps }: NavGroupProps) {
-  const [open, setOpen] = useState(true);
-
-  const handleToggle = useCallback(() => {
-    setOpen((prev) => !prev);
-  }, []);
 
   const renderContent = items.map((list) => (
     <NavList key={list.title} data={list} depth={1} slotProps={slotProps} />
@@ -46,7 +41,7 @@ function Group({ subheader, items, slotProps }: NavGroupProps) {
           <ListSubheader
             disableGutters
             disableSticky
-            onClick={handleToggle}
+            // onClick={handleToggle}
             sx={{
               fontSize: 11,
               cursor: 'pointer',
@@ -68,7 +63,7 @@ function Group({ subheader, items, slotProps }: NavGroupProps) {
             {subheader}
           </ListSubheader>
 
-          <Collapse in={open}>{renderContent}</Collapse>
+          <Collapse in>{renderContent}</Collapse>
         </>
       ) : (
         renderContent
