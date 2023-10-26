@@ -1,2 +1,26 @@
 /* scrollbar */
 @import 'simplebar-react/dist/simplebar.min.css';
+
+.css-1eh6rbs-MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within,
+.css-1eh6rbs-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}
+
+.css-hx0cd3-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: rgb(183, 29, 24) !important;
+}
+
+.css-omahlj-MuiButtonBase-root-MuiButton-root:hover {
+  border-color: currentcolor;
+  box-shadow: currentcolor 0px 0px 0px 0.5px;
+}
+
+.css-h0bz2g-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.css-h0bz2g-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important;
+}
+
+.css-h0bz2g-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.css-h0bz2g-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important;
+}

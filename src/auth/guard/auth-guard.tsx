@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -50,14 +50,14 @@ function Container({ children }: Props) {
     }
   }, [authenticated, method, router]);
 
-  useEffect(() => {
-    check();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   check();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  if (!checked) {
-    return null;
-  }
+  // if (!checked) {
+  //   return null;
+  // }
 
   return <>{children}</>;
 }

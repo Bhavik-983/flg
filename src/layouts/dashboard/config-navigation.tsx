@@ -51,16 +51,20 @@ export function useNavData() {
       {
         subheader: '',
         items: [
-          { title: 'one', path: paths.dashboard.root, icon: ICONS.dashboard },
-          { title: 'two', path: paths.dashboard.two, icon: ICONS.ecommerce },
+          { title: 'Language', path: paths.dashboard.language, icon: ICONS.dashboard },
+          { title: 'Website', path: paths.dashboard.website, icon: ICONS.ecommerce },
           {
-            title: 'three',
-            path: paths.dashboard.three,
-            icon: ICONS.analytics,  
+            title: 'Page',
+            path: paths.dashboard.page,
+            icon: ICONS.analytics,
+          },
+          {
+            title: 'Key',
+            path: paths.dashboard.key,
+            icon: ICONS.external,
           },
         ],
       },
-
     ],
     []
   );

@@ -24,16 +24,18 @@ export const dashboardRoutes = [
       <AuthGuard>
         <DashboardLayout>
           <Suspense fallback={<LoadingScreen />}>
-            <Outlet /> 
+            <Outlet />
           </Suspense>
         </DashboardLayout>
       </AuthGuard>
     ),
     children: [
-      { element: <IndexPage />, index: true },
-      { path: 'two', element: <PageTwo /> },
-      { path: 'three', element: <PageThree /> }, 
-      {  
+      // { element: <IndexPage />, index: true },
+      { path: 'language', element: <IndexPage /> },
+      { path: 'website', element: <PageTwo /> },
+      { path: 'page', element: <PageThree /> },
+      { path: 'key', element: <PageFour /> },
+      {
         path: 'group',
         children: [
           { element: <PageFour />, index: true },
