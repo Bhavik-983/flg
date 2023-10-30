@@ -4,17 +4,11 @@ import { Button } from '@mui/material';
 
 interface ButtonProps {
   title: string;
-  onOpen?: any;
+  handleClick?: any;
 }
 
-const AddButton = ({ title, onOpen }: ButtonProps) => (
-  <Button
-    variant="contained"
-    color="primary"
-    onClick={() => {
-      onOpen();
-    }}
-  >
+const AddButton = ({ title, handleClick }: ButtonProps) => (
+  <Button variant="contained" color="primary" onClick={handleClick}>
     <AiOutlinePlus
       style={{
         width: '1.5rem',

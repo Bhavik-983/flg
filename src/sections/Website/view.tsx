@@ -13,12 +13,53 @@ import AddButton from 'src/routes/components/AddButton';
 import DataTable from 'src/routes/components/DataTable';
 import Searchinput from 'src/routes/components/Searchinput';
 import DeleteModal from 'src/routes/components/modal/DeleteModal';
+import WebsiteModal from 'src/routes/components/modal/WebsiteModal';
 
 import { useSettingsContext } from 'src/components/settings';
 
 // ----------------------------------------------------------------------
 
+const rows = [
+  { id: 1, name: 'Snow', createdat: '23/10/2020', status: true, url: 'https://www.google.com' },
+  {
+    id: 2,
+    name: 'Lannister',
+    createdat: '22/10/2020',
+    status: false,
+    url: 'https://www.facebook.com',
+  },
+  {
+    id: 3,
+    name: 'Lannister',
+    createdat: '20/10/2020',
+    status: false,
+    url: 'https://www.amazon.com',
+  },
+  {
+    id: 4,
+    name: 'Stark',
+    createdat: '10/10/2020',
+    status: true,
+    url: 'https://www.instagram.com',
+  },
+];
+interface WebsiteData {
+  id: number;
+  name: string;
+  url: string;
+}
 export default function TwoView() {
+  const [websiteData, setWebsiteData] = useState<WebsiteData[]>(rows);
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [tableData, setTableData] = useState<WebsiteData[]>(rows);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsOpen(false);
+  };
   const settings = useSettingsContext();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -91,42 +132,35 @@ export default function TwoView() {
       ),
     },
   ];
-  const rows = [
-    { id: 1, name: 'Snow', createdat: '23/10/2020', status: true, url: 'https://www.google.com' },
-    {
-      id: 2,
-      name: 'Lannister',
-      createdat: '22/10/2020',
-      status: false,
-      url: 'https://www.facebook.com',
-    },
-    {
-      id: 3,
-      name: 'Lannister',
-      createdat: '20/10/2020',
-      status: false,
-      url: 'https://www.amazon.com',
-    },
-    {
-      id: 4,
-      name: 'Stark',
-      createdat: '10/10/2020',
-      status: true,
-      url: 'https://www.instagram.com',
-    },
-  ];
+
+  const handleSearchData = (value: string) => {
+    setSearchInput(value);
+
+    // Filter data based on the search input value
+    const filteredData = websiteData.filter((data) => {
+      const loweredValue = value.toLowerCase();
+      return (
+        data.name.toLowerCase().includes(loweredValue) ||
+        data.url.toLowerCase().includes(loweredValue)
+      );
+    });
+
+    setTableData(filteredData);
+  };
+
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'xl'}>
         <Box display="flex" justifyContent="space-between" width="full">
           <Typography variant="h4"> Website </Typography>
-          <AddButton title="Add Website" />
+          <AddButton title="Add Website" handleClick={handleModalOpen} />
         </Box>
-        <Searchinput />
+        <Searchinput handleSearchData={handleSearchData} />
         <Box mt={5}>
-          <DataTable columns={columns} rows={rows} />
+          <DataTable columns={columns} rows={tableData} />
         </Box>
       </Container>
+      <WebsiteModal isOpen={isOpen} onClose={handleModalClose} />
       <DeleteModal isOpen={isDeleteOpen} onClose={handleDeleteModalClose} />
     </>
   );

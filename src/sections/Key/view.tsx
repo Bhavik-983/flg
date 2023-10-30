@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MdDelete } from 'react-icons/md';
+import { useNavigate } from 'react-router';
 import { RiEditLine } from 'react-icons/ri';
 
 import Box from '@mui/material/Box';
@@ -17,6 +18,8 @@ import { useSettingsContext } from 'src/components/settings';
 // ----------------------------------------------------------------------
 
 export default function FourView() {
+  const navigate = useNavigate();
+
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const handleDeleteModalOpen = () => {
@@ -120,12 +123,16 @@ export default function FourView() {
     { id: 4, key: 'HI', page: 'Arya', languages: 'Hindi', createdat: '23/10/2020', status: false },
   ];
 
+  const handleNavigate: any = () => {
+    navigate('/dashboard/key/new');
+  };
+
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : 'xl'}>
         <Box display="flex" justifyContent="space-between" width="full">
           <Typography variant="h4"> Key </Typography>
-          <AddButton title="Add Key" />
+          <AddButton title="Add Key" handleClick={handleNavigate} />
         </Box>
         <Searchinput />
 

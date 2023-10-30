@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
 
-import { ADD_LANGUAGE, DELETE_LANGUAGE, UPDATE_LANGUAGE, GET_ALL_LANGUAGE } from 'src/utils/url';
+import { ADD_LANGUAGE, DELETE_LANGUAGE, UPDATE_LANGUAGE } from 'src/utils/url';
 
 import client from 'src/lib/client';
+
+export interface TranslateLanguae {
+  q: string;
+  target: string;
+  api_key: string;
+}
 
 export interface Language {
   createdAt: string;
@@ -17,11 +23,18 @@ export interface Language {
 
 const languageService = {
   getAllLanguage: async (): Promise<Language[]> => {
-    const response: AxiosResponse<any> = await client.get(GET_ALL_LANGUAGE);
-    return response?.data?.data?.rows;
+    const response: AxiosResponse<any> = await axios.get('/api/language');
+    return response?.data?.rows;
   },
-  getLanguage: async (): Promise<Language[]> => {
-    const response: AxiosResponse<any> = await axios.get('https://libretranslate.com/languages');
+
+  UpdateLanguageTranslate: async (data: any): Promise<any> => {
+    const response: AxiosResponse<any> = await axios.post('https://libretranslate.com/translate', {
+      q: data?.q,
+      source: 'auto',
+      target: data?.target,
+      format: 'text',
+      api_key: '',
+    });
     return response?.data;
   },
   addLanguage: async (data: any): Promise<any> => {

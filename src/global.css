@@ -24,3 +24,8 @@
 .css-h0bz2g-MuiDataGrid-root .MuiDataGrid-cell:focus {
   outline: none !important;
 }
+
+.css-ms7r0b .MuiDataGrid-columnHeader:focus,
+.css-ms7r0b .MuiDataGrid-cell:focus {
+  outline: none !important;
+}

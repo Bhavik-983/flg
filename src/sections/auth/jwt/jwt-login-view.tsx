@@ -28,7 +28,6 @@ export default function JwtLoginView() {
   const router = useRouter();
 
   const [errorMsg, setErrorMsg] = useState('');
-  console.log(setErrorMsg);
   // const searchParams = useSearchParams();
 
   // const returnTo = searchParams.get('returnTo');

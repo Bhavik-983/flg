@@ -22,6 +22,7 @@ export const paths = {
     website: `${ROOTS.DASHBOARD}/website`,
     page: `${ROOTS.DASHBOARD}/page`,
     key: `${ROOTS.DASHBOARD}/key`,
+    keyNew: `${ROOTS.DASHBOARD}/key/new`,
     group: {
       root: `${ROOTS.DASHBOARD}/group`,
       five: `${ROOTS.DASHBOARD}/group/five`,

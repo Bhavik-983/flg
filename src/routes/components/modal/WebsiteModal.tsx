@@ -4,13 +4,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Alert, Modal, Stack, Button, Switch, Typography } from '@mui/material';
-
-import { defaultLanguages } from 'src/utils/languageData';
+import { Box, Alert, Modal, Stack, Button, Typography } from '@mui/material';
 
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
-import RHFSelectField from 'src/components/hook-form/rhf-select-field';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -29,29 +26,22 @@ interface ModalProps {
   onClose: () => void;
 }
 
-export default function BasicModal({ isOpen, onClose }: ModalProps) {
+export default function WebsiteModal({ isOpen, onClose }: ModalProps) {
   const [errorMsg, setErrorMsg] = React.useState('');
-  const [isChecked, setIsChecked] = React.useState(false);
 
-  const handleSwitchChange = () => {
-    setIsChecked((prevValue) => !prevValue);
-  };
   const LanguageSchema = Yup.object().shape({
     name: Yup.string().min(2).required('Name is required'),
-    key: Yup.string().required('Key is required'),
-    code: Yup.object().shape({
-      label: Yup.string().required('Code is required'),
-      value: Yup.string().required('Code is required'),
-    }),
+    url: Yup.string()
+      .required('URL is required')
+      .matches(
+        /^(https?:\/\/[^\s/$.?#].[^\s]*)\.com$/,
+        'URL must start with http:// or https://, end with .com, and not end with /'
+      ),
   });
 
   const defaultValues = {
     name: '',
-    key: '',
-    code: {
-      label: '',
-      value: '',
-    },
+    url: '',
   };
 
   const methods = useForm({
@@ -62,7 +52,6 @@ export default function BasicModal({ isOpen, onClose }: ModalProps) {
   const {
     reset,
     handleSubmit,
-    setValue,
     formState: { isSubmitting, errors },
   } = methods;
 
@@ -84,11 +73,7 @@ export default function BasicModal({ isOpen, onClose }: ModalProps) {
       {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
       <RHFTextField name="name" label="Name" />
-      <RHFTextField name="key" label="Key" />
-      <RHFSelectField label="Code" name="code" handleChange={setValue} options={defaultLanguages} />
-
-      <Switch checked={isChecked} onChange={handleSwitchChange} name="switch" />
-
+      <RHFTextField name="url" label="URL" />
       <Box display="flex" justifyContent="flex-end" gap={2}>
         <Button
           sx={{
@@ -102,7 +87,6 @@ export default function BasicModal({ isOpen, onClose }: ModalProps) {
           Cancel
         </Button>
         <LoadingButton
-          // fullWidth
           color="inherit"
           size="medium"
           type="submit"
@@ -117,14 +101,14 @@ export default function BasicModal({ isOpen, onClose }: ModalProps) {
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Add Language</Typography>
+      <Typography variant="h4">Add Website</Typography>
     </Stack>
   );
 
   return (
     <Modal
       open={isOpen}
-      // onClose={onClose}
+      //   onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >

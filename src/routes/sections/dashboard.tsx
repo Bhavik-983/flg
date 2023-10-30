@@ -6,6 +6,8 @@ import DashboardLayout from 'src/layouts/dashboard';
 
 import { LoadingScreen } from 'src/components/loading-screen';
 
+import AddKey from '../components/page/AddKey';
+
 // ----------------------------------------------------------------------
 
 const IndexPage = lazy(() => import('src/pages/dashboard/one'));
@@ -35,6 +37,7 @@ export const dashboardRoutes = [
       { path: 'website', element: <PageTwo /> },
       { path: 'page', element: <PageThree /> },
       { path: 'key', element: <PageFour /> },
+      { path: 'key/new', element: <AddKey /> },
       {
         path: 'group',
         children: [
