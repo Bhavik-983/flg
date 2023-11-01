@@ -1,5 +1,6 @@
 import { memo } from 'react';
 
+import { Box } from '@mui/material';
 import Stack from '@mui/material/Stack';
 
 import NavList from './nav-list';
@@ -25,7 +26,15 @@ function Group({ items, slotProps }: NavGroupProps) {
   return (
     <>
       {items.map((list) => (
-        <NavList key={list.title} data={list} depth={1} slotProps={slotProps} />
+        <Box
+        // sx={{
+        //   borderRadius: 2,
+        //   p: '0px 10px',
+        //   bgcolor: 'rgba(145, 158, 171, 0.08)',
+        // }}
+        >
+          <NavList key={list.title} data={list} depth={1} slotProps={slotProps} />
+        </Box>
       ))}
     </>
   );

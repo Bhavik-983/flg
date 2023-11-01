@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import ThreeView from 'src/sections/Page/view';
+import SettingView from 'src/sections/setting/view';
 
 // ----------------------------------------------------------------------
 
@@ -8,10 +8,10 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Three</title>
+        <title> Dashboard: Setting</title>
       </Helmet>
 
-      <ThreeView />
+      <SettingView />
     </>
   );
 }

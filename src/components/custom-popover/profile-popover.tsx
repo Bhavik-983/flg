@@ -7,10 +7,10 @@ import { MenuPopoverProps } from './types';
 
 // ----------------------------------------------------------------------
 
-export default function CustomPopover({
+export default function ProfilePopover({
   open,
   children,
-  arrow = 'left-top',
+  arrow = 'left-bottom',
   hiddenArrow,
   sx,
   ...other

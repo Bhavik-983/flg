@@ -126,11 +126,10 @@ export function AuthProvider({ children }: Props) {
   }, [initialize]);
 
   // LOGIN
-  const login = useCallback(async (email: string, password: string, url: string) => {
+  const login = useCallback(async (email: string, password: string) => {
     const data = {
       email,
       password,
-      url,
     };
 
     const res = await axios.post(endpoints.auth.login, data);

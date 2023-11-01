@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
 
-import { paths } from 'src/routes/paths';
-
 import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -51,18 +49,9 @@ export function useNavData() {
       {
         subheader: '',
         items: [
-          { title: 'Language', path: paths.dashboard.language, icon: ICONS.dashboard },
-          { title: 'Website', path: paths.dashboard.website, icon: ICONS.ecommerce },
-          {
-            title: 'Page',
-            path: paths.dashboard.page,
-            icon: ICONS.analytics,
-          },
-          {
-            title: 'Key',
-            path: paths.dashboard.key,
-            icon: ICONS.external,
-          },
+          { title: 'languages', path: '/dashboard/languages', icon: ICONS.ecommerce },
+          { title: 'member', path: '/dashboard/member', icon: ICONS.dashboard },
+          { title: 'setting', path: '/dashboard/setting', icon: ICONS.dashboard },
         ],
       },
     ],

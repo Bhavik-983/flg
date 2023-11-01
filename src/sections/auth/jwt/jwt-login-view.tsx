@@ -1,20 +1,23 @@
-/* eslint-disable no-useless-escape */
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import { Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useRouter } from 'src/routes/hooks';
+import { paths } from 'src/routes/paths';
+import { RouterLink } from 'src/routes/components';
+import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { useAuthContext } from 'src/auth/hooks';
 import { PATH_AFTER_LOGIN } from 'src/config-global';
 
 import Iconify from 'src/components/iconify';
@@ -23,44 +26,26 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export default function JwtLoginView() {
-  // const { login } = useAuthContext();
+  const { login } = useAuthContext();
 
   const router = useRouter();
 
   const [errorMsg, setErrorMsg] = useState('');
-  // const searchParams = useSearchParams();
 
-  // const returnTo = searchParams.get('returnTo');
+  const searchParams = useSearchParams();
+
+  const returnTo = searchParams.get('returnTo');
 
   const password = useBoolean();
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string()
-      .required('Email is required')
-      .email('Email must be a valid email address')
-      .matches(
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        'Email must be valid'
-      ),
-    password: Yup.string()
-      .required('Password is required')
-      .min(8, 'Password must be at least 8 characters')
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-        'Password Must Be a one uppercase, one lowercase, one special character and one digit'
-      ),
-    url: Yup.string()
-      .required('URL is required')
-      .matches(
-        /^(https?:\/\/[^\s/$.?#].[^\s]*)\.com$/,
-        'URL must start with http:// or https://, end with .com, and not end with /'
-      ),
+    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
+    password: Yup.string().required('Password is required'),
   });
 
   const defaultValues = {
-    email: '',
-    password: '',
-    url: '',
+    email: 'demo@minimals.cc',
+    password: 'demo1234',
   };
 
   const methods = useForm({
@@ -69,37 +54,34 @@ export default function JwtLoginView() {
   });
 
   const {
-    // reset,
+    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
-    router.push(PATH_AFTER_LOGIN);
-    // try {
-    //   await login?.(data.email, data.password, data.url);
-    //   router.push(returnTo || PATH_AFTER_LOGIN);
-    // } catch (error) {
-    //   console.error(error);
-    //   reset();
-    //   setErrorMsg(typeof error === 'string' ? error : error.message);
-    // }
+    try {
+      await login?.(data.email, data.password);
+
+      router.push(returnTo || PATH_AFTER_LOGIN);
+    } catch (error) {
+      console.error(error);
+      reset();
+      setErrorMsg(typeof error === 'string' ? error : error.message);
+    }
   });
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography textAlign="center" variant="h4">
-        Sign in{' '}
-      </Typography>
+      <Typography variant="h4">Sign in to Minimal</Typography>
 
-      {/* <Stack direction="row" spacing={0.5}>
+      <Stack direction="row" spacing={0.5}>
         <Typography variant="body2">New user?</Typography>
 
         <Link component={RouterLink} href={paths.auth.jwt.register} variant="subtitle2">
           Create an account
         </Link>
-      </Stack> */}
+      </Stack>
     </Stack>
   );
 
@@ -107,7 +89,6 @@ export default function JwtLoginView() {
     <Stack spacing={2.5}>
       {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
-      <RHFTextField name="url" label="URL" />
       <RHFTextField name="email" label="Email address" />
 
       <RHFTextField
@@ -125,9 +106,9 @@ export default function JwtLoginView() {
         }}
       />
 
-      {/* <Link variant="body2" color="inherit" underline="always" sx={{ alignSelf: 'flex-end' }}>
+      <Link variant="body2" color="inherit" underline="always" sx={{ alignSelf: 'flex-end' }}>
         Forgot password?
-      </Link> */}
+      </Link>
 
       <LoadingButton
         fullWidth
@@ -143,16 +124,14 @@ export default function JwtLoginView() {
   );
 
   return (
-    <Box bgcolor="#FFFFFF" p={8} borderRadius={2} width={500}>
-      <FormProvider methods={methods} onSubmit={onSubmit}>
-        {renderHead}
+    <FormProvider methods={methods} onSubmit={onSubmit}>
+      {renderHead}
 
-        {/* <Alert severity="info" sx={{ mb: 3 }}>
+      <Alert severity="info" sx={{ mb: 3 }}>
         Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-      </Alert> */}
+      </Alert>
 
-        {renderForm}
-      </FormProvider>
-    </Box>
+      {renderForm}
+    </FormProvider>
   );
 }

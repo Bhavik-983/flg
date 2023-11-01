@@ -13,16 +13,15 @@ export const paths = {
   auth: {
     jwt: {
       login: `${ROOTS.AUTH}/jwt/login`,
-      // register: `${ROOTS.AUTH}/jwt/register`,
+      register: `${ROOTS.AUTH}/jwt/register`,
     },
   },
   // DASHBOARD
   dashboard: {
-    language: `${ROOTS.DASHBOARD}/language`,
-    website: `${ROOTS.DASHBOARD}/website`,
-    page: `${ROOTS.DASHBOARD}/page`,
-    key: `${ROOTS.DASHBOARD}/key`,
-    keyNew: `${ROOTS.DASHBOARD}/key/new`,
+    root: ROOTS.DASHBOARD,
+    one: `${ROOTS.DASHBOARD}/one`,
+    two: `${ROOTS.DASHBOARD}/languages`,
+    three: `${ROOTS.DASHBOARD}/three`,
     group: {
       root: `${ROOTS.DASHBOARD}/group`,
       five: `${ROOTS.DASHBOARD}/group/five`,

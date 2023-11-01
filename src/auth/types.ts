@@ -1,3 +1,4 @@
+
 // ----------------------------------------------------------------------
 
 export type ActionMapType<M extends { [index: string]: any }> = {
@@ -22,7 +23,7 @@ export type AuthStateType = {
 // ----------------------------------------------------------------------
 
 type CanRemove = {
-  login?: (email: string, password: string, url: string) => Promise<void>;
+  login?: (email: string, password: string) => Promise<void>;
   register?: (
     email: string,
     password: string,
@@ -47,7 +48,7 @@ export type JWTContextType = CanRemove & {
   loading: boolean;
   authenticated: boolean;
   unauthenticated: boolean;
-  login: (email: string, password: string, url: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -63,7 +64,7 @@ export type FirebaseContextType = CanRemove & {
   loginWithGithub: () => Promise<void>;
   loginWithTwitter: () => Promise<void>;
   forgotPassword?: (email: string) => Promise<void>;
-  login: (email: string, password: string, url: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
 };
 
@@ -73,7 +74,7 @@ export type AmplifyContextType = CanRemove & {
   loading: boolean;
   authenticated: boolean;
   unauthenticated: boolean;
-  login: (email: string, password: string, url: string) => Promise<unknown>;
+  login: (email: string, password: string) => Promise<unknown>;
   register: (
     email: string,
     password: string,
@@ -88,3 +89,5 @@ export type AmplifyContextType = CanRemove & {
 };
 
 // ----------------------------------------------------------------------
+
+

@@ -6,14 +6,12 @@ import DashboardLayout from 'src/layouts/dashboard';
 
 import { LoadingScreen } from 'src/components/loading-screen';
 
-import AddKey from '../components/page/AddKey';
-
 // ----------------------------------------------------------------------
 
-const IndexPage = lazy(() => import('src/pages/dashboard/one'));
-const PageTwo = lazy(() => import('src/pages/dashboard/two'));
-const PageThree = lazy(() => import('src/pages/dashboard/three'));
-const PageFour = lazy(() => import('src/pages/dashboard/four'));
+// const IndexPage = lazy(() => import('src/pages/dashboard/one'));
+const IndexPage = lazy(() => import('src/pages/dashboard/language'));
+const PageThree = lazy(() => import('src/pages/dashboard/member'));
+const PageFour = lazy(() => import('src/pages/dashboard/setting'));
 const PageFive = lazy(() => import('src/pages/dashboard/five'));
 const PageSix = lazy(() => import('src/pages/dashboard/six'));
 
@@ -33,11 +31,9 @@ export const dashboardRoutes = [
     ),
     children: [
       // { element: <IndexPage />, index: true },
-      { path: 'language', element: <IndexPage /> },
-      { path: 'website', element: <PageTwo /> },
-      { path: 'page', element: <PageThree /> },
-      { path: 'key', element: <PageFour /> },
-      { path: 'key/new', element: <AddKey /> },
+      { path: 'languages', element: <IndexPage /> },
+      { path: 'member', element: <PageThree /> },
+      { path: 'setting', element: <PageFour /> },
       {
         path: 'group',
         children: [

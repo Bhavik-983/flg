@@ -4,12 +4,10 @@ import Typography from '@mui/material/Typography';
 
 // ----------------------------------------------------------------------
 
-export default function LanguageView() {
-  // const settings = useSettingsContext();
-
+export default function MemberView() {
   return (
     <>
-      <Typography variant="h4"> Languages </Typography>
+      <Typography variant="h4"> Member </Typography>
 
       <Box
         sx={{

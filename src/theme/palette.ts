@@ -67,8 +67,6 @@ export const success = {
   dark: '#118D57',
   darker: '#065E49',
   contrastText: '#ffffff',
-  true: 'rgb(119, 237, 139)',
-  bgtrue: 'rgba(34, 197, 94, 0.16)',
 };
 
 export const warning = {
@@ -87,8 +85,6 @@ export const error = {
   dark: '#B71D18',
   darker: '#7A0916',
   contrastText: '#FFFFFF',
-  false: 'rgb(255, 172, 130)',
-  bgfalse: 'rgba(255, 86, 48, 0.16)',
 };
 
 export const common = {

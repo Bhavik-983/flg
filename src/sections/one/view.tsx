@@ -1,15 +1,18 @@
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+
+import { useSettingsContext } from 'src/components/settings';
 
 // ----------------------------------------------------------------------
 
-export default function LanguageView() {
-  // const settings = useSettingsContext();
+export default function OneView() {
+  const settings = useSettingsContext();
 
   return (
-    <>
-      <Typography variant="h4"> Languages </Typography>
+    <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+      <Typography variant="h4"> Page One </Typography>
 
       <Box
         sx={{
@@ -21,6 +24,6 @@ export default function LanguageView() {
           border: (theme) => `dashed 1px ${theme.palette.divider}`,
         }}
       />
-    </>
+    </Container>
   );
 }
