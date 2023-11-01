@@ -19,13 +19,11 @@ import { AuthProvider } from 'src/auth/context/jwt';
 
 export default function App() {
   const charAt = `
-
   ░░░    ░░░
   ▒▒▒▒  ▒▒▒▒
   ▒▒ ▒▒▒▒ ▒▒
   ▓▓  ▓▓  ▓▓
   ██      ██
-
   `;
 
   console.info(`%c${charAt}`, 'color: #5BE49B');
@@ -55,3 +53,5 @@ export default function App() {
     </AuthProvider>
   );
 }
+
+

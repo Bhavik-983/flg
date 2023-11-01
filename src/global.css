@@ -11,3 +11,6 @@
 .css-7pdj6e-MuiStack-root::-webkit-scrollbar {
   display: none;
 }
+.projectPopoverScrollbar::-webkit-scrollbar {
+  display: none;
+}
