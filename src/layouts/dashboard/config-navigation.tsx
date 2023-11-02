@@ -52,6 +52,7 @@ export function useNavData() {
           { title: 'languages', path: '/dashboard/languages', icon: ICONS.ecommerce },
           { title: 'member', path: '/dashboard/member', icon: ICONS.dashboard },
           { title: 'setting', path: '/dashboard/setting', icon: ICONS.dashboard },
+          { title: 'key', path: '/dashboard/key', icon: ICONS.external },
         ],
       },
     ],

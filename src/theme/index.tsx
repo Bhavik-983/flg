@@ -26,10 +26,12 @@ type Props = {
 export default function ThemeProvider({ children }: Props) {
   const settings = useSettingsContext();
 
+  settings.themeMode = 'light';
+
   const presets = createPresets(settings.themeColorPresets);
 
   const contrast = createContrast(settings.themeContrast, settings.themeMode);
-
+  console.log(settings.themeMode);
   const memoizedValue = useMemo(
     () => ({
       palette: {
