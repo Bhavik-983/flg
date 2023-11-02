@@ -114,6 +114,9 @@ export default function NavMini() {
           onClick={popover.onOpen}
           sx={{
             borderRadius: '0',
+            '&:hover:': {
+              background: 'red',
+            },
           }}
         >
           <Box
@@ -121,7 +124,7 @@ export default function NavMini() {
               borderRadius: 1,
               height: 52,
               width: 59,
-              backgroundImage: `linear-gradient(to top, #1e40747d 0%, #31435c 100%)`,
+              backgroundImage: `linear-gradient(to top, #e0e0e07d 0%, #d7d7d782 100%)`,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',

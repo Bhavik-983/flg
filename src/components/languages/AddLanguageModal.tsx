@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { BsSearch } from 'react-icons/Bs';
 import { AiOutlineClose } from 'react-icons/Ai';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -19,7 +20,13 @@ import {
 import { hideScroll } from 'src/theme/css';
 import { currentProjects } from 'src/store/slices/projectSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { Language, addProjectLanguage, selectLanguageData } from 'src/store/slices/LanguageSlice';
+import {
+  Language,
+  addProjectLanguage,
+  selectLanguageData,
+  editProjectLanguage,
+  selectProjectLanguage,
+} from 'src/store/slices/LanguageSlice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -38,12 +45,22 @@ const style = {
 };
 
 interface AddLanguageModalType {
+  isEdit: boolean;
   open: boolean;
   handleClose: () => void;
+  setIsEdit: (x: boolean) => void;
+  selectedID: string | undefined;
 }
 
-const AddLanguageModal = ({ open, handleClose }: AddLanguageModalType) => {
+const AddLanguageModal = ({
+  isEdit,
+  open,
+  handleClose,
+  setIsEdit,
+  selectedID,
+}: AddLanguageModalType) => {
   const allLanguages = useAppSelector(selectLanguageData);
+  const projectLanguage = useAppSelector(selectProjectLanguage);
   const dispatch = useAppDispatch();
   const currentProj = useAppSelector(currentProjects);
   const [languageData, setLanguageData] = useState<Language[]>(allLanguages);
@@ -60,14 +77,45 @@ const AddLanguageModal = ({ open, handleClose }: AddLanguageModalType) => {
     setLanguageData(updatedData);
   };
 
+  const handleLanguage = (data: Language) => {
+    if (isEdit === true) {
+      handleEditLanguage(data);
+    } else {
+      handleAddLanguage(data);
+    }
+  };
+
   const handleAddLanguage = (data: Language) => {
     const newLanguage = {
+      id: uuidv4(),
       currentProjId: currentProj.projectId,
       name: data.name,
       code: data.code,
       nativeName: data.nativeName,
     };
     dispatch(addProjectLanguage(newLanguage));
+    setIsEdit(false);
+    handleClose();
+    setLanguageData(allLanguages);
+  };
+
+  const handleEditLanguage = (data: Language) => {
+    const AlllanguageData = [...projectLanguage];
+    const updatedLanguageData = AlllanguageData?.map((items) =>
+      items.id === selectedID
+        ? {
+            ...items,
+            name: data.name,
+            code: data.code,
+            nativeName: data.nativeName,
+          }
+        : items
+    );
+    dispatch(editProjectLanguage(updatedLanguageData));
+  };
+
+  const handleCloseModal = () => {
+    setIsEdit(false);
     handleClose();
   };
 
@@ -76,7 +124,7 @@ const AddLanguageModal = ({ open, handleClose }: AddLanguageModalType) => {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       open={open}
-      onClose={handleClose}
+      onClose={handleCloseModal}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
       slotProps={{
@@ -101,7 +149,6 @@ const AddLanguageModal = ({ open, handleClose }: AddLanguageModalType) => {
                 transform: 'translate(-50%, -50%)',
                 width: '100%',
               }}
-              onClick={handleClose}
             >
               <Box
                 sx={{
@@ -119,6 +166,7 @@ const AddLanguageModal = ({ open, handleClose }: AddLanguageModalType) => {
                     transform: 'translate(50%, 50%)',
                   },
                 }}
+                onClick={handleCloseModal}
               >
                 <AiOutlineClose />
               </Box>
@@ -172,7 +220,7 @@ const AddLanguageModal = ({ open, handleClose }: AddLanguageModalType) => {
                           alignItems: 'center',
                           cursor: 'pointer',
                         }}
-                        onClick={() => handleAddLanguage(data)}
+                        onClick={() => handleLanguage(data)}
                       >
                         {data.name}
                       </Button>

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import OneView from 'src/sections/one/view';
+import KeyView from '../../sections/key/view';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export default function Page() {
         <title> Dashboard: One</title>
       </Helmet>
 
-      <OneView />
+      <KeyView />
     </>
   );
 }

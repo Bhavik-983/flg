@@ -14,3 +14,6 @@
 .projectPopoverScrollbar::-webkit-scrollbar {
   display: none;
 }
+.css-nonrd-MuiButtonBase-root-MuiIconButton-root:hover {
+  background-color: transparent !important;
+}

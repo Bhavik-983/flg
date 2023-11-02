@@ -10,7 +10,7 @@ const AddLanguageButton = ({ handleClick }: LanguageTypes) => (
   <Card
     sx={{
       background: '#efefef1a',
-      width: '90%',
+      width: 200,
       height: 140,
       display: 'flex',
       justifyContent: 'center',

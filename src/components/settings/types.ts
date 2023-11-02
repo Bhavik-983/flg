@@ -2,7 +2,7 @@
 
 export type SettingsValueProps = {
   themeStretch: boolean;
-  themeMode: 'light' | 'dark';
+  themeMode: 'light';
   themeDirection: 'rtl' | 'ltr';
   themeContrast: 'default' | 'bold';
   themeLayout: 'vertical' | 'horizontal' | 'mini';

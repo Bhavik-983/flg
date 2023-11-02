@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import Box from '@mui/material/Box';
@@ -18,10 +19,11 @@ export default function LanguageView() {
   // const settings = useSettingsContext();
   const languageModal = useLanguage();
   const languages = useAppSelector(selectProjectLanguage);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [selectedID, setSelectedId] = useState<string | undefined>('');
 
   const handleAddLanguage = () => {
     languageModal.openAddLanguage();
-    console.log(languageModal.open);
   };
   return (
     <>
@@ -47,6 +49,7 @@ export default function LanguageView() {
             alignItems: 'center',
           }}
         />
+
         <ResponsiveMasonry
           columnsCountBreakPoints={{
             100: 1,
@@ -61,32 +64,34 @@ export default function LanguageView() {
           }}
         >
           <Masonry>
-            <LanguageListCard
-              handleEdit={() => {
-                console.log('edit');
-              }}
-              handleClick={() => {
-                console.log('click');
-              }}
-            />
-            {languages.length > 0 &&
-              languages?.map((data: ProjectLanguage) => (
-                <LanguageListCard
-                  handleEdit={() => {
-                    console.log('edit');
-                  }}
-                  handleClick={() => {
-                    console.log('click');
-                  }}
-                />
-              ))}
             <AddLanguageButton handleClick={handleAddLanguage} />
+            {languages && languages.length > 0
+              ? languages?.map((data: ProjectLanguage) => (
+                  <LanguageListCard
+                    name={data.name}
+                    code={data.code}
+                    handleOpen={languageModal.openAddLanguage}
+                    handleClick={() => {
+                      console.log('click');
+                    }}
+                    setIsEdit={setIsEdit}
+                    setSelectedId={setSelectedId}
+                    data={data}
+                  />
+                ))
+              : ''}
           </Masonry>
         </ResponsiveMasonry>
       </Box>
 
       {/* ADD LANGUAGE MODAL */}
-      <AddLanguageModal open={languageModal.open} handleClose={languageModal.closeAddLanguage} />
+      <AddLanguageModal
+        isEdit={isEdit}
+        open={languageModal.open}
+        handleClose={languageModal.closeAddLanguage}
+        setIsEdit={setIsEdit}
+        selectedID={selectedID}
+      />
     </>
   );
 }

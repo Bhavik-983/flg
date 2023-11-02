@@ -10,6 +10,7 @@ export interface ProjectLanguage {
     projectId: string;
     name: string;
     code: string;
+    nativeName: string;
 }
 
 export interface Language {
@@ -26,14 +27,7 @@ interface Projects {
 // Define the initial state using that type 
 const initialState: Projects = {
     allLanguage: languageData,
-    projectLanguage: [
-        {
-            id: 'faskld',
-            name: 'English',
-            code: "en",
-            projectId: 'faskdf;'
-        }
-    ]
+    projectLanguage: []
 };
 
 const LanguageSlice = createSlice({
@@ -43,12 +37,15 @@ const LanguageSlice = createSlice({
         resetState: () => initialState,
         addProjectLanguage: (state, action) => {
             state.projectLanguage.push(action.payload);
+        },
+        editProjectLanguage: (state, action) => {
+            state.projectLanguage = action.payload
         }   
     },
 
 });
 
-export const { resetState, addProjectLanguage } = LanguageSlice.actions;
+export const { resetState, addProjectLanguage, editProjectLanguage } = LanguageSlice.actions;
 
 export default LanguageSlice.reducer;
 
