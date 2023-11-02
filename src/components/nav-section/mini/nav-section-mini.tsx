@@ -26,13 +26,7 @@ function Group({ items, slotProps }: NavGroupProps) {
   return (
     <>
       {items.map((list) => (
-        <Box
-        // sx={{
-        //   borderRadius: 2,
-        //   p: '0px 10px',
-        //   bgcolor: 'rgba(145, 158, 171, 0.08)',
-        // }}
-        >
+        <Box>
           <NavList key={list.title} data={list} depth={1} slotProps={slotProps} />
         </Box>
       ))}
