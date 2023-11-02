@@ -4,6 +4,9 @@ import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
+import { useAppSelector } from 'src/store/hooks';
+import { ProjectLanguage, selectProjectLanguage } from 'src/store/slices/LanguageSlice';
+
 import useLanguage from 'src/components/languages/use-language';
 import LanguageListCard from 'src/components/languages/LanguageListCard';
 import AddLanguageModal from 'src/components/languages/AddLanguageModal';
@@ -14,6 +17,7 @@ import AddLanguageButton from 'src/components/languages/AddLanguageButton';
 export default function LanguageView() {
   // const settings = useSettingsContext();
   const languageModal = useLanguage();
+  const languages = useAppSelector(selectProjectLanguage);
 
   const handleAddLanguage = () => {
     languageModal.openAddLanguage();
@@ -43,7 +47,6 @@ export default function LanguageView() {
             alignItems: 'center',
           }}
         />
-        {/* <AddLanguageCard handleClick={() => console.log('object')} /> */}
         <ResponsiveMasonry
           columnsCountBreakPoints={{
             100: 1,
@@ -66,10 +69,23 @@ export default function LanguageView() {
                 console.log('click');
               }}
             />
+            {languages.length > 0 &&
+              languages?.map((data: ProjectLanguage) => (
+                <LanguageListCard
+                  handleEdit={() => {
+                    console.log('edit');
+                  }}
+                  handleClick={() => {
+                    console.log('click');
+                  }}
+                />
+              ))}
             <AddLanguageButton handleClick={handleAddLanguage} />
           </Masonry>
         </ResponsiveMasonry>
       </Box>
+
+      {/* ADD LANGUAGE MODAL */}
       <AddLanguageModal open={languageModal.open} handleClose={languageModal.closeAddLanguage} />
     </>
   );

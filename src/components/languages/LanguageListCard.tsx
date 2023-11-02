@@ -36,13 +36,6 @@ const LanguageListCard = ({ handleEdit, handleClick }: LanguageTypes) => (
         <Typography variant="body2" color="text.secondary">
           EN
         </Typography>
-        <Typography
-          sx={{ fontSize: 12, position: 'absolute', bottom: 1, left: '18px' }}
-          color="text.secondary"
-          gutterBottom
-        >
-          Base Language
-        </Typography>
       </Box>
     </CardContent>
     <CardActions sx={{ position: 'absolute', top: 4, right: 2, p: 0 }}>

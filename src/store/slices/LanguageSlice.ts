@@ -5,21 +5,21 @@ import { languageData } from "src/utils/LanguageData";
 
 import type { RootState } from "../index";
 
-interface ProjectLanguage {
+export interface ProjectLanguage {
     id: string;
     projectId: string;
     name: string;
     code: string;
 }
 
-export interface AllLanguage {
+export interface Language {
     code: string;
     name: string;
     nativeName: string;
 }
 
 interface Projects {
-    allLanguage: AllLanguage[]
+    allLanguage: Language[]
     projectLanguage: ProjectLanguage[]
 }
 
@@ -41,11 +41,14 @@ const LanguageSlice = createSlice({
     initialState,
     reducers: {
         resetState: () => initialState,
-
+        addProjectLanguage: (state, action) => {
+            state.projectLanguage.push(action.payload);
+        }   
     },
+
 });
 
-export const { resetState, } = LanguageSlice.actions;
+export const { resetState, addProjectLanguage } = LanguageSlice.actions;
 
 export default LanguageSlice.reducer;
 

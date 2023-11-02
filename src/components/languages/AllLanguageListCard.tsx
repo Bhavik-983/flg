@@ -1,10 +1,10 @@
 import { Card, CardContent } from '@mui/material';
 
-import { AllLanguage } from 'src/store/slices/LanguageSlice';
+import { Language } from 'src/store/slices/LanguageSlice';
 
 interface LanguageTypes {
   handleClick: () => void;
-  data: AllLanguage;
+  data: Language[];
 }
 
 const AllLanguageListCard = ({ handleClick, data }: LanguageTypes) => (
