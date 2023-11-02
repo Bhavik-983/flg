@@ -112,6 +112,8 @@ const AddLanguageModal = ({
         : items
     );
     dispatch(editProjectLanguage(updatedLanguageData));
+    setIsEdit(false);
+    handleClose();
   };
 
   const handleCloseModal = () => {
