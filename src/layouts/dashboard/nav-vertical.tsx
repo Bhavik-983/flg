@@ -20,7 +20,6 @@ import NavSectionVertical from 'src/components/nav-section/vertical/nav-section-
 
 import { NAV } from '../config-layout';
 import { useNavData } from './config-navigation';
-import AccountPopover from '../common/account-popover';
 import NavToggleButton from '../common/nav-toggle-button';
 
 // ----------------------------------------------------------------------
@@ -203,7 +202,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
           {renderContent}
         </Drawer>
       )}
-      <Box
+      {/* <Box
         sx={{
           borderRadius: 1,
           height: 50,
@@ -218,7 +217,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         }}
       >
         <AccountPopover />
-      </Box>
+      </Box> */}
     </Box>
   );
 }
