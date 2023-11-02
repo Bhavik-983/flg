@@ -166,7 +166,7 @@ export default function NavMini() {
           <Stack sx={{ p: 1, height: 289, ...hideScroll.y }}>
             {projects?.map((project: ProjectType) => (
               <MenuItem
-                key={project.projectId}
+                key={project.projectName}
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 onClick={() => handleClickItem(project)}
               >

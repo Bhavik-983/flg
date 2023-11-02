@@ -49,7 +49,7 @@ export default function DashboardLayout({ children }: Props) {
   if (isMini) {
     return (
       <>
-        <Header onOpenNav={nav.onTrue} />
+        {/* <Header onOpenNav={nav.onTrue} /> */}
 
         <Box
           sx={{
