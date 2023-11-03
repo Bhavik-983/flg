@@ -14,10 +14,10 @@ import { MotionLazy } from 'src/components/animate/motion-lazy';
 import { SettingsProvider } from 'src/components/settings';
 
 import { AuthProvider } from 'src/auth/context/jwt';
-import AddProjectModal from './components/projects/AddProjectModal';
 import { useAppSelector } from './store/hooks';
 import { selectProjects } from './store/slices/projectSlice';
 import useProject from './components/projects/use-projects';
+import AddProjectModal from './components/modal/AddProjectModal';
 
 // ----------------------------------------------------------------------
 
@@ -64,8 +64,8 @@ export default function App() {
         </SettingsProvider>
       </AuthProvider>
       <AddProjectModal
-        open={addProjectModal.open}
-        closeModal={addProjectModal.closeAddProjectModal}
+        isOpen={addProjectModal.open}
+        onClose={addProjectModal.closeAddProjectModal}
       />
     </>
   );

@@ -22,7 +22,7 @@ import {
 import Logo from 'src/components/logo';
 import { NavSectionMini } from 'src/components/nav-section';
 import useProject from 'src/components/projects/use-projects';
-import AddProjectModal from 'src/components/projects/AddProjectModal';
+import AddProjectModal from 'src/components/modal/AddProjectModal';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 import { NAV } from '../config-layout';
@@ -223,7 +223,7 @@ export default function NavMini() {
         </Box>
 
         {/* Add Project Modal */}
-        <AddProjectModal open={projectModal.open} closeModal={projectModal.closeAddProjectModal} />
+        <AddProjectModal isOpen={projectModal.open} onClose={projectModal.closeAddProjectModal} />
       </Stack>
     </Box>
   );

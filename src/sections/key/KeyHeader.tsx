@@ -7,14 +7,14 @@ import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { SelectChangeEvent } from '@mui/material/Select';
-import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 import { useAppSelector } from 'src/store/hooks';
 import { Page, selectAllPages } from 'src/store/slices/pageSlice';
 
 import usePage from 'src/components/keys/use-page';
 import AddPageModal from 'src/components/modal/AddPageModal';
-import RHFSelectField from 'src/components/hook-form/rhf-select-field';
+import { Autocomplete, FormControl, InputLabel, MenuItem, TextField } from '@mui/material';
+import { Select } from 'antd';
 
 const buttonStyles = {
   '&:hover': {
@@ -34,17 +34,18 @@ interface HeaderType {
 
 const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
   const pageModal = usePage();
-  const [page, setPage] = useState('');
+  const [page, setPage] = useState<string | undefined>('');
   const allPages = useAppSelector(selectAllPages);
 
   const handleChange = (event: SelectChangeEvent) => {
     setPage(event.target.value as string);
   };
   const defaultLanguages = [
-    { label: 'Project Manager', value: 'PM' },
-    { label: 'Developer', value: 'DP' },
-    { label: 'Translator', value: 'TS' },
+    { label: 'Project Manager' },
+    { label: 'Developer' },
+    { label: 'Translator' },
   ];
+  console.log(allPages);
 
   return (
     <>
@@ -52,34 +53,12 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
         <AppBar position="static">
           <Toolbar sx={{ px: '0 !important' }}>
             <Box sx={{ minWidth: 250, mr: 2 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label" sx={{ background: 'white', px: 1 }}>
-                  Select Page
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={page}
-                  label="Pages"
-                  onChange={handleChange}
-                >
-                  {allPages.length > 0 &&
-                    allPages?.map((data: Page) => (
-                      <MenuItem
-                        value={10}
-                        key={data.pageID}
-                        sx={{ textTransform: 'capitalize', py: 1 }}
-                      >
-                        {data.pageName}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-              <RHFSelectField
-                options={defaultLanguages}
-                // handleChange={setValue}
-                name="role"
-                label="Role"
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={allPages.map((data: any) => data.pageName)}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField {...params} label="Movie" />}
               />
             </Box>
             <Box sx={{ mr: 2 }}>
@@ -104,8 +83,8 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
         </AppBar>
       </Box>
       <AddPageModal
-        open={pageModal.open}
-        closeModal={pageModal.closeAddPageModal}
+        isOpen={pageModal.open}
+        onClose={pageModal.closeAddPageModal}
         currentProjId={currentProjId}
       />
     </>
@@ -113,3 +92,4 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
 };
 
 export default KeyHeader;
+

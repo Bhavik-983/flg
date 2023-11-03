@@ -28,20 +28,19 @@ const style = {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  currentProjId: string;
 }
 
-export default function AddPageModal({ isOpen, onClose, currentProjId }: ModalProps) {
+export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
   const dispatch = useAppDispatch();
 
   const [errorMsg, setErrorMsg] = React.useState('');
   console.log(setErrorMsg);
   const LanguageSchema = Yup.object().shape({
-    pageName: Yup.string().min(2).required('Page Name is required'),
+    name: Yup.string().min(2).required('Project Name is required'),
   });
 
   const defaultValues = {
-    pageName: '',
+    name: '',
   };
 
   const methods = useForm({
@@ -56,22 +55,26 @@ export default function AddPageModal({ isOpen, onClose, currentProjId }: ModalPr
   } = methods;
 
   const onSubmit = handleSubmit(async (data: any) => {
-    if (data.pageName !== '') {
+    if (data.name !== '') {
       const newProject = {
-        projectId: currentProjId,
-        pageID: uuidv4(),
-        pageName: data.pageName,
+        projectID: uuidv4(),
+        projectName: data.name,
       };
-      console.log(newProject);
-      onClose();
-      dispatch(addPages(newProject));
+      const defaultProject = {
+        projectName: newProject.projectName,
+        projectID: newProject.projectID,
+      };
+      // dispatch(setCurrentProject(defaultProject));
+      // dispatch(addProject(newProject));
+      // setProjectName('');
+      // closeModal();
     }
   });
 
   const renderForm = (
     <Stack spacing={2.5}>
       {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-      <RHFTextField name="pageName" label="Page Name" />
+      <RHFTextField name="name" label="name" />
       <Box display="flex" justifyContent="flex-end" gap={2}>
         <LoadingButton
           color="inherit"
@@ -99,7 +102,7 @@ export default function AddPageModal({ isOpen, onClose, currentProjId }: ModalPr
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Add Page</Typography>
+      <Typography variant="h4">Add Project</Typography>
     </Stack>
   );
   return (

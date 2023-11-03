@@ -28,7 +28,7 @@ interface ProjectModalType {
   closeModal: () => void;
 }
 
-const AddProjectModal = ({ open, closeModal }: ProjectModalType) => {
+const AddProjectModals = ({ open, closeModal }: ProjectModalType) => {
   const allProjects = useAppSelector(selectProjects);
   console.log(allProjects.length);
   const [projectName, setProjectName] = React.useState<string>('');
@@ -115,4 +115,4 @@ const AddProjectModal = ({ open, closeModal }: ProjectModalType) => {
   );
 };
 
-export default AddProjectModal;
+export default AddProjectModals;
