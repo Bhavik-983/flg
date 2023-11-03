@@ -17,7 +17,13 @@ export default function CustomHeader() {
         display: 'flex',
         borderBottom: '1px solid #e0e0e0',
         py: 2,
-        mb: 3,
+        pl: {
+          xs: 10,
+          sm: 10,
+          md: 10,
+          lg: 2,
+          xl: 0,
+        },
         gap: 5,
       }}
     >
@@ -30,7 +36,7 @@ export default function CustomHeader() {
       >
         {currentProject?.projectName}
       </Typography>
-      <Typography sx={{ mt: 1 }} variant="h6">
+      <Typography variant="h4">
         {languageCount} {languageCount === 1 ? 'Language' : 'Languages'}
       </Typography>
     </Box>

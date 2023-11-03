@@ -9,6 +9,8 @@ import { useSettingsContext } from 'src/components/settings';
 import Main from './main';
 import Header from './header';
 import NavMini from './nav-mini';
+import NavVertical from './nav-vertical';
+import NavHorizontal from './nav-horizontal';
 
 // ----------------------------------------------------------------------
 
@@ -29,21 +31,21 @@ export default function DashboardLayout({ children }: Props) {
   console.log(isMini, 'isMini');
   const renderNavMini = <NavMini />;
 
-  // const renderHorizontal = <NavHorizontal />;
+  const renderHorizontal = <NavHorizontal />;
 
-  // const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
+  const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
 
-  // if (isHorizontal) {
-  //   return (
-  //     <>
-  //       <Header onOpenNav={nav.onTrue} />
+  if (isHorizontal) {
+    return (
+      <>
+        <Header onOpenNav={nav.onTrue} />
 
-  //       {/* {lgUp ? renderHorizontal : renderNavVertical} */}
+        {lgUp ? renderHorizontal : renderNavVertical}
 
-  //       <Main>{children}</Main>
-  //     </>
-  //   );
-  // }
+        <Main>{children}</Main>
+      </>
+    );
+  }
 
   if (isMini) {
     return (
@@ -57,7 +59,7 @@ export default function DashboardLayout({ children }: Props) {
             flexDirection: { xs: 'column', lg: 'row' },
           }}
         >
-          {lgUp && renderNavMini}
+          {lgUp ? renderNavMini : renderNavVertical}
 
           <Main>
             <CustomHeader />
@@ -68,24 +70,24 @@ export default function DashboardLayout({ children }: Props) {
     );
   }
 
-  // return (
-  //   <>
-  //     <Header onOpenNav={nav.onTrue} />
+  return (
+    <>
+      <Header onOpenNav={nav.onTrue} />
 
-  //     <Box
-  //       sx={{
-  //         minHeight: 1,
-  //         display: 'flex',
-  //         flexDirection: { xs: 'column', lg: 'row' },
-  //       }}
-  //     >
-  //       {renderNavMini}
+      <Box
+        sx={{
+          minHeight: 1,
+          display: 'flex',
+          flexDirection: { xs: 'column', lg: 'row' },
+        }}
+      >
+        {lgUp ? renderNavMini : renderNavVertical}
 
-  //       <Main>
-  //         <CustomHeader />
-  //         {children}
-  //       </Main>
-  //     </Box>
-  //   </>
-  // );
+        <Main>
+          <CustomHeader />
+          {children}
+        </Main>
+      </Box>
+    </>
+  );
 }
