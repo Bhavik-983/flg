@@ -5,10 +5,11 @@ import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
+import useLanguage from 'src/hooks/use-language';
+
 import { useAppSelector } from 'src/store/hooks';
 import { ProjectLanguage, selectProjectLanguage } from 'src/store/slices/LanguageSlice';
 
-import useLanguage from 'src/components/languages/use-language';
 import LanguageListCard from 'src/components/languages/LanguageListCard';
 import AddLanguageModal from 'src/components/languages/AddLanguageModal';
 import AddLanguageButton from 'src/components/languages/AddLanguageButton';

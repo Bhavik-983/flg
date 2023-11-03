@@ -8,6 +8,7 @@ import { Box, Divider, MenuItem, Typography } from '@mui/material';
 
 // import { useRouter } from 'src/routes/hooks';
 
+import useProject from 'src/hooks/use-projects';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
 import { hideScroll } from 'src/theme/css';
@@ -21,7 +22,6 @@ import {
 
 import Logo from 'src/components/logo';
 import { NavSectionMini } from 'src/components/nav-section';
-import useProject from 'src/components/projects/use-projects';
 import AddProjectModal from 'src/components/modal/AddProjectModal';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 

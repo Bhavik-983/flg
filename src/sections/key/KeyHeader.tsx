@@ -6,15 +6,15 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import { TextField, Autocomplete } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-import { useAppSelector } from 'src/store/hooks';
-import { Page, selectAllPages } from 'src/store/slices/pageSlice';
+import usePage from 'src/hooks/use-page';
 
-import usePage from 'src/components/keys/use-page';
+import { useAppSelector } from 'src/store/hooks';
+import { selectAllPages } from 'src/store/slices/pageSlice';
+
 import AddPageModal from 'src/components/modal/AddPageModal';
-import { Autocomplete, FormControl, InputLabel, MenuItem, TextField } from '@mui/material';
-import { Select } from 'antd';
 
 const buttonStyles = {
   '&:hover': {
@@ -40,12 +40,6 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
   const handleChange = (event: SelectChangeEvent) => {
     setPage(event.target.value as string);
   };
-  const defaultLanguages = [
-    { label: 'Project Manager' },
-    { label: 'Developer' },
-    { label: 'Translator' },
-  ];
-  console.log(allPages);
 
   return (
     <>

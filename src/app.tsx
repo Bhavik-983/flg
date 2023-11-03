@@ -16,7 +16,7 @@ import { SettingsProvider } from 'src/components/settings';
 import { AuthProvider } from 'src/auth/context/jwt';
 import { useAppSelector } from './store/hooks';
 import { selectProjects } from './store/slices/projectSlice';
-import useProject from './components/projects/use-projects';
+import useProject from './hooks/use-projects';
 import AddProjectModal from './components/modal/AddProjectModal';
 
 // ----------------------------------------------------------------------
