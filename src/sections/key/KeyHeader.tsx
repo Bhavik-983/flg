@@ -6,16 +6,15 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
+import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 import { useAppSelector } from 'src/store/hooks';
 import { Page, selectAllPages } from 'src/store/slices/pageSlice';
 
 import usePage from 'src/components/keys/use-page';
-import AddPageModal from 'src/components/keys/AddPageModal';
+import AddPageModal from 'src/components/modal/AddPageModal';
+import RHFSelectField from 'src/components/hook-form/rhf-select-field';
 
 const buttonStyles = {
   '&:hover': {
@@ -41,6 +40,11 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
   const handleChange = (event: SelectChangeEvent) => {
     setPage(event.target.value as string);
   };
+  const defaultLanguages = [
+    { label: 'Project Manager', value: 'PM' },
+    { label: 'Developer', value: 'DP' },
+    { label: 'Translator', value: 'TS' },
+  ];
 
   return (
     <>
@@ -71,6 +75,12 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
                     ))}
                 </Select>
               </FormControl>
+              <RHFSelectField
+                options={defaultLanguages}
+                // handleChange={setValue}
+                name="role"
+                label="Role"
+              />
             </Box>
             <Box sx={{ mr: 2 }}>
               <Button
