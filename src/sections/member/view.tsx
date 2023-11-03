@@ -11,12 +11,16 @@ export default function MemberView() {
 
       <Box
         sx={{
-          mt: 5,
-          width: 1,
-          height: 320,
+          mt: '40px',
+          width: 0.99,
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          minHeight: 400,
           borderRadius: 2,
           bgcolor: (theme) => alpha(theme.palette.grey[500], 0.04),
           border: (theme) => `dashed 1px ${theme.palette.divider}`,
+          py: 4,
+          px: 4,
         }}
       />
     </>

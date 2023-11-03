@@ -27,8 +27,10 @@ export default function LanguageView() {
   };
   return (
     <>
+      <Typography variant="h4"> Languages </Typography>
       <Box
         sx={{
+          mt: '40px',
           width: 0.99,
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -40,7 +42,6 @@ export default function LanguageView() {
           px: 4,
         }}
       >
-        <Typography variant="h4"> Languages </Typography>
         <Box
           sx={{
             mt: 3,

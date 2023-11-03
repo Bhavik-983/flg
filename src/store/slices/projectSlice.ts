@@ -16,14 +16,15 @@ interface Projects {
 // Define the initial state using that type
 const initialState: Projects = {
     allProject: [
-        {
-            projectId: "34da3126-136f-3488-fsd6-e232a0c6123jf",
-            projectName: 'Servery management'
-        }
+        // {
+        //     projectId: "34da3126-136f-3488-fsd6-e232a0c6123jf",
+        //     projectName: 'Servery management'
+        // }
     ],
-    currentProject: {
-        projectId: "ea0a3126-136f-4017-af14-e232a0c6baa3",
-        projectName: 'Servery management'
+    currentProject:
+    {
+        projectId: "",
+        projectName: ''
     }
 };
 

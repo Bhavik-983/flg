@@ -156,12 +156,9 @@ export default function NavMini() {
               noWrap
               sx={{ fontSize: '19px', textTransform: 'capitalize' }}
             >
+              {console.log(currentProject?.projectName)}
               {currentProject?.projectName}
             </Typography>
-
-            {/* <Typography variant="body2" sx={{ color: 'text.secondary', opacity: 0 }} noWrap>
-              {currentProject?.projectId}
-            </Typography> */}
           </Box>
 
           <Divider sx={{ borderStyle: 'dashed' }} />

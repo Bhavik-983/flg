@@ -3,6 +3,13 @@
 import React, { useState } from 'react';
 import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
+import { Box } from '@mui/material';
+
+import { useAppSelector } from 'src/store/hooks';
+import { currentProjects } from 'src/store/slices/projectSlice';
+
+import KeyHeader from './KeyHeader';
+
 interface Item {
   key: string;
   name: string;
@@ -67,6 +74,7 @@ export default function KeyView() {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
+  const currentProject = useAppSelector(currentProjects);
 
   const isEditing = (record: Item) => record.key === editingKey;
 
@@ -214,20 +222,38 @@ export default function KeyView() {
     };
   });
 
+  const addRow = () => {
+    // Generate a unique key for the new row (you can use a library like uuid for this)
+    const newRowKey = (data.length + 1).toString();
+    const newRow: Item = {
+      key: newRowKey,
+      name: '',
+      age: 0,
+      address: '',
+    };
+    // Insert the new row at the beginning of the data array
+    setData([newRow, ...data]);
+    // Start editing the new row immediately
+    edit({ ...newRow, key: newRowKey });
+  };
+
   return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={false}
-      />
-    </Form>
+    <Box>
+      <KeyHeader currentProjId={currentProject.projectId} handleAddString={addRow} />
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          dataSource={data}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={false}
+        />
+      </Form>
+    </Box>
   );
 }

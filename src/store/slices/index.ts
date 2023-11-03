@@ -3,7 +3,9 @@ import { persistReducer } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 
+import keySlice from "./keySlice";
 import authSlice from "./authSlice";
+import pageSlice from "./pageSlice";
 import projectSlice from "./projectSlice";
 import LanguageSlice from "./LanguageSlice";
 import { REDUX_SECRET_KEY } from "../../utils/environments";
@@ -15,7 +17,7 @@ const encryptor = encryptTransform({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", 'projects'],
+  whitelist: ["auth", 'projects', 'languages', 'pages'],
   // blacklist: ["auth"],
   // stateReconciler: hardSet,
   transforms: [encryptor],
@@ -24,7 +26,9 @@ const persistConfig = {
 const rootReducers = combineReducers({
   auth: authSlice,
   projects: projectSlice,
-  languages: LanguageSlice
+  languages: LanguageSlice,
+  pages: pageSlice,
+  keys: keySlice
 });
 
 export default persistReducer(persistConfig, rootReducers);

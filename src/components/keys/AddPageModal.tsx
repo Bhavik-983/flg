@@ -9,8 +9,8 @@ import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import Typography from '@mui/material/Typography';
 
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { addProject, selectProjects, setCurrentProject } from 'src/store/slices/projectSlice';
+import { useAppDispatch } from 'src/store/hooks';
+import { addPages } from 'src/store/slices/pageSlice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -26,31 +26,26 @@ const style = {
 interface ProjectModalType {
   open: boolean;
   closeModal: () => void;
+  currentProjId: string;
 }
 
-const AddProjectModal = ({ open, closeModal }: ProjectModalType) => {
-  const allProjects = useAppSelector(selectProjects);
-  console.log(allProjects.length);
-  const [projectName, setProjectName] = React.useState<string>('');
+const AddPageModal = ({ open, closeModal, currentProjId }: ProjectModalType) => {
+  const [pageName, setPageName] = React.useState<string>('');
   const dispatch = useAppDispatch();
 
   const handleAddProject = () => {
-    if (projectName !== '') {
+    if (pageName !== '') {
       const newProject = {
-        projectID: uuidv4(),
-        projectName,
+        projectId: currentProjId,
+        pageID: uuidv4(),
+        pageName,
       };
-      const defaultProject = {
-        projectName: newProject.projectName,
-        projectID: newProject.projectID,
-      };
-      dispatch(setCurrentProject(defaultProject));
-      dispatch(addProject(newProject));
-      setProjectName('');
+      console.log(newProject);
+      setPageName('');
       closeModal();
+      dispatch(addPages(newProject));
     }
   };
-
   return (
     <div>
       <Modal
@@ -74,18 +69,18 @@ const AddProjectModal = ({ open, closeModal }: ProjectModalType) => {
               component="h2"
               sx={{ textAlign: 'center' }}
             >
-              Add New Project
+              Add New Page
             </Typography>
             <Box sx={{ mt: 4 }}>
-              <Typography sx={{ mb: 1, ml: '2px' }}>Title :</Typography>
+              <Typography sx={{ mb: 1, ml: '2px' }}>Page Name :</Typography>
               <TextField
                 id="outlined-basic"
                 autoComplete="off"
                 fullWidth
                 variant="outlined"
-                value={projectName}
+                value={pageName}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setProjectName(e.target.value)
+                  setPageName(e.target.value)
                 }
               />
             </Box>
@@ -98,13 +93,7 @@ const AddProjectModal = ({ open, closeModal }: ProjectModalType) => {
               >
                 Save
               </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                sx={{ width: '100px' }}
-                disabled={allProjects.length === 0}
-                onClick={closeModal}
-              >
+              <Button variant="outlined" size="large" sx={{ width: '100px' }} onClick={closeModal}>
                 Cancel
               </Button>
             </Box>
@@ -115,4 +104,4 @@ const AddProjectModal = ({ open, closeModal }: ProjectModalType) => {
   );
 };
 
-export default AddProjectModal;
+export default AddPageModal;
