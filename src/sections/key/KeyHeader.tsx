@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { BiPlus } from 'react-icons/Bi';
 import { AiOutlineFileAdd } from 'react-icons/Ai';
 
 import Box from '@mui/material/Box';
@@ -16,6 +15,7 @@ import { Page, selectAllPages } from 'src/store/slices/pageSlice';
 
 import usePage from 'src/components/keys/use-page';
 import AddPageModal from 'src/components/keys/AddPageModal';
+import { BiPlus } from 'react-icons/bi';
 
 const buttonStyles = {
   '&:hover': {
