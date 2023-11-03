@@ -7,12 +7,12 @@ import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { TextField, Autocomplete } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
 
 import usePage from 'src/hooks/use-page';
 
 import { useAppSelector } from 'src/store/hooks';
 import { selectAllPages } from 'src/store/slices/pageSlice';
+import { currentProjects } from 'src/store/slices/projectSlice';
 
 import AddPageModal from 'src/components/modal/AddPageModal';
 
@@ -33,12 +33,15 @@ interface HeaderType {
 }
 
 const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
+  const currentProject = useAppSelector(currentProjects);
   const pageModal = usePage();
-  const [page, setPage] = useState<string | undefined>('');
+  const [page, setPage] = useState<string | undefined>(currentProject.pageName);
   const allPages = useAppSelector(selectAllPages);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setPage(event.target.value as string);
+  const handleChange = (event: React.SyntheticEvent, newValue: string | null) => {
+    if (newValue !== null) {
+      setPage(newValue);
+    }
   };
 
   return (
@@ -50,9 +53,11 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
+                value={page}
                 options={allPages.map((data: any) => data.pageName)}
                 sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Movie" />}
+                renderInput={(params) => <TextField {...params} label="page" />}
+                onChange={(event, newValue) => handleChange(event, newValue as string | null)}
               />
             </Box>
             <Box sx={{ mr: 2 }}>

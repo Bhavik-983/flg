@@ -88,7 +88,7 @@ const AddLanguageModal = ({
   const handleAddLanguage = (data: Language) => {
     const newLanguage = {
       id: uuidv4(),
-      projectId: currentProj.projectId,
+      projectID: currentProj.projectID,
       name: data.name,
       code: data.code,
       nativeName: data.nativeName,

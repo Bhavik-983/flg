@@ -156,7 +156,6 @@ export default function NavMini() {
               noWrap
               sx={{ fontSize: '19px', textTransform: 'capitalize' }}
             >
-              {console.log(currentProject?.projectName)}
               {currentProject?.projectName}
             </Typography>
           </Box>
