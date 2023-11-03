@@ -89,7 +89,8 @@ export default function MemberView() {
               width: '50%',
               p: 1,
               ml: 2,
-              borderRadius: 1,
+              borderTopLeftRadius: 5,
+              borderTopRightRadius: 5,
               boxShadow: '0 2px 4px 1px rgba(0,0,0,.11)',
             }}
           >
@@ -140,6 +141,28 @@ export default function MemberView() {
                 />
               </Box>
             </Box>
+          </Box>
+          <Box
+            sx={{
+              bgcolor: '#f6f6f6',
+              borderTop: '1px solid #ececec',
+              pl: 1,
+              py: '3px',
+              ml: 2,
+              boxShadow: '0 2px 4px 1px rgba(0,0,0,.11)',
+              width: '50%',
+              borderBottomLeftRadius: 5,
+              borderBottomRightRadius: 5,
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 12,
+                fontWeight: 'bold',
+              }}
+            >
+              Project Admin
+            </Typography>
           </Box>
         </Stack>
         <AddMemberModal isOpen={isOpen} onClose={handleModalClose} />
