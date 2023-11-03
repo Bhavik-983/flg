@@ -8,7 +8,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Alert, Modal, Stack, Button, Typography } from '@mui/material';
 
 import { useAppDispatch } from 'src/store/hooks';
-import { addPages } from 'src/store/slices/pageSlice';
 
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';

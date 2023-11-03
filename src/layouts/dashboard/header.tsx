@@ -7,9 +7,6 @@ import IconButton from '@mui/material/IconButton';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { bgBlur } from 'src/theme/css';
-
-import Logo from 'src/components/logo';
 import SvgColor from 'src/components/svg-color';
 import { useSettingsContext } from 'src/components/settings';
 
@@ -38,7 +35,7 @@ export default function Header({ onOpenNav }: Props) {
 
   const renderContent = (
     <>
-      {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
+      {/* {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />} */}
 
       {!lgUp && (
         <IconButton onClick={onOpenNav}>
@@ -65,9 +62,9 @@ export default function Header({ onOpenNav }: Props) {
       sx={{
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
-        ...bgBlur({
-          color: theme.palette.background.default,
-        }),
+        // ...bgBlur({
+        //   color: theme.palette.background.default,
+        // }),
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,
         }),
@@ -77,12 +74,12 @@ export default function Header({ onOpenNav }: Props) {
           ...(offsetTop && {
             height: HEADER.H_DESKTOP_OFFSET,
           }),
-          ...(isNavHorizontal && {
-            width: 1,
-            bgcolor: 'background.default',
-            height: HEADER.H_DESKTOP_OFFSET,
-            borderBottom: `dashed 1px ${theme.palette.divider}`,
-          }),
+          // ...(isNavHorizontal && {
+          //   width: 1,
+          //   bgcolor: 'background.default',
+          //   height: HEADER.H_DESKTOP_OFFSET,
+          //   borderBottom: `dashed 1px ${theme.palette.divider}`,
+          // }),
           ...(isNavMini && {
             width: `calc(100% - ${NAV.W_MINI + 1}px)`,
           }),
