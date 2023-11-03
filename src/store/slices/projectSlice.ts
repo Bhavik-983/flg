@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../index";
 
 export interface ProjectType {
-    projectId: string;
+    projectID: string;
     projectName: string;
 }
 
@@ -23,7 +23,7 @@ const initialState: Projects = {
     ],
     currentProject:
     {
-        projectId: "",
+        projectID: "",
         projectName: ''
     }
 };

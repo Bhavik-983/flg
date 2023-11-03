@@ -11,8 +11,8 @@ import { TextField, Autocomplete } from '@mui/material';
 import usePage from 'src/hooks/use-page';
 
 import { useAppSelector } from 'src/store/hooks';
-import { selectAllPages } from 'src/store/slices/pageSlice';
 import { currentProjects } from 'src/store/slices/projectSlice';
+import { Page, selectAllPages } from 'src/store/slices/pageSlice';
 
 import AddPageModal from 'src/components/modal/AddPageModal';
 
@@ -28,18 +28,38 @@ const buttonStyles = {
 };
 
 interface HeaderType {
-  currentProjId: string;
   handleAddString: () => void;
 }
 
-const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
+const KeyHeader = ({ handleAddString }: HeaderType) => {
   const currentProject = useAppSelector(currentProjects);
   const pageModal = usePage();
-  const [page, setPage] = useState<string | undefined>(currentProject.pageName);
   const allPages = useAppSelector(selectAllPages);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string | null) => {
+  interface LabelValue {
+    label: string;
+    value: string;
+  }
+
+  const projectPages = allPages.reduce((result: LabelValue[], data: Page) => {
+    if (data.projectID === currentProject.projectID) {
+      result.push({
+        label: data.pageName,
+        value: data.pageID,
+      });
+    }
+    return result;
+  }, []);
+
+  const [page, setPage] = useState<LabelValue>(
+    projectPages?.find((data: LabelValue) => data?.label === 'Default')
+  );
+
+  console.log({ projectPages, page });
+
+  const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
     if (newValue !== null) {
+      console.log({ newValue });
       setPage(newValue);
     }
   };
@@ -54,10 +74,11 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
                 disablePortal
                 id="combo-box-demo"
                 value={page}
-                options={allPages.map((data: any) => data.pageName)}
+                options={projectPages}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="page" />}
-                onChange={(event, newValue) => handleChange(event, newValue as string | null)}
+                onChange={(event, newValue) => handleChange(event, newValue as LabelValue | null)}
+                clearIcon={null}
               />
             </Box>
             <Box sx={{ mr: 2 }}>
@@ -81,11 +102,7 @@ const KeyHeader = ({ currentProjId, handleAddString }: HeaderType) => {
           </Toolbar>
         </AppBar>
       </Box>
-      <AddPageModal
-        isOpen={pageModal.open}
-        onClose={pageModal.closeAddPageModal}
-        currentProjId={currentProjId}
-      />
+      <AddPageModal isOpen={pageModal.open} onClose={pageModal.closeAddPageModal} />
     </>
   );
 };

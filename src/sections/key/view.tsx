@@ -5,9 +5,6 @@ import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
 import { Box } from '@mui/material';
 
-import { useAppSelector } from 'src/store/hooks';
-import { currentProjects } from 'src/store/slices/projectSlice';
-
 import KeyHeader from './KeyHeader';
 
 interface Item {
@@ -74,7 +71,6 @@ export default function KeyView() {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
-  const currentProject = useAppSelector(currentProjects);
 
   const isEditing = (record: Item) => record.key === editingKey;
 
@@ -239,7 +235,7 @@ export default function KeyView() {
 
   return (
     <Box>
-      <KeyHeader currentProjId={currentProject.projectId} handleAddString={addRow} />
+      <KeyHeader handleAddString={addRow} />
       <Form form={form} component={false}>
         <Table
           components={{
