@@ -5,10 +5,12 @@ import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
+import useLanguage from 'src/hooks/use-language';
+
 import { useAppSelector } from 'src/store/hooks';
+import { currentProjects } from 'src/store/slices/projectSlice';
 import { ProjectLanguage, selectProjectLanguage } from 'src/store/slices/LanguageSlice';
 
-import useLanguage from 'src/components/languages/use-language';
 import LanguageListCard from 'src/components/languages/LanguageListCard';
 import AddLanguageModal from 'src/components/languages/AddLanguageModal';
 import AddLanguageButton from 'src/components/languages/AddLanguageButton';
@@ -16,15 +18,19 @@ import AddLanguageButton from 'src/components/languages/AddLanguageButton';
 // ----------------------------------------------------------------------
 
 export default function LanguageView() {
-  // const settings = useSettingsContext();
+  const currentProj = useAppSelector(currentProjects);
   const languageModal = useLanguage();
   const languages = useAppSelector(selectProjectLanguage);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [selectedID, setSelectedId] = useState<string | undefined>('');
+  const projLanguage = languages.filter(
+    (data: ProjectLanguage) => data.projectID === currentProj.projectID
+  );
 
   const handleAddLanguage = () => {
     languageModal.openAddLanguage();
   };
+
   return (
     <>
       <Typography variant="h4"> Languages </Typography>
@@ -66,8 +72,8 @@ export default function LanguageView() {
         >
           <Masonry>
             <AddLanguageButton handleClick={handleAddLanguage} />
-            {languages && languages.length > 0
-              ? languages?.map((data: ProjectLanguage) => (
+            {projLanguage.length > 0
+              ? projLanguage?.map((data: ProjectLanguage) => (
                   <LanguageListCard
                     name={data.name}
                     code={data.code}

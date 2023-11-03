@@ -7,7 +7,7 @@ import type { RootState } from "../index";
 
 export interface ProjectLanguage {
     id: string;
-    projectId: string;
+    projectID: string;
     name: string;
     code: string;
     nativeName: string;

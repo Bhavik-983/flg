@@ -16,11 +16,7 @@ interface Pages {
 // Define the initial state using that type 
 const initialState: Pages = {
     allPages: [
-        {
-            projectID: "34da3126-136f-3488-fsd6-e232a0c6123jf",
-            pageID: "3384bd3d-e1fc-49d1-8aab-c93c10ca33bb",
-            pageName: "Home Page",
-        }
+
     ]
 };
 
