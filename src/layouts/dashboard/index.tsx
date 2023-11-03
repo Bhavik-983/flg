@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import CustomHeader from 'src/components/header/Header';
 import { useSettingsContext } from 'src/components/settings';
 
 import Main from './main';
@@ -21,13 +22,13 @@ export default function DashboardLayout({ children }: Props) {
   const settings = useSettingsContext();
 
   const lgUp = useResponsive('up', 'lg');
-  
+
   const nav = useBoolean();
 
   const isHorizontal = settings.themeLayout === 'horizontal';
-
+  console.log(isHorizontal, 'isHorizontal');
   const isMini = settings.themeLayout === 'mini';
-
+  console.log(isMini, 'isMini');
   const renderNavMini = <NavMini />;
 
   const renderHorizontal = <NavHorizontal />;
@@ -60,7 +61,10 @@ export default function DashboardLayout({ children }: Props) {
         >
           {lgUp ? renderNavMini : renderNavVertical}
 
-          <Main>{children}</Main>
+          <Main>
+            <CustomHeader />
+            {children}
+          </Main>
         </Box>
       </>
     );
@@ -77,9 +81,12 @@ export default function DashboardLayout({ children }: Props) {
           flexDirection: { xs: 'column', lg: 'row' },
         }}
       >
-        {renderNavVertical}
+        {lgUp ? renderNavMini : renderNavVertical}
 
-        <Main>{children}</Main>
+        <Main>
+          <CustomHeader />
+          {children}
+        </Main>
       </Box>
     </>
   );

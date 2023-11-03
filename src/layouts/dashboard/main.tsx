@@ -48,10 +48,10 @@ export default function Main({ children, sx, ...other }: BoxProps) {
         minHeight: 1,
         display: 'flex',
         flexDirection: 'column',
-        py: `${HEADER.H_MOBILE + SPACING}px`,
+        // py: `${HEADER.H_MOBILE + SPACING}px`,
         ...(lgUp && {
           px: 2,
-          py: `${HEADER.H_DESKTOP + SPACING}px`,
+          // py: `${HEADER.H_DESKTOP + SPACING}px`,
           width: `calc(100% - ${NAV.W_VERTICAL}px)`,
           ...(isNavMini && {
             width: `calc(100% - ${NAV.W_MINI}px)`,
