@@ -135,7 +135,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
             textTransform: 'capitalize',
           }}
         >
-          {currentProject.projectName.charAt(0)}
+          {currentProject.projectName}
         </Box>
       </IconButton>
 

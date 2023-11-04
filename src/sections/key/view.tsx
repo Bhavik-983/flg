@@ -254,7 +254,7 @@ export default function KeyView() {
             },
           }}
           bordered
-          scroll={{ x: 1500 }}
+          scroll={{ x: 2000 }}
           dataSource={data}
           columns={mergedColumns}
           rowClassName="editable-row"
