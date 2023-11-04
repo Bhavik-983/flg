@@ -169,7 +169,7 @@ export default function KeyView() {
     {
       title: 'Details',
       dataIndex: 'details',
-      width: '30%',
+      width: '40%',
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
@@ -254,6 +254,7 @@ export default function KeyView() {
             },
           }}
           bordered
+          scroll={{ x: 1500 }}
           dataSource={data}
           columns={mergedColumns}
           rowClassName="editable-row"
