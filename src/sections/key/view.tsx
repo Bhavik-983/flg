@@ -19,37 +19,12 @@ interface Item {
 
 const originData: Item[] = [];
 for (let i = 0; i < 2; i++) {
-  originData.push(
-    {
-      key: i.toString(),
-      name: `Edward ${i}`,
-      language: 'hindi',
-      details: `London Park no. ${i}`,
-    }
-    // {
-    //   keyID: i.toString(),
-    //   keyName: `Edward ${i}`,
-    //   page: {
-    //     projectID: '',
-    //     pageID: '',
-    //     pageName: '',
-    //   },
-    //   projectID: '',
-    //   detail: `London Park no. ${i}`,
-    //   languages: [
-    //     {
-    //       language: {
-    //         id: '7477b141-6d80-4472-a3e2-b5e464e094af',
-    //         projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
-    //         code: 'hz',
-    //         name: 'Herero',
-    //         nativeName: 'Otjiherero',
-    //       },
-    //       value: '',
-    //     },
-    //   ],
-    // }
-  );
+  originData.push({
+    key: i.toString(),
+    name: `Edward ${i}`,
+    language: 'hindi',
+    details: `London Park no. ${i}`,
+  });
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
