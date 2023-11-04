@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { v4 as uuidv4 } from 'uuid';
 import React, { useState } from 'react';
 import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
@@ -73,7 +74,7 @@ export default function KeyView() {
   const originData: any = [];
   for (let i = 0; i < 2; i++) {
     originData.push({
-      keyID: i.toString(),
+      keyID: uuidv4(),
       keyName: `Edward ${i}`,
       page: currentPage,
       projectID: currentProject.projectID,
@@ -123,12 +124,13 @@ export default function KeyView() {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
-  // console.log({ data });
+  console.log({ data });
+  console.log({ editingKey });
 
   const isEditing = (record: Item) => record.key === editingKey;
 
   const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ name: '', age: '', address: '', ...record });
+    form.setFieldsValue({ keyName: '', details: '', ...record });
     setEditingKey(record.key);
   };
 
@@ -260,7 +262,7 @@ export default function KeyView() {
     //   details: '',
     // };
     const newRow: any = {
-      keyID: newRowKey,
+      keyID: uuidv4(),
       keyName: '',
       page: currentPage,
       projectID: currentProject.projectID,
