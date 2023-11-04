@@ -131,7 +131,7 @@ export default function KeyView() {
   const isEditing = (record: Item) => record.key === editingKey;
 
   const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ name: '', age: '', address: '', ...record });
+    form.setFieldsValue({ name: '', details: '', ...record });
     setEditingKey(record.key);
   };
 
