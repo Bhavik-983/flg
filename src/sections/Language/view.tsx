@@ -33,13 +33,12 @@ export default function LanguageView() {
 
   return (
     <>
-      <Typography variant="h4"> Languages </Typography>
+      <Typography variant="h4" sx={{ my: '10px', color: '#444444' }}>
+        {' '}
+        Languages{' '}
+      </Typography>
       <Box
         sx={{
-          mt: '40px',
-          width: 0.99,
-          marginLeft: 'auto',
-          marginRight: 'auto',
           minHeight: 400,
           borderRadius: 2,
           bgcolor: (theme) => alpha(theme.palette.grey[500], 0.04),
