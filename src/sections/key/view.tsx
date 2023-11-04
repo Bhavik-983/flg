@@ -19,13 +19,39 @@ interface Item {
 
 const originData: Item[] = [];
 for (let i = 0; i < 2; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    language: 'hindi',
-    details: `London Park no. ${i}`,
-  });
+  originData.push(
+    {
+      key: i.toString(),
+      name: `Edward ${i}`,
+      language: 'hindi',
+      details: `London Park no. ${i}`,
+    }
+    // {
+    //   keyID: i.toString(),
+    //   keyName: `Edward ${i}`,
+    //   page: {
+    //     projectID: '',
+    //     pageID: '',
+    //     pageName: '',
+    //   },
+    //   projectID: '',
+    //   detail: `London Park no. ${i}`,
+    //   languages: [
+    //     {
+    //       language: {
+    //         id: '7477b141-6d80-4472-a3e2-b5e464e094af',
+    //         projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
+    //         code: 'hz',
+    //         name: 'Herero',
+    //         nativeName: 'Otjiherero',
+    //       },
+    //       value: '',
+    //     },
+    //   ],
+    // }
+  );
 }
+
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
@@ -75,7 +101,7 @@ export default function KeyView() {
     result.push({
       title: data.name,
       dataIndex: data.id,
-      width: 150,
+      width: 200,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
@@ -97,6 +123,7 @@ export default function KeyView() {
     });
     return result;
   }, []);
+
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
@@ -113,7 +140,6 @@ export default function KeyView() {
   };
 
   const save = async (key: React.Key) => {
-    console.log({ key });
     try {
       const row = (await form.validateFields()) as Item;
 
@@ -142,7 +168,7 @@ export default function KeyView() {
     {
       title: 'Name',
       dataIndex: 'name',
-      width: 150,
+      width: 200,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
