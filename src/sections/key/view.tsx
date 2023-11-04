@@ -69,13 +69,12 @@ export default function KeyView() {
   // const currentLanguage = useAppSelector(selectProjectLanguage);
   const currentPage = useAppSelector(selectCurrentPage);
   const currentProject = useAppSelector(currentProjects);
-  console.log({ currentPage, currentProject });
 
   const originData: any = [];
   for (let i = 0; i < 2; i++) {
     originData.push({
       keyID: uuidv4(),
-      keyName: `Edward ${i}`,
+      name: `Edward ${i}`,
       page: currentPage,
       projectID: currentProject.projectID,
       details: `London Park no. ${i}`,
@@ -124,26 +123,26 @@ export default function KeyView() {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
-  console.log({ data });
-  console.log({ editingKey });
 
   const isEditing = (record: Item) => record.key === editingKey;
 
-  const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ keyName: '', details: '', ...record });
-    setEditingKey(record.key);
+  const edit = (record: Partial<Item> & { keyID: any }) => {
+    console.log({ record });
+    form.setFieldsValue({ name: '', details: '', ...record });
+    setEditingKey(record.keyID);
   };
 
   const cancel = () => {
     setEditingKey('');
   };
 
-  const save = async (key: React.Key) => {
+  const save = async (key: any) => {
+    console.log({ key });
     try {
       const row = (await form.validateFields()) as Item;
 
       const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => (key = item.keyID));
       if (index > -1) {
         const item = newData[index];
         // console.log({ row });
@@ -165,8 +164,8 @@ export default function KeyView() {
 
   const columns = [
     {
-      title: 'keyName',
-      dataIndex: 'keyName',
+      title: 'name',
+      dataIndex: 'name',
       width: 200,
       editable: true,
       render: (text: any, record: any) =>
@@ -190,7 +189,7 @@ export default function KeyView() {
     // ...languages,
 
     {
-      title: 'Details',
+      title: 'details',
       dataIndex: 'details',
       width: 150,
       editable: true,
@@ -216,7 +215,7 @@ export default function KeyView() {
     {
       title: 'operation',
       dataIndex: 'operation',
-      render: (_: any, record: Item) => {
+      render: (_: any, record: any) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
@@ -244,7 +243,7 @@ export default function KeyView() {
       ...col,
       onCell: (record: Item) => ({
         record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        inputType: col.dataIndex === 'name' ? 'detail' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -262,10 +261,8 @@ export default function KeyView() {
     //   details: '',
     // };
     const newRow: any = {
-      keyID: uuidv4(),
-      keyName: '',
-      page: currentPage,
-      projectID: currentProject.projectID,
+      keyID: newRowKey,
+      name: '',
       details: '',
       languages: [
         // {
@@ -283,7 +280,7 @@ export default function KeyView() {
     // Insert the new row at the beginning of the data array
     setData([newRow, ...data]);
     // Start editing the new row immediately
-    // edit({ ...newRow, key: newRowKey });
+    edit({ ...newRow, key: newRowKey });
   };
 
   return (
