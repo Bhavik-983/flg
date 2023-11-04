@@ -25,6 +25,7 @@ export default function CustomHeader() {
           xl: 0,
         },
         gap: 5,
+        mb: 5,
       }}
     >
       <Typography
