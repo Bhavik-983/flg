@@ -10,9 +10,9 @@ import { TextField, Autocomplete } from '@mui/material';
 
 import usePage from 'src/hooks/use-page';
 
-import { useAppSelector } from 'src/store/hooks';
 import { currentProjects } from 'src/store/slices/projectSlice';
-import { Page, selectAllPages } from 'src/store/slices/pageSlice';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { Page, addCurrentPage, selectAllPages } from 'src/store/slices/pageSlice';
 
 import AddPageModal from 'src/components/modal/AddPageModal';
 
@@ -33,6 +33,7 @@ interface HeaderType {
 
 const KeyHeader = ({ handleAddString }: HeaderType) => {
   const currentProject = useAppSelector(currentProjects);
+  const dispatch = useAppDispatch();
   const pageModal = usePage();
   const allPages = useAppSelector(selectAllPages);
 
@@ -57,8 +58,13 @@ const KeyHeader = ({ handleAddString }: HeaderType) => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
     if (newValue !== null) {
-      console.log({ newValue });
       setPage(newValue);
+      const newCurrentPage = {
+        projectID: currentProject.projectID,
+        pageName: newValue.label,
+        pageID: newValue.value,
+      };
+      dispatch(addCurrentPage(newCurrentPage));
     }
   };
 

@@ -5,8 +5,13 @@ import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
 import { Box } from '@mui/material';
 
+import { selectCurrentPage } from 'src/store/slices/pageSlice';
+import { currentProjects } from 'src/store/slices/projectSlice';
+
+// import { useAppSelector } from 'src/store/hooks';
+// import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
+
 import { useAppSelector } from 'src/store/hooks';
-import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
 
 import KeyHeader from './KeyHeader';
 
@@ -15,41 +20,6 @@ interface Item {
   name: string;
   language: string;
   details: string;
-}
-
-const originData: Item[] = [];
-for (let i = 0; i < 2; i++) {
-  originData.push(
-    {
-      key: i.toString(),
-      name: `Edward ${i}`,
-      language: 'hindi',
-      details: `London Park no. ${i}`,
-    }
-    // {
-    //   keyID: i.toString(),
-    //   keyName: `Edward ${i}`,
-    //   page: {
-    //     projectID: '',
-    //     pageID: '',
-    //     pageName: '',
-    //   },
-    //   projectID: '',
-    //   detail: `London Park no. ${i}`,
-    //   languages: [
-    //     {
-    //       language: {
-    //         id: '7477b141-6d80-4472-a3e2-b5e464e094af',
-    //         projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
-    //         code: 'hz',
-    //         name: 'Herero',
-    //         nativeName: 'Otjiherero',
-    //       },
-    //       value: '',
-    //     },
-    //   ],
-    // }
-  );
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -95,38 +65,65 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 export default function KeyView() {
-  const currentLanguage = useAppSelector(selectProjectLanguage);
+  // const currentLanguage = useAppSelector(selectProjectLanguage);
+  const currentPage = useAppSelector(selectCurrentPage);
+  const currentProject = useAppSelector(currentProjects);
+  console.log({ currentPage, currentProject });
 
-  const languages = currentLanguage.reduce((result: any[], data: any) => {
-    result.push({
-      title: data.name,
-      dataIndex: data.id,
-      width: 200,
-      editable: true,
-      render: (text: any, record: any) =>
-        isEditing(record) ? (
-          <Form.Item
-            name={data.name}
-            style={{ margin: 0 }}
-            rules={[
-              {
-                required: true,
-                message: 'Please Input language!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-        ) : (
-          <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
-        ),
+  const originData: any = [];
+  for (let i = 0; i < 2; i++) {
+    originData.push({
+      keyID: i.toString(),
+      keyName: `Edward ${i}`,
+      page: currentPage,
+      projectID: currentProject.projectID,
+      details: `London Park no. ${i}`,
+      languages: [
+        // {
+        //   language: {
+        //     id: '7477b141-6d80-4472-a3e2-b5e464e094af',
+        //     projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
+        //     code: 'hz',
+        //     name: 'Herero',
+        //     nativeName: 'Otjiherero',
+        //   },
+        //   value: '',
+        // },
+      ],
     });
-    return result;
-  }, []);
+  }
+
+  // const languages = currentLanguage.reduce((result: any[], data: any) => {
+  //   result.push({
+  //     title: data.name,
+  //     dataIndex: data.id,
+  //     width: 200,
+  //     editable: true,
+  //     render: (text: any, record: any) =>
+  //       isEditing(record) ? (
+  //         <Form.Item
+  //           name={data.name}
+  //           style={{ margin: 0 }}
+  //           rules={[
+  //             {
+  //               required: true,
+  //               message: 'Please Input language!',
+  //             },
+  //           ]}
+  //         >
+  //           <Input />
+  //         </Form.Item>
+  //       ) : (
+  //         <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
+  //       ),
+  //   });
+  //   return result;
+  // }, []);
 
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
+  // console.log({ data });
 
   const isEditing = (record: Item) => record.key === editingKey;
 
@@ -147,7 +144,7 @@ export default function KeyView() {
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
         const item = newData[index];
-        console.log({ row });
+        // console.log({ row });
         newData.splice(index, 1, {
           ...item,
           ...row,
@@ -166,8 +163,8 @@ export default function KeyView() {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: 'keyName',
+      dataIndex: 'keyName',
       width: 200,
       editable: true,
       render: (text: any, record: any) =>
@@ -188,7 +185,7 @@ export default function KeyView() {
           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
         ),
     },
-    ...languages,
+    // ...languages,
 
     {
       title: 'Details',
@@ -213,6 +210,7 @@ export default function KeyView() {
           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
         ),
     },
+
     {
       title: 'operation',
       dataIndex: 'operation',
@@ -255,16 +253,35 @@ export default function KeyView() {
   const addRow = () => {
     // Generate a unique key for the new row (you can use a library like uuid for this)
     const newRowKey = (data.length + 1).toString();
-    const newRow: Item = {
-      key: newRowKey,
-      name: '',
-      language: '',
+    // const newRow: Item = {
+    //   key: newRowKey,
+    //   name: '',
+    //   language: '',
+    //   details: '',
+    // };
+    const newRow: any = {
+      keyID: newRowKey,
+      keyName: '',
+      page: currentPage,
+      projectID: currentProject.projectID,
       details: '',
+      languages: [
+        // {
+        //   language: {
+        //     id: '7477b141-6d80-4472-a3e2-b5e464e094af',
+        //     projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
+        //     code: 'hz',
+        //     name: 'Herero',
+        //     nativeName: 'Otjiherero',
+        //   },
+        //   value: '',
+        // },
+      ],
     };
     // Insert the new row at the beginning of the data array
     setData([newRow, ...data]);
     // Start editing the new row immediately
-    edit({ ...newRow, key: newRowKey });
+    // edit({ ...newRow, key: newRowKey });
   };
 
   return (

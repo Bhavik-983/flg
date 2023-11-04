@@ -20,7 +20,7 @@ export interface KeyType {
     keyName: string;
     page: Page;
     projectID: string;
-    detail: string;
+    details: string;
     languages: keyLanguage[]
 }
 
@@ -32,30 +32,30 @@ interface KeysTypes {
 // Define the initial state using that type 
 const initialState: KeysTypes = {
     allKeys: [
-        {
-            keyID: "",
-            keyName: "",
-            page: {
-                projectID: "",
-                pageID: "",
-                pageName: "",
-            },
-            projectID: "",
-            detail: "",
-            languages: [
-                {
-                    language: {
-                        id: "7477b141-6d80-4472-a3e2-b5e464e094af",
-                        projectId: "34da3126-136f-3488-fsd6-e232a0c6123jf",
-                        code: "hz",
-                        name: "Herero",
-                        nativeName: "Otjiherero"
-                    },
-                    value: "",
-                }
+        // {
+        //     keyID: "",
+        //     keyName: "",
+        //     page: {
+        //         projectID: "",
+        //         pageID: "",
+        //         pageName: "",
+        //     },
+        //     projectID: "",
+        //     details: "",
+        //     languages: [
+        //         {
+        //             language: {
+        //                 id: "7477b141-6d80-4472-a3e2-b5e464e094af",
+        //                 projectId: "34da3126-136f-3488-fsd6-e232a0c6123jf",
+        //                 code: "hz",
+        //                 name: "Herero",
+        //                 nativeName: "Otjiherero"
+        //             },
+        //             value: "",
+        //         }
 
-            ]
-        }
+        //     ]
+        // }
     ]
 };
 

@@ -17,7 +17,10 @@ interface Projects {
 // Define the initial state using that type
 const initialState: Projects = {
   allProject: [
-
+    // {
+    //     projectID: "",
+    //     projectName: ''
+    // }
   ],
   currentProject: {
     projectID: 'ea0a3126-136f-4017-af14-e232a0c6baa3',
