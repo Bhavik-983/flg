@@ -20,7 +20,7 @@ export interface KeyType {
     keyName: string;
     page: Page;
     projectID: string;
-    detail: string;
+    details: string;
     languages: keyLanguage[]
 }
 
@@ -41,7 +41,7 @@ const initialState: KeysTypes = {
                 pageName: "",
             },
             projectID: "",
-            detail: "",
+            details: "",
             languages: [
                 {
                     language: {
@@ -67,11 +67,16 @@ const keySlice = createSlice({
         addKeys: (state, action) => {
             state.allKeys.push(action.payload);
         },
+        addKeyLanguage: (state, action) => {
+            // state.allKeys.forEach((data) => {
+
+            // })
+        }
     },
 
 });
 
-export const { resetState, addKeys } = keySlice.actions;
+export const { resetState, addKeys, addKeyLanguage } = keySlice.actions;
 
 export default keySlice.reducer;
 
