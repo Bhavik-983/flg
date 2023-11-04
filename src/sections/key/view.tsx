@@ -70,7 +70,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 export default function KeyView() {
   const currentLanguage = useAppSelector(selectProjectLanguage);
-  console.log({ currentLanguage });
 
   const languages = currentLanguage.reduce((result: any[], data: any) => {
     result.push({
@@ -98,7 +97,6 @@ export default function KeyView() {
     });
     return result;
   }, []);
-  console.log({ languages });
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
