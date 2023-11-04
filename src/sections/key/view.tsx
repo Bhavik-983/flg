@@ -76,7 +76,7 @@ export default function KeyView() {
     result.push({
       title: data.name,
       dataIndex: data.id,
-      width: '15%',
+      width: 150,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
@@ -144,7 +144,7 @@ export default function KeyView() {
     {
       title: 'Name',
       dataIndex: 'name',
-      width: '15%',
+      width: 150,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
@@ -169,7 +169,7 @@ export default function KeyView() {
     {
       title: 'Details',
       dataIndex: 'details',
-      width: '40%',
+      width: 150,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
