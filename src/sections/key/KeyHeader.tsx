@@ -55,8 +55,6 @@ const KeyHeader = ({ handleAddString }: HeaderType) => {
     projectPages?.find((data: LabelValue) => data?.label === 'Default')
   );
 
-  console.log({ projectPages, page });
-
   const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
     if (newValue !== null) {
       console.log({ newValue });
@@ -66,7 +64,7 @@ const KeyHeader = ({ handleAddString }: HeaderType) => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1, pb: 3 }}>
+      <Box sx={{ flexGrow: 1, py: 1 }}>
         <AppBar position="static">
           <Toolbar sx={{ px: '0 !important' }}>
             <Box sx={{ minWidth: 250, mr: 2 }}>
@@ -81,7 +79,7 @@ const KeyHeader = ({ handleAddString }: HeaderType) => {
                 clearIcon={null}
               />
             </Box>
-            <Box sx={{ mr: 2 }}>
+            <Box sx={{ mr: 2, flexGrow: 1 }}>
               <Button
                 onClick={pageModal.openAddPageModal}
                 variant="outlined"

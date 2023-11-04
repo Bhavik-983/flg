@@ -17,7 +17,7 @@ interface Pages {
 const initialState: Pages = {
     allPages: [
 
-    ]
+    ],
 };
 
 const pageSlice = createSlice({

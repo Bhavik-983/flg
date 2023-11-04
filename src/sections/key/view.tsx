@@ -234,7 +234,7 @@ export default function KeyView() {
   };
 
   return (
-    <Box>
+    <Box sx={{ mt: 1 }}>
       <KeyHeader handleAddString={addRow} />
       <Form form={form} component={false}>
         <Table

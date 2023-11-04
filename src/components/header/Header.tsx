@@ -15,6 +15,8 @@ export default function CustomHeader() {
       sx={{
         width: '100%',
         display: 'flex',
+        justifyContent: 'space-between',
+        px: 4,
         borderBottom: '1px solid #e0e0e0',
         py: 2,
         pl: {
@@ -30,15 +32,18 @@ export default function CustomHeader() {
       <Typography
         sx={{
           fontWeight: 'bold',
-          color: '#303030',
+          color: '#444444',
+          textTransform: 'capitalize',
         }}
         variant="h4"
       >
         {currentProject?.projectName}
       </Typography>
-      <Typography variant="h4">
-        {languageCount} {languageCount === 1 ? 'Language' : 'Languages'}
-      </Typography>
+      <Box sx={{ border: '1px solid black', px: 1, py: '2px', borderRadius: '3px' }}>
+        <Typography variant="h5" sx={{ fontSize: '14px', color: 'gray' }}>
+          {languageCount} {languageCount === 1 ? 'Language' : 'Languages'}
+        </Typography>
+      </Box>
     </Box>
   );
 }
