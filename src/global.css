@@ -17,3 +17,30 @@
 .css-nonrd-MuiButtonBase-root-MuiIconButton-root:hover {
   background-color: transparent !important;
 }
+
+/* Customize the scrollbar track */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 8px; /* Adjust the width as needed */
+}
+
+/* Customize the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Change the color */
+  border-radius: 6px; /* Round the corners */
+}
+
+/* Customize the scrollbar track on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Change the color on hover */
+}
+
+/* Customize the scrollbar track on the track (non-draggable area) */
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Change the color */
+}
+
+/* Customize the scrollbar corner (where horizontal and vertical scrollbars meet) */
+::-webkit-scrollbar-corner {
+  background: #e0e0e0; /* Change the color */
+}
