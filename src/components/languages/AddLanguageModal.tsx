@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 
 import { hideScroll } from 'src/theme/css';
+import { addKeyLanguage } from 'src/store/slices/keySlice';
 import { currentProjects } from 'src/store/slices/projectSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import {
@@ -27,7 +28,6 @@ import {
   editProjectLanguage,
   selectProjectLanguage,
 } from 'src/store/slices/LanguageSlice';
-import { addKeyLanguage } from 'src/store/slices/keySlice';
 
 const style = {
   position: 'absolute' as 'absolute',

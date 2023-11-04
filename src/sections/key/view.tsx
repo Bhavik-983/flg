@@ -8,12 +8,9 @@ import { Box } from '@mui/material';
 
 import { selectCurrentPage } from 'src/store/slices/pageSlice';
 import { currentProjects } from 'src/store/slices/projectSlice';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
-
-// import { useAppSelector } from 'src/store/hooks';
-// import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
-
-import { useAppSelector } from 'src/store/hooks';
+import { addKeys, setKeys, selectKeys } from 'src/store/slices/keySlice';
 
 import KeyHeader from './KeyHeader';
 
@@ -70,6 +67,8 @@ export default function KeyView() {
   const currentLanguage = useAppSelector(selectProjectLanguage);
   const currentPage = useAppSelector(selectCurrentPage);
   const currentProject = useAppSelector(currentProjects);
+  const allKeys = useAppSelector(selectKeys);
+  const dispatch = useAppDispatch();
 
   const originData: any = [];
   for (let i = 0; i < 1; i++) {
@@ -122,7 +121,7 @@ export default function KeyView() {
   }, []);
 
   const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
+  const [data, setData] = useState<any>(allKeys);
   const [editingKey, setEditingKey] = useState('');
 
   const isEditing = (record: any) => record.keyID === editingKey;
@@ -150,7 +149,9 @@ export default function KeyView() {
           ...row,
         });
         setData(newData);
+        console.log({ newData });
         setEditingKey('');
+        dispatch(setKeys(newData));
       } else {
         newData.push(row);
         setData(newData);
@@ -252,7 +253,7 @@ export default function KeyView() {
 
   const addRow = () => {
     // Generate a unique key for the new row (you can use a library like uuid for this)
-    const newRowKey = (data.length + 1).toString();
+    // const newRowKey = (data.length + 1).toString();
     // const newRow: Item = {
     //   key: newRowKey,
     //   name: '',
@@ -260,7 +261,7 @@ export default function KeyView() {
     //   details: '',
     // };
     const newRow: any = {
-      keyID: newRowKey,
+      keyID: uuidv4(),
       name: '',
       details: '',
       languages: [
@@ -277,9 +278,10 @@ export default function KeyView() {
       ],
     };
     // Insert the new row at the beginning of the data array
-    setData([newRow, ...data]);
+    setData(() => [newRow, ...data]);
     // Start editing the new row immediately
-    edit({ ...newRow, key: newRowKey });
+    edit({ ...newRow, key: newRow.keyID });
+    dispatch(addKeys(newRow));
   };
 
   return (
