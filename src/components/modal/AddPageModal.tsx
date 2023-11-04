@@ -5,10 +5,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Alert, Modal, Stack, Button, Typography } from '@mui/material';
+import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
-import { useAppDispatch } from 'src/store/hooks';
-import { addPages } from 'src/store/slices/pageSlice';
+import { Page, addPages } from 'src/store/slices/pageSlice';
+import { currentProjects } from 'src/store/slices/projectSlice';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
@@ -28,14 +29,12 @@ const style = {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  currentProjId: string;
 }
 
-export default function AddPageModal({ isOpen, onClose, currentProjId }: ModalProps) {
+export default function AddPageModal({ isOpen, onClose }: ModalProps) {
+  const currentProject = useAppSelector(currentProjects);
   const dispatch = useAppDispatch();
 
-  const [errorMsg, setErrorMsg] = React.useState('');
-  console.log(setErrorMsg);
   const LanguageSchema = Yup.object().shape({
     pageName: Yup.string().min(2).required('Page Name is required'),
   });
@@ -57,20 +56,19 @@ export default function AddPageModal({ isOpen, onClose, currentProjId }: ModalPr
 
   const onSubmit = handleSubmit(async (data: any) => {
     if (data.pageName !== '') {
-      const newProject = {
-        projectId: currentProjId,
+      const newProject: Page = {
+        projectID: currentProject.projectID,
         pageID: uuidv4(),
         pageName: data.pageName,
       };
-      console.log(newProject);
       onClose();
       dispatch(addPages(newProject));
+      reset();
     }
   });
 
   const renderForm = (
     <Stack spacing={2.5}>
-      {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
       <RHFTextField name="pageName" label="Page Name" />
       <Box display="flex" justifyContent="flex-end" gap={2}>
         <LoadingButton

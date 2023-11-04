@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Alert, Modal, Stack, Button, Typography } from '@mui/material';
+import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
 import { useAppDispatch } from 'src/store/hooks';
 import { addPages } from 'src/store/slices/pageSlice';
@@ -34,8 +34,6 @@ interface ModalProps {
 export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
   const dispatch = useAppDispatch();
 
-  const [errorMsg, setErrorMsg] = React.useState('');
-  console.log(setErrorMsg);
   const LanguageSchema = Yup.object().shape({
     name: Yup.string().min(2).required('Project Name is required'),
   });
@@ -80,7 +78,6 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
 
   const renderForm = (
     <Stack spacing={2.5}>
-      {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
       <RHFTextField name="name" label="name" />
       <Box display="flex" justifyContent="flex-end" gap={2}>
         <LoadingButton

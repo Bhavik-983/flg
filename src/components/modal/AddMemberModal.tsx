@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Alert, Modal, Stack, Button, Typography } from '@mui/material';
+import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
 // import { defaultLanguages } from 'src/utils/languageData';
 
@@ -34,8 +34,6 @@ interface ModalProps {
 }
 
 export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
-  const [errorMsg, setErrorMsg] = React.useState('');
-  console.log(setErrorMsg);
   const LanguageSchema = Yup.object().shape({
     name: Yup.string().min(2).required('Name is required'),
     email: Yup.string().min(2).required('Email is required'),
@@ -78,7 +76,6 @@ export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
 
   const renderForm = (
     <Stack spacing={2.5}>
-      {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
       <RHFTextField name="name" label="Name" />
       <RHFTextField name="email" label="Email" />
       <RHFSelectField options={defaultLanguages} handleChange={setValue} name="role" label="Role" />

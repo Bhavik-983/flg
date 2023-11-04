@@ -4,8 +4,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 export interface ProjectType {
-  projectId: string;
-  projectName: string;
+    projectID: string;
+    projectName: string;
+
 }
 
 interface Projects {
@@ -17,12 +18,12 @@ interface Projects {
 const initialState: Projects = {
   allProject: [
     {
-      projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
-      projectName: 'Servery management',
-    },
+        projectID: "",
+        projectName: ''
+    }
   ],
   currentProject: {
-    projectId: 'ea0a3126-136f-4017-af14-e232a0c6baa3',
+    projectID: 'ea0a3126-136f-4017-af14-e232a0c6baa3',
     projectName: 'Servery management',
   },
 };
