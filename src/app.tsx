@@ -22,15 +22,15 @@ import AddProjectModal from './components/modal/AddProjectModal';
 // ----------------------------------------------------------------------
 
 export default function App() {
-  const charAt = `
-  ░░░    ░░░
-  ▒▒▒▒  ▒▒▒▒
-  ▒▒ ▒▒▒▒ ▒▒
-  ▓▓  ▓▓  ▓▓
-  ██      ██
-  `;
+  // const charAt = `
+  // ░░░    ░░░
+  // ▒▒▒▒  ▒▒▒▒
+  // ▒▒ ▒▒▒▒ ▒▒
+  // ▓▓  ▓▓  ▓▓
+  // ██      ██
+  // `;
 
-  console.info(`%c${charAt}`, 'color: #5BE49B');
+  // console.info(`%c${charAt}`, 'color: #5BE49B');
 
   useScrollToTop();
   const addProjectModal = useProject();
