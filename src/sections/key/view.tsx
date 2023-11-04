@@ -8,6 +8,7 @@ import { Box } from '@mui/material';
 
 import { selectCurrentPage } from 'src/store/slices/pageSlice';
 import { currentProjects } from 'src/store/slices/projectSlice';
+import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
 
 // import { useAppSelector } from 'src/store/hooks';
 // import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
@@ -66,18 +67,18 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 export default function KeyView() {
-  // const currentLanguage = useAppSelector(selectProjectLanguage);
+  const currentLanguage = useAppSelector(selectProjectLanguage);
   const currentPage = useAppSelector(selectCurrentPage);
   const currentProject = useAppSelector(currentProjects);
 
   const originData: any = [];
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 1; i++) {
     originData.push({
       keyID: uuidv4(),
-      name: `Edward ${i}`,
+      name: '',
       page: currentPage,
       projectID: currentProject.projectID,
-      details: `London Park no. ${i}`,
+      details: '',
       languages: [
         // {
         //   language: {
@@ -93,38 +94,38 @@ export default function KeyView() {
     });
   }
 
-  // const languages = currentLanguage.reduce((result: any[], data: any) => {
-  //   result.push({
-  //     title: data.name,
-  //     dataIndex: data.id,
-  //     width: 200,
-  //     editable: true,
-  //     render: (text: any, record: any) =>
-  //       isEditing(record) ? (
-  //         <Form.Item
-  //           name={data.name}
-  //           style={{ margin: 0 }}
-  //           rules={[
-  //             {
-  //               required: true,
-  //               message: 'Please Input language!',
-  //             },
-  //           ]}
-  //         >
-  //           <Input />
-  //         </Form.Item>
-  //       ) : (
-  //         <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
-  //       ),
-  //   });
-  //   return result;
-  // }, []);
+  const languages = currentLanguage.reduce((result: any[], data: any) => {
+    result.push({
+      title: data.name,
+      dataIndex: data.id,
+      width: 200,
+      editable: true,
+      render: (text: any, record: any) =>
+        isEditing(record) ? (
+          <Form.Item
+            name={data.name}
+            style={{ margin: 0 }}
+            rules={[
+              {
+                required: true,
+                message: 'Please Input language!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        ) : (
+          <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
+        ),
+    });
+    return result;
+  }, []);
 
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
 
-  const isEditing = (record: Item) => record.key === editingKey;
+  const isEditing = (record: any) => record.keyID === editingKey;
 
   const edit = (record: Partial<Item> & { keyID: any }) => {
     console.log({ record });
@@ -136,13 +137,11 @@ export default function KeyView() {
     setEditingKey('');
   };
 
-  const save = async (key: any) => {
-    console.log({ key });
+  const save = async (keyID: any) => {
     try {
-      const row = (await form.validateFields()) as Item;
-
+      const row = (await form.validateFields()) as any;
       const newData = [...data];
-      const index = newData.findIndex((item) => (key = item.keyID));
+      const index = newData.findIndex((item) => keyID === item.keyID);
       if (index > -1) {
         const item = newData[index];
         // console.log({ row });
@@ -186,7 +185,7 @@ export default function KeyView() {
           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
         ),
     },
-    // ...languages,
+    ...languages,
 
     {
       title: 'details',
@@ -219,7 +218,7 @@ export default function KeyView() {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8 }}>
+            <Typography.Link onClick={() => save(record.keyID)} style={{ marginRight: 8 }}>
               Save
             </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>

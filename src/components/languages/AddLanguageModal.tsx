@@ -27,6 +27,7 @@ import {
   editProjectLanguage,
   selectProjectLanguage,
 } from 'src/store/slices/LanguageSlice';
+import { addKeyLanguage } from 'src/store/slices/keySlice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -59,10 +60,10 @@ const AddLanguageModal = ({
   setIsEdit,
   selectedID,
 }: AddLanguageModalType) => {
-  const allLanguages = useAppSelector(selectLanguageData);
-  const projectLanguage = useAppSelector(selectProjectLanguage);
   const dispatch = useAppDispatch();
   const currentProj = useAppSelector(currentProjects);
+  const allLanguages = useAppSelector(selectLanguageData);
+  const projectLanguage = useAppSelector(selectProjectLanguage);
   const [languageData, setLanguageData] = useState<Language[]>(allLanguages);
 
   const handleSearch = (language: string) => {
@@ -93,6 +94,7 @@ const AddLanguageModal = ({
       code: data.code,
       nativeName: data.nativeName,
     };
+    dispatch(addKeyLanguage({ newLanguage, value: '' }));
     dispatch(addProjectLanguage(newLanguage));
     setIsEdit(false);
     handleClose();
