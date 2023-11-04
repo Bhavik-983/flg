@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import { Divider, MenuItem, IconButton, Typography } from '@mui/material';
 
-import { useRouter, usePathname } from 'src/routes/hooks';
+import { usePathname } from 'src/routes/hooks';
 
 import useProject from 'src/hooks/use-projects';
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -33,32 +33,32 @@ import AccountPopover from '../common/account-popover';
 
 // ----------------------------------------------------------------------
 
-const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Profile',
-    linkTo: '/#1',
-  },
-  {
-    label: 'Settings',
-    linkTo: '/#2',
-  },
-  {
-    label: 'Settings',
-    linkTo: '/#2',
-  },
-  {
-    label: 'Settings',
-    linkTo: '/#2',
-  },
-  {
-    label: 'Settings',
-    linkTo: '/#2',
-  },
-];
+// const OPTIONS = [
+//   {
+//     label: 'Home',
+//     linkTo: '/',
+//   },
+//   {
+//     label: 'Profile',
+//     linkTo: '/#1',
+//   },
+//   {
+//     label: 'Settings',
+//     linkTo: '/#2',
+//   },
+//   {
+//     label: 'Settings',
+//     linkTo: '/#2',
+//   },
+//   {
+//     label: 'Settings',
+//     linkTo: '/#2',
+//   },
+//   {
+//     label: 'Settings',
+//     linkTo: '/#2',
+//   },
+// ];
 
 type Props = {
   openNav: boolean;
@@ -73,7 +73,6 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
   const projectModal = useProject();
   const pathname = usePathname();
   const popover = usePopover();
-  const router = useRouter();
 
   const lgUp = useResponsive('up', 'lg');
 
