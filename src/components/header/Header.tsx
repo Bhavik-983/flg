@@ -9,7 +9,6 @@ export default function CustomHeader() {
   const currentLanguage = useAppSelector(selectProjectLanguage);
 
   const languageCount = currentLanguage.length;
-  console.log({ currentLanguage });
   return (
     <Box
       sx={{

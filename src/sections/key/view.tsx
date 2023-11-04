@@ -5,13 +5,16 @@ import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
 import { Box } from '@mui/material';
 
+import { useAppSelector } from 'src/store/hooks';
+import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
+
 import KeyHeader from './KeyHeader';
 
 interface Item {
   key: string;
   name: string;
-  age: number;
-  address: string;
+  language: string;
+  details: string;
 }
 
 const originData: Item[] = [];
@@ -19,8 +22,8 @@ for (let i = 0; i < 2; i++) {
   originData.push({
     key: i.toString(),
     name: `Edward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
+    language: 'hindi',
+    details: `London Park no. ${i}`,
   });
 }
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -28,8 +31,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   dataIndex: string;
   title: any;
   inputType: 'number' | 'text';
-  // record: Item;
-  // index: number;
+
   children: React.ReactNode;
 }
 
@@ -38,8 +40,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   dataIndex,
   title,
   inputType,
-  // record,
-  // index,
+
   children,
   ...restProps
 }) => {
@@ -68,6 +69,36 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 export default function KeyView() {
+  const currentLanguage = useAppSelector(selectProjectLanguage);
+  console.log({ currentLanguage });
+
+  const languages = currentLanguage.reduce((result: any[], data: any) => {
+    result.push({
+      title: data.name,
+      dataIndex: data.id,
+      width: '15%',
+      editable: true,
+      render: (text: any, record: any) =>
+        isEditing(record) ? (
+          <Form.Item
+            name={data.name}
+            style={{ margin: 0 }}
+            rules={[
+              {
+                required: true,
+                message: 'Please Input language!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        ) : (
+          <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
+        ),
+    });
+    return result;
+  }, []);
+  console.log({ languages });
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
@@ -111,9 +142,9 @@ export default function KeyView() {
 
   const columns = [
     {
-      title: 'name',
+      title: 'Name',
       dataIndex: 'name',
-      width: '25%',
+      width: '15%',
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
@@ -133,43 +164,22 @@ export default function KeyView() {
           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
         ),
     },
+    ...languages,
+
     {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
+      title: 'Details',
+      dataIndex: 'details',
+      width: '30%',
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
           <Form.Item
-            name="age"
+            name="details"
             style={{ margin: 0 }}
             rules={[
               {
                 required: true,
-                message: 'Please Input age!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-        ) : (
-          <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
-        ),
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-      width: '40%',
-      editable: true,
-      render: (text: any, record: any) =>
-        isEditing(record) ? (
-          <Form.Item
-            name="address"
-            style={{ margin: 0 }}
-            rules={[
-              {
-                required: true,
-                message: 'Please Input address!',
+                message: 'Please Input details!',
               },
             ]}
           >
@@ -224,8 +234,8 @@ export default function KeyView() {
     const newRow: Item = {
       key: newRowKey,
       name: '',
-      age: 0,
-      address: '',
+      language: '',
+      details: '',
     };
     // Insert the new row at the beginning of the data array
     setData([newRow, ...data]);
