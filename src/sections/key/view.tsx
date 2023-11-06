@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import { selectCurrentPage } from 'src/store/slices/pageSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
-import { addKeys, setKeys, selectKeys } from 'src/store/slices/keySlice';
+import { addKeys, setKeys, KeyType, selectKeys } from 'src/store/slices/keySlice';
 
 import KeyHeader from './KeyHeader';
 
@@ -63,25 +63,27 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export default function KeyView() {
   const currentLanguage = useAppSelector(selectProjectLanguage);
   const currentPage = useAppSelector(selectCurrentPage);
-  const allKeys = useAppSelector(selectKeys);
+  const allKeys: KeyType = useAppSelector(selectKeys);
   const dispatch = useAppDispatch();
 
   const [form] = Form.useForm();
-  const [data, setData] = useState<any>(allKeys);
+  const [data, setData] = useState<KeyType>(allKeys);
   const [editingKey, setEditingKey] = useState('');
 
-  const currenPageString = data.filter((items: any) => currentPage.pageID === items.page.pageID);
+  const currenPageString = data.filter(
+    (items: KeyType) => currentPage.pageID === items.page.pageID
+  );
 
-  const languages = currentLanguage.reduce((result: any[], elements: any) => {
+  const languages = currentLanguage.reduce((result: any[], language: any) => {
     result.push({
-      title: elements.name,
-      dataIndex: elements.id,
+      title: language.name,
+      dataIndex: language.id,
       width: 200,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
           <Form.Item
-            name={`${elements.id}.value`}
+            name={`${language.id}.value`}
             style={{ margin: 0 }}
             rules={[
               {
@@ -93,9 +95,7 @@ export default function KeyView() {
             <Input />
           </Form.Item>
         ) : (
-          <Typography.Text onDoubleClick={() => edit(record)}>
-            {record.languages.find((lang: any) => lang.language.id === elements.id)?.value || ''}
-          </Typography.Text>
+          <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
         ),
     });
     return result;
@@ -103,7 +103,7 @@ export default function KeyView() {
 
   const isEditing = (record: any) => record.keyID === editingKey;
 
-  const edit = (record: Partial<Item> & { keyID: any }) => {
+  const edit = (record: Partial<KeyType> & { keyID: string }) => {
     console.log({ record });
     form.setFieldsValue({ name: '', details: '', ...record });
     setEditingKey(record.keyID);
@@ -113,10 +113,10 @@ export default function KeyView() {
     setEditingKey('');
   };
 
-  const save = async (keyID: any) => {
+  const save = async (keyID: string) => {
     try {
       const row = (await form.validateFields()) as any;
-      const newData = data.map((item: any) => {
+      const newData = data.map((item: KeyType) => {
         if (item.keyID === keyID) {
           return {
             ...item,
@@ -228,15 +228,16 @@ export default function KeyView() {
   });
 
   const addRow = () => {
-    const newRow: any = {
+    const newRow: KeyType = {
       keyID: uuidv4(),
       name: '',
       details: '',
       page: currentPage,
+      projectID: currentPage.projectID,
       languages: [],
     };
     setData(() => [newRow, ...data]);
-    edit({ ...newRow, key: newRow.keyID });
+    edit({ ...newRow, keyID: newRow.keyID });
     dispatch(addKeys(newRow));
   };
 
