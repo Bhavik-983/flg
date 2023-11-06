@@ -63,11 +63,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export default function KeyView() {
   const currentLanguage = useAppSelector(selectProjectLanguage);
   const currentPage = useAppSelector(selectCurrentPage);
-  const allKeys: KeyType = useAppSelector(selectKeys);
+  const allKeys: KeyType[] = useAppSelector(selectKeys);
   const dispatch = useAppDispatch();
 
   const [form] = Form.useForm();
-  const [data, setData] = useState<KeyType>(allKeys);
+  const [data, setData] = useState<KeyType[]>(allKeys);
   const [editingKey, setEditingKey] = useState('');
 
   const currenPageString = data.filter(
