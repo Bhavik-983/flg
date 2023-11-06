@@ -34,7 +34,6 @@ export default function LanguageView() {
   return (
     <>
       <Typography variant="h4" sx={{ my: '10px', color: '#444444' }}>
-        
         Languages
       </Typography>
       <Box

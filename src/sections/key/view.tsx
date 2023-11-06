@@ -1,12 +1,16 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { v4 as uuidv4 } from 'uuid';
 import React, { useState } from 'react';
 import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
 import { Box } from '@mui/material';
 
-import { useAppSelector } from 'src/store/hooks';
+import { selectCurrentPage } from 'src/store/slices/pageSlice';
+import { currentProjects } from 'src/store/slices/projectSlice';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
+import { addKeys, setKeys, selectKeys } from 'src/store/slices/keySlice';
 
 import KeyHeader from './KeyHeader';
 
@@ -17,15 +21,6 @@ interface Item {
   details: string;
 }
 
-const originData: Item[] = [];
-for (let i = 0; i < 2; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    language: 'hindi',
-    details: `London Park no. ${i}`,
-  });
-}
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -71,6 +66,33 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 export default function KeyView() {
   const currentLanguage = useAppSelector(selectProjectLanguage);
+  const currentPage = useAppSelector(selectCurrentPage);
+  const currentProject = useAppSelector(currentProjects);
+  const allKeys = useAppSelector(selectKeys);
+  const dispatch = useAppDispatch();
+
+  const originData: any = [];
+  for (let i = 0; i < 1; i++) {
+    originData.push({
+      keyID: uuidv4(),
+      name: '',
+      page: currentPage,
+      projectID: currentProject.projectID,
+      details: '',
+      languages: [
+        // {
+        //   language: {
+        //     id: '7477b141-6d80-4472-a3e2-b5e464e094af',
+        //     projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
+        //     code: 'hz',
+        //     name: 'Herero',
+        //     nativeName: 'Otjiherero',
+        //   },
+        //   value: '',
+        // },
+      ],
+    });
+  }
 
   const languages = currentLanguage.reduce((result: any[], data: any) => {
     result.push({
@@ -100,37 +122,39 @@ export default function KeyView() {
   }, []);
 
   const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
+  const [data, setData] = useState<any>(allKeys);
   const [editingKey, setEditingKey] = useState('');
   console.log({ data });
   console.log({ editingKey });
 
-  const isEditing = (record: Item) => record.key === editingKey;
+  const isEditing = (record: any) => record.keyID === editingKey;
 
-  const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ keyName: '', details: '', ...record });
-    setEditingKey(record.key);
+  const edit = (record: Partial<Item> & { keyID: any }) => {
+    console.log({ record });
+    form.setFieldsValue({ name: '', details: '', ...record });
+    setEditingKey(record.keyID);
   };
 
   const cancel = () => {
     setEditingKey('');
   };
 
-  const save = async (key: React.Key) => {
+  const save = async (keyID: any) => {
     try {
-      const row = (await form.validateFields()) as Item;
-
+      const row = (await form.validateFields()) as any;
       const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => keyID === item.keyID);
       if (index > -1) {
         const item = newData[index];
-        console.log({ row });
+        // console.log({ row });
         newData.splice(index, 1, {
           ...item,
           ...row,
         });
         setData(newData);
+        console.log({ newData });
         setEditingKey('');
+        dispatch(setKeys(newData));
       } else {
         newData.push(row);
         setData(newData);
@@ -143,7 +167,7 @@ export default function KeyView() {
 
   const columns = [
     {
-      title: 'Name',
+      title: 'name',
       dataIndex: 'name',
       width: 200,
       editable: true,
@@ -168,7 +192,7 @@ export default function KeyView() {
     ...languages,
 
     {
-      title: 'Details',
+      title: 'details',
       dataIndex: 'details',
       width: 150,
       editable: true,
@@ -190,14 +214,15 @@ export default function KeyView() {
           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
         ),
     },
+
     {
       title: 'operation',
       dataIndex: 'operation',
-      render: (_: any, record: Item) => {
+      render: (_: any, record: any) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8 }}>
+            <Typography.Link onClick={() => save(record.keyID)} style={{ marginRight: 8 }}>
               Save
             </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
@@ -221,7 +246,7 @@ export default function KeyView() {
       ...col,
       onCell: (record: Item) => ({
         record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        inputType: col.dataIndex === 'name' ? 'detail' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -231,17 +256,35 @@ export default function KeyView() {
 
   const addRow = () => {
     // Generate a unique key for the new row (you can use a library like uuid for this)
-    const newRowKey = (data.length + 1).toString();
-    const newRow: Item = {
-      key: newRowKey,
+    // const newRowKey = (data.length + 1).toString();
+    // const newRow: Item = {
+    //   key: newRowKey,
+    //   name: '',
+    //   language: '',
+    //   details: '',
+    // };
+    const newRow: any = {
+      keyID: uuidv4(),
       name: '',
-      language: '',
       details: '',
+      languages: [
+        // {
+        //   language: {
+        //     id: '7477b141-6d80-4472-a3e2-b5e464e094af',
+        //     projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
+        //     code: 'hz',
+        //     name: 'Herero',
+        //     nativeName: 'Otjiherero',
+        //   },
+        //   value: '',
+        // },
+      ],
     };
     // Insert the new row at the beginning of the data array
-    setData([newRow, ...data]);
+    setData(() => [newRow, ...data]);
     // Start editing the new row immediately
-    edit({ ...newRow, key: newRowKey });
+    edit({ ...newRow, key: newRow.keyID });
+    dispatch(addKeys(newRow));
   };
 
   return (

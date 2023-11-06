@@ -7,7 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
 import { useAppDispatch } from 'src/store/hooks';
-import { addPages } from 'src/store/slices/pageSlice';
+import { addPages, addCurrentPage } from 'src/store/slices/pageSlice';
 import { addProject, setCurrentProject } from 'src/store/slices/projectSlice';
 
 import { RHFTextField } from 'src/components/hook-form';
@@ -68,6 +68,7 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
         pageName: 'Default',
       };
       dispatch(addPages(defaultPage));
+      dispatch(addCurrentPage(defaultPage));
       dispatch(addProject(newProject));
       dispatch(setCurrentProject(defaultProject));
       onClose();

@@ -11,6 +11,7 @@ export interface Page {
 
 interface Pages {
     allPages: Page[];
+    currentPage: Page,
 }
 
 // Define the initial state using that type 
@@ -18,6 +19,11 @@ const initialState: Pages = {
     allPages: [
 
     ],
+    currentPage: {
+        projectID: "",
+        pageID: "",
+        pageName: ""
+    }
 };
 
 const pageSlice = createSlice({
@@ -25,6 +31,9 @@ const pageSlice = createSlice({
     initialState,
     reducers: {
         resetState: () => initialState,
+        addCurrentPage: (state, action) => {
+            state.currentPage = action.payload
+        },
         addPages: (state, action) => {
             state.allPages.push(action.payload);
         },
@@ -32,8 +41,9 @@ const pageSlice = createSlice({
 
 });
 
-export const { resetState, addPages } = pageSlice.actions;
+export const { resetState, addPages, addCurrentPage } = pageSlice.actions;
 
 export default pageSlice.reducer;
 
 export const selectAllPages = (state: RootState) => state.pages.allPages;
+export const selectCurrentPage = (state: RootState) => state.pages.currentPage;

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import KeyView from '../../sections/key/view';
+import KeyView from 'src/sections/key/view';
 
 // ----------------------------------------------------------------------
 
