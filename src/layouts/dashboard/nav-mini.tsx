@@ -169,7 +169,7 @@ export default function NavMini() {
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                 onClick={() => handleClickItem(project)}
               >
-                {project.projectName}
+                {project?.projectName}
               </MenuItem>
             ))}
           </Stack>

@@ -29,13 +29,13 @@
 
 /* Customize the scrollbar thumb (the draggable part) */
 ::-webkit-scrollbar-thumb {
-  background: #888; /* Change the color */
+  background: #8f8f8f80; /* Change the color */
   border-radius: 6px; /* Round the corners */
 }
 
 /* Customize the scrollbar track on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Change the color on hover */
+  background: #8f8f8fb4; /* Change the color on hover */
 }
 
 /* Customize the scrollbar track on the track (non-draggable area) */

@@ -78,7 +78,7 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
 
   const renderForm = (
     <Stack spacing={2.5}>
-      <RHFTextField name="name" label="name" />
+      <RHFTextField name="name" label="Name" />
       <Box display="flex" justifyContent="flex-end" gap={2}>
         <LoadingButton
           color="inherit"

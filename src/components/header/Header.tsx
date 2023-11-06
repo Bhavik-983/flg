@@ -39,7 +39,7 @@ export default function CustomHeader() {
       >
         {currentProject?.projectName}
       </Typography>
-      <Box sx={{ border: '1px solid black', px: 1, py: '2px', borderRadius: '3px' }}>
+      <Box sx={{ border: '1px solid #dbdbdb', px: 1, py: '2px', borderRadius: '3px' }}>
         <Typography variant="h5" sx={{ fontSize: '14px', color: 'gray' }}>
           {languageCount} {languageCount === 1 ? 'Language' : 'Languages'}
         </Typography>
