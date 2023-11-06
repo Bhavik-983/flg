@@ -5,27 +5,22 @@ import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import useLanguage from 'src/hooks/use-language';
+import useLanguage from 'src/hooks/use-language-modal';
 
-import { useAppSelector } from 'src/store/hooks';
-import { currentProjects } from 'src/store/slices/projectSlice';
-import { ProjectLanguage, selectProjectLanguage } from 'src/store/slices/LanguageSlice';
+import { ProjectLanguage } from 'src/store/slices/LanguageSlice';
 
 import LanguageListCard from 'src/components/languages/LanguageListCard';
 import AddLanguageModal from 'src/components/languages/AddLanguageModal';
 import AddLanguageButton from 'src/components/languages/AddLanguageButton';
+import useLanguageHook from 'src/hooks/use-language-hook';
 
 // ----------------------------------------------------------------------
 
 export default function LanguageView() {
-  const currentProj = useAppSelector(currentProjects);
   const languageModal = useLanguage();
-  const languages = useAppSelector(selectProjectLanguage);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [selectedID, setSelectedId] = useState<string | undefined>('');
-  const projLanguage = languages.filter(
-    (data: ProjectLanguage) => data.projectID === currentProj.projectID
-  );
+
+  const { projLanguage, selectedID, setSelectedId } = useLanguageHook();
 
   const handleAddLanguage = () => {
     languageModal.openAddLanguage();

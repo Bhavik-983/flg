@@ -4,8 +4,6 @@ import { Box, Card, Button, Typography, CardContent, CardActions } from '@mui/ma
 
 import { ProjectLanguage } from 'src/store/slices/LanguageSlice';
 
-// import { ProjectLanguage } from 'src/store/slices/LanguageSlice';
-
 interface LanguageTypes {
   name?: string;
   code?: string;

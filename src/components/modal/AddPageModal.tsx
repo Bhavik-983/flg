@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
+import useProjectHook from 'src/hooks/use-project-hook';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -31,8 +32,8 @@ interface ModalProps {
 }
 
 export default function AddPageModal({ isOpen, onClose }: ModalProps) {
-  const currentProject = useAppSelector(currentProjects);
   const dispatch = useAppDispatch();
+  const { currentProject } = useProjectHook();
 
   const LanguageSchema = Yup.object().shape({
     pageName: Yup.string().min(2).required('Page Name is required'),

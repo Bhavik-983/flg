@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import Box, { BoxProps } from '@mui/material/Box';
 
-import useProject from 'src/hooks/use-projects';
+import useProject from 'src/hooks/use-projects-modal';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { useAppSelector } from 'src/store/hooks';

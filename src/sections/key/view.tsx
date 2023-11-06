@@ -8,10 +8,13 @@ import { Box } from '@mui/material';
 
 import { selectCurrentPage } from 'src/store/slices/pageSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
 import { addKeys, setKeys, KeyType, selectKeys } from 'src/store/slices/keySlice';
+import { ProjectLanguage, selectProjectLanguage } from 'src/store/slices/LanguageSlice';
 
 import KeyHeader from './KeyHeader';
+import useLanguageHook from 'src/hooks/use-language-hook';
+import usePageHook from 'src/hooks/use-page-hook';
+import useKeyHook from 'src/hooks/use-key-hook';
 
 interface Item {
   key: string;
@@ -61,50 +64,56 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 export default function KeyView() {
-  const currentLanguage = useAppSelector(selectProjectLanguage);
-  const currentPage = useAppSelector(selectCurrentPage);
-  const allKeys: KeyType[] = useAppSelector(selectKeys);
+  const { data, setData } = useKeyHook();
   const dispatch = useAppDispatch();
+  const { currentPage } = usePageHook();
+  const { projectLanguage } = useLanguageHook();
 
   const [form] = Form.useForm();
-  const [data, setData] = useState<KeyType[]>(allKeys);
   const [editingKey, setEditingKey] = useState('');
 
   const currenPageString = data.filter(
     (items: KeyType) => currentPage.pageID === items.page.pageID
   );
 
-  const languages = currentLanguage.reduce((result: any[], language: any) => {
+  const currenPageLanguages = projectLanguage.filter(
+    (ele: ProjectLanguage) => ele.pageID === currentPage.pageID
+  );
+  const languages = currenPageLanguages.reduce((result: any[], language: any) => {
     result.push({
       title: language.name,
       dataIndex: language.id,
       width: 200,
+      pageID: currentPage.pageID,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
-          <Form.Item
-            name={`${language.id}.value`}
-            style={{ margin: 0 }}
-            rules={[
-              {
-                required: true,
-                message: 'Please Input language!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+          <>
+            {console.log(text)}
+            <Form.Item
+              name={`${language.id}.value`}
+              style={{ margin: 0 }}
+              rules={[
+                {
+                  required: true,
+                  message: 'Please Input language!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </>
         ) : (
           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
         ),
     });
+    console.log({ result });
     return result;
   }, []);
 
   const isEditing = (record: any) => record.keyID === editingKey;
 
   const edit = (record: Partial<KeyType> & { keyID: string }) => {
-    console.log({ record });
     form.setFieldsValue({ name: '', details: '', ...record });
     setEditingKey(record.keyID);
   };
@@ -116,12 +125,14 @@ export default function KeyView() {
   const save = async (keyID: string) => {
     try {
       const row = (await form.validateFields()) as any;
+      console.log({ row });
+      console.log({ data });
       const newData = data.map((item: KeyType) => {
         if (item.keyID === keyID) {
           return {
             ...item,
             ...row,
-            languages: currentLanguage.map((lang: any) => ({
+            languages: projectLanguage.map((lang: any) => ({
               language: lang,
               value: row[lang.id],
             })),
@@ -176,7 +187,7 @@ export default function KeyView() {
             style={{ margin: 0 }}
             rules={[
               {
-                required: true,
+                required: false,
                 message: 'Please Input details!',
               },
             ]}
@@ -236,6 +247,7 @@ export default function KeyView() {
       projectID: currentPage.projectID,
       languages: [],
     };
+    console.log({ newRow });
     setData(() => [newRow, ...data]);
     edit({ ...newRow, keyID: newRow.keyID });
     dispatch(addKeys(newRow));

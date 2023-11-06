@@ -8,7 +8,7 @@ import { Box, Divider, MenuItem, Typography } from '@mui/material';
 
 // import { useRouter } from 'src/routes/hooks';
 
-import useProject from 'src/hooks/use-projects';
+import useProject from 'src/hooks/use-projects-modal';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
 import { hideScroll } from 'src/theme/css';

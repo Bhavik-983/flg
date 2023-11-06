@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { BsSearch } from 'react-icons/Bs';
 import { AiOutlineClose } from 'react-icons/Ai';
@@ -19,15 +18,11 @@ import {
 
 import { hideScroll } from 'src/theme/css';
 import { addKeyLanguage } from 'src/store/slices/keySlice';
-import { currentProjects } from 'src/store/slices/projectSlice';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import {
-  Language,
-  addProjectLanguage,
-  selectLanguageData,
-  editProjectLanguage,
-  selectProjectLanguage,
-} from 'src/store/slices/LanguageSlice';
+import { useAppDispatch } from 'src/store/hooks';
+import { Language, addProjectLanguage, editProjectLanguage } from 'src/store/slices/LanguageSlice';
+import useProjectHook from 'src/hooks/use-project-hook';
+import usePageHook from 'src/hooks/use-page-hook';
+import useLanguageHook from 'src/hooks/use-language-hook';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -61,10 +56,9 @@ const AddLanguageModal = ({
   selectedID,
 }: AddLanguageModalType) => {
   const dispatch = useAppDispatch();
-  const currentProj = useAppSelector(currentProjects);
-  const allLanguages = useAppSelector(selectLanguageData);
-  const projectLanguage = useAppSelector(selectProjectLanguage);
-  const [languageData, setLanguageData] = useState<Language[]>(allLanguages);
+  const { currentPage } = usePageHook();
+  const { currentProject } = useProjectHook();
+  const { allLanguages, projectLanguage, languageData, setLanguageData } = useLanguageHook();
 
   const handleSearch = (language: string) => {
     const updatedData =
@@ -89,10 +83,11 @@ const AddLanguageModal = ({
   const handleAddLanguage = (data: Language) => {
     const newLanguage = {
       id: uuidv4(),
-      projectID: currentProj.projectID,
+      projectID: currentProject.projectID,
       name: data.name,
       code: data.code,
       nativeName: data.nativeName,
+      pageID: currentPage.pageID,
     };
     dispatch(addKeyLanguage({ newLanguage, value: '' }));
     dispatch(addProjectLanguage(newLanguage));

@@ -9,7 +9,7 @@ import { Divider, MenuItem, IconButton, Typography } from '@mui/material';
 
 import { usePathname } from 'src/routes/hooks';
 
-import useProject from 'src/hooks/use-projects';
+import useProject from 'src/hooks/use-projects-modal';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 

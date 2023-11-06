@@ -8,11 +8,16 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { TextField, Autocomplete } from '@mui/material';
 
-import usePage from 'src/hooks/use-page';
+import usePage from 'src/hooks/use-page-modal';
 
 import { currentProjects } from 'src/store/slices/projectSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { Page, addCurrentPage, selectAllPages } from 'src/store/slices/pageSlice';
+import {
+  Page,
+  addCurrentPage,
+  selectAllPages,
+  selectCurrentPage,
+} from 'src/store/slices/pageSlice';
 
 import AddPageModal from 'src/components/modal/AddPageModal';
 
@@ -33,6 +38,7 @@ interface HeaderType {
 
 const KeyHeader = ({ handleAddString }: HeaderType) => {
   const currentProject = useAppSelector(currentProjects);
+  const currentpage = useAppSelector(selectCurrentPage);
   const dispatch = useAppDispatch();
   const pageModal = usePage();
   const allPages = useAppSelector(selectAllPages);
@@ -52,9 +58,7 @@ const KeyHeader = ({ handleAddString }: HeaderType) => {
     return result;
   }, []);
 
-  const [page, setPage] = useState<LabelValue>(
-    projectPages?.find((data: LabelValue) => data?.label === 'Default')
-  );
+  const [page, setPage] = useState<LabelValue>(currentpage.pageName);
 
   const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
     if (newValue !== null) {

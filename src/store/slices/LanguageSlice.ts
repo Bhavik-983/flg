@@ -11,6 +11,7 @@ export interface ProjectLanguage {
     name: string;
     code: string;
     nativeName: string;
+    pageID: string
 }
 
 export interface Language {

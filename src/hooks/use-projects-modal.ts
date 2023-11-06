@@ -5,25 +5,25 @@ import { useState, useCallback } from 'react';
 type ReturnType = {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    openAddPageModal: () => void;
-    closeAddPageModal: () => void;
+    openAddProjectModal: () => void;
+    closeAddProjectModal: () => void;
 };
 
-export default function usePage(): ReturnType {
+export default function useProjectModal(): ReturnType {
     const [open, setOpen] = useState<boolean>(false);
 
-    const openAddPageModal = useCallback(() => {
+    const openAddProjectModal = useCallback(() => {
         setOpen(true);
     }, []);
 
-    const closeAddPageModal = useCallback(() => {
+    const closeAddProjectModal = useCallback(() => {
         setOpen(false);
     }, []);
 
     return {
         open,
         setOpen,
-        openAddPageModal,
-        closeAddPageModal,
+        openAddProjectModal,
+        closeAddProjectModal,
     };
 }

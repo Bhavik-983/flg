@@ -5,25 +5,25 @@ import { useState, useCallback } from 'react';
 type ReturnType = {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    openAddLanguage: () => void;
-    closeAddLanguage: () => void;
+    openAddPageModal: () => void;
+    closeAddPageModal: () => void;
 };
 
-export default function useLanguage(): ReturnType {
+export default function usePageMoal(): ReturnType {
     const [open, setOpen] = useState<boolean>(false);
 
-    const openAddLanguage = useCallback(() => {
+    const openAddPageModal = useCallback(() => {
         setOpen(true);
     }, []);
 
-    const closeAddLanguage = useCallback(() => {
+    const closeAddPageModal = useCallback(() => {
         setOpen(false);
     }, []);
 
     return {
         open,
         setOpen,
-        openAddLanguage,
-        closeAddLanguage,
+        openAddPageModal,
+        closeAddPageModal,
     };
 }

@@ -5,25 +5,25 @@ import { useState, useCallback } from 'react';
 type ReturnType = {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    openAddProjectModal: () => void;
-    closeAddProjectModal: () => void;
+    openAddLanguage: () => void;
+    closeAddLanguage: () => void;
 };
 
-export default function useProject(): ReturnType {
+export default function useLanguageModal(): ReturnType {
     const [open, setOpen] = useState<boolean>(false);
 
-    const openAddProjectModal = useCallback(() => {
+    const openAddLanguage = useCallback(() => {
         setOpen(true);
     }, []);
 
-    const closeAddProjectModal = useCallback(() => {
+    const closeAddLanguage = useCallback(() => {
         setOpen(false);
     }, []);
 
     return {
         open,
         setOpen,
-        openAddProjectModal,
-        closeAddProjectModal,
+        openAddLanguage,
+        closeAddLanguage,
     };
 }
