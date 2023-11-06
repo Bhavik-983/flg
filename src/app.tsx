@@ -4,7 +4,6 @@ import 'src/global.css';
 // ----------------------------------------------------------------------
 import { useEffect } from 'react';
 import Router from 'src/routes/sections';
-
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
 import ThemeProvider from 'src/theme';
@@ -63,6 +62,7 @@ export default function App() {
           </ThemeProvider>
         </SettingsProvider>
       </AuthProvider>
+
       <AddProjectModal
         isOpen={addProjectModal.open}
         onClose={addProjectModal.closeAddProjectModal}

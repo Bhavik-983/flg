@@ -1,20 +1,15 @@
 import * as Yup from 'yup';
-import * as React from 'react';
+import { BsSend } from 'react-icons/Bs';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
-// import { defaultLanguages } from 'src/utils/languageData';
-
-import { BsSend } from 'react-icons/Bs';
-
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 
 import RHFSelectField from '../hook-form/rhf-select-field';
-// import RHFSelectField from 'src/components/hook-form/rhf-select-field';
 
 const style = {
   position: 'absolute' as 'absolute',
