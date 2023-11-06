@@ -21,13 +21,11 @@ interface Item {
   details: string;
 }
 
-
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
   inputType: 'number' | 'text';
-
   children: React.ReactNode;
 }
 
@@ -36,7 +34,6 @@ const EditableCell: React.FC<EditableCellProps> = ({
   dataIndex,
   title,
   inputType,
-
   children,
   ...restProps
 }) => {
@@ -167,7 +164,7 @@ export default function KeyView() {
 
   const columns = [
     {
-      title: 'name',
+      title: 'Name',
       dataIndex: 'name',
       width: 200,
       editable: true,
@@ -192,7 +189,7 @@ export default function KeyView() {
     ...languages,
 
     {
-      title: 'details',
+      title: 'Details',
       dataIndex: 'details',
       width: 150,
       editable: true,
@@ -216,7 +213,7 @@ export default function KeyView() {
     },
 
     {
-      title: 'operation',
+      title: 'Operation',
       dataIndex: 'operation',
       render: (_: any, record: any) => {
         const editable = isEditing(record);

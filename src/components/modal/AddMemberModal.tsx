@@ -31,7 +31,7 @@ interface ModalProps {
 export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
   const LanguageSchema = Yup.object().shape({
     name: Yup.string().min(2).required('Name is required'),
-    email: Yup.string().min(2).required('Email is required'),
+    email: Yup.string().min(2).email('Please enter a valid email!').required('Email is required'),
     role: Yup.object().shape({
       label: Yup.string().required('Role is required'),
       value: Yup.string().required('Role is required'),
