@@ -7,7 +7,6 @@ import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 import { Box } from '@mui/material';
 
 import { selectCurrentPage } from 'src/store/slices/pageSlice';
-import { currentProjects } from 'src/store/slices/projectSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
 import { addKeys, setKeys, selectKeys } from 'src/store/slices/keySlice';
@@ -20,7 +19,6 @@ interface Item {
   language: string;
   details: string;
 }
-
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -67,32 +65,14 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export default function KeyView() {
   const currentLanguage = useAppSelector(selectProjectLanguage);
   const currentPage = useAppSelector(selectCurrentPage);
-  const currentProject = useAppSelector(currentProjects);
   const allKeys = useAppSelector(selectKeys);
   const dispatch = useAppDispatch();
 
-  const originData: any = [];
-  for (let i = 0; i < 1; i++) {
-    originData.push({
-      keyID: uuidv4(),
-      name: '',
-      page: currentPage,
-      projectID: currentProject.projectID,
-      details: '',
-      languages: [
-        // {
-        //   language: {
-        //     id: '7477b141-6d80-4472-a3e2-b5e464e094af',
-        //     projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
-        //     code: 'hz',
-        //     name: 'Herero',
-        //     nativeName: 'Otjiherero',
-        //   },
-        //   value: '',
-        // },
-      ],
-    });
-  }
+  const [form] = Form.useForm();
+  const [data, setData] = useState<any>(allKeys);
+  const [editingKey, setEditingKey] = useState('');
+
+  const currenPageString = data.filter((items: any) => currentPage.pageID === items.page.pageID);
 
   const languages = currentLanguage.reduce((result: any[], data: any) => {
     result.push({
@@ -103,7 +83,7 @@ export default function KeyView() {
       render: (text: any, record: any) =>
         isEditing(record) ? (
           <Form.Item
-            name={data.name}
+            name={`${data.id}.value`}
             style={{ margin: 0 }}
             rules={[
               {
@@ -115,17 +95,13 @@ export default function KeyView() {
             <Input />
           </Form.Item>
         ) : (
-          <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
+          <Typography.Text onDoubleClick={() => edit(record)}>
+            {record.languages.find((lang: any) => lang.language.id === data.id)?.value || ''}
+          </Typography.Text>
         ),
     });
     return result;
   }, []);
-
-  const [form] = Form.useForm();
-  const [data, setData] = useState<any>(allKeys);
-  const [editingKey, setEditingKey] = useState('');
-  console.log({ data });
-  console.log({ editingKey });
 
   const isEditing = (record: any) => record.keyID === editingKey;
 
@@ -142,24 +118,23 @@ export default function KeyView() {
   const save = async (keyID: any) => {
     try {
       const row = (await form.validateFields()) as any;
-      const newData = [...data];
-      const index = newData.findIndex((item) => keyID === item.keyID);
-      if (index > -1) {
-        const item = newData[index];
-        // console.log({ row });
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        setData(newData);
-        console.log({ newData });
-        setEditingKey('');
-        dispatch(setKeys(newData));
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
-      }
+      const newData = data.map((item: any) => {
+        if (item.keyID === keyID) {
+          return {
+            ...item,
+            ...row,
+            languages: currentLanguage.map((lang: any) => ({
+              language: lang,
+              value: row[lang.id],
+            })),
+          };
+        }
+        return item;
+      });
+
+      setData(newData);
+      setEditingKey('');
+      dispatch(setKeys(newData));
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
@@ -255,34 +230,14 @@ export default function KeyView() {
   });
 
   const addRow = () => {
-    // Generate a unique key for the new row (you can use a library like uuid for this)
-    // const newRowKey = (data.length + 1).toString();
-    // const newRow: Item = {
-    //   key: newRowKey,
-    //   name: '',
-    //   language: '',
-    //   details: '',
-    // };
     const newRow: any = {
       keyID: uuidv4(),
       name: '',
       details: '',
-      languages: [
-        // {
-        //   language: {
-        //     id: '7477b141-6d80-4472-a3e2-b5e464e094af',
-        //     projectId: '34da3126-136f-3488-fsd6-e232a0c6123jf',
-        //     code: 'hz',
-        //     name: 'Herero',
-        //     nativeName: 'Otjiherero',
-        //   },
-        //   value: '',
-        // },
-      ],
+      page: currentPage,
+      languages: [],
     };
-    // Insert the new row at the beginning of the data array
     setData(() => [newRow, ...data]);
-    // Start editing the new row immediately
     edit({ ...newRow, key: newRow.keyID });
     dispatch(addKeys(newRow));
   };
@@ -299,7 +254,7 @@ export default function KeyView() {
           }}
           bordered
           scroll={{ x: 1500 }}
-          dataSource={data}
+          dataSource={currenPageString}
           columns={mergedColumns}
           rowClassName="editable-row"
           pagination={false}
