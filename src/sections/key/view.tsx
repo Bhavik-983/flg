@@ -72,16 +72,16 @@ export default function KeyView() {
 
   const currenPageString = data.filter((items: any) => currentPage.pageID === items.page.pageID);
 
-  const languages = currentLanguage.reduce((result: any[], data: any) => {
+  const languages = currentLanguage.reduce((result: any[], elements: any) => {
     result.push({
-      title: data.name,
-      dataIndex: data.id,
+      title: elements.name,
+      dataIndex: elements.id,
       width: 200,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
           <Form.Item
-            name={`${data.id}.value`}
+            name={`${elements.id}.value`}
             style={{ margin: 0 }}
             rules={[
               {
@@ -94,7 +94,7 @@ export default function KeyView() {
           </Form.Item>
         ) : (
           <Typography.Text onDoubleClick={() => edit(record)}>
-            {record.languages.find((lang: any) => lang.language.id === data.id)?.value || ''}
+            {record.languages.find((lang: any) => lang.language.id === elements.id)?.value || ''}
           </Typography.Text>
         ),
     });
