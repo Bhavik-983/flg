@@ -21,19 +21,7 @@ interface Item {
   details: string;
 }
 
-<<<<<<< HEAD
-const originData: Item[] = [];
-for (let i = 0; i < 2; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    language: 'hindi',
-    details: `London Park no. ${i}`,
-  });
-}
 
-=======
->>>>>>> fe-key
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
@@ -141,16 +129,10 @@ export default function KeyView() {
 
   const isEditing = (record: any) => record.keyID === editingKey;
 
-<<<<<<< HEAD
-  const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ keyName: '', details: '', ...record });
-    setEditingKey(record.key);
-=======
   const edit = (record: Partial<Item> & { keyID: any }) => {
     console.log({ record });
     form.setFieldsValue({ name: '', details: '', ...record });
     setEditingKey(record.keyID);
->>>>>>> fe-key
   };
 
   const cancel = () => {
