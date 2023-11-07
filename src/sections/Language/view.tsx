@@ -6,13 +6,13 @@ import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import useLanguage from 'src/hooks/use-language-modal';
+import useLanguageHook from 'src/hooks/use-language-hook';
 
 import { ProjectLanguage } from 'src/store/slices/LanguageSlice';
 
 import LanguageListCard from 'src/components/languages/LanguageListCard';
 import AddLanguageModal from 'src/components/languages/AddLanguageModal';
 import AddLanguageButton from 'src/components/languages/AddLanguageButton';
-import useLanguageHook from 'src/hooks/use-language-hook';
 
 // ----------------------------------------------------------------------
 

@@ -8,7 +8,13 @@ export default function CustomHeader() {
   const currentProject = useAppSelector(currentProjects);
   const currentLanguage = useAppSelector(selectProjectLanguage);
 
-  const languageCount = currentLanguage.length;
+  const projectId = currentProject?.projectID;
+
+  const projectLanguages = currentLanguage.filter(
+    (language: any) => language.projectID === projectId
+  );
+  const languageCount = projectLanguages.length;
+
   return (
     <Box
       sx={{
