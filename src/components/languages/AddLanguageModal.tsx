@@ -16,13 +16,14 @@ import {
   InputAdornment,
 } from '@mui/material';
 
-import { hideScroll } from 'src/theme/css';
-import { addKeyLanguage } from 'src/store/slices/keySlice';
-import { useAppDispatch } from 'src/store/hooks';
-import { Language, addProjectLanguage, editProjectLanguage } from 'src/store/slices/LanguageSlice';
-import useProjectHook from 'src/hooks/use-project-hook';
 import usePageHook from 'src/hooks/use-page-hook';
+import useProjectHook from 'src/hooks/use-project-hook';
 import useLanguageHook from 'src/hooks/use-language-hook';
+
+import { hideScroll } from 'src/theme/css';
+import { useAppDispatch } from 'src/store/hooks';
+import { addKeyLanguage } from 'src/store/slices/keySlice';
+import { Language, addProjectLanguage, editProjectLanguage } from 'src/store/slices/LanguageSlice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -34,9 +35,9 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   borderRadius: 1,
-  pt: 4,
   pb: 8,
   p: 4,
+  pt: 0,
   ...hideScroll.y,
 };
 
@@ -111,11 +112,13 @@ const AddLanguageModal = ({
     dispatch(editProjectLanguage(updatedLanguageData));
     setIsEdit(false);
     handleClose();
+    setLanguageData(allLanguages);
   };
 
   const handleCloseModal = () => {
     setIsEdit(false);
     handleClose();
+    setLanguageData(allLanguages);
   };
 
   return (
@@ -134,25 +137,27 @@ const AddLanguageModal = ({
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Box sx={{ position: 'relative' }}>
+          <Box>
             <Box
               sx={{
-                pb: 6,
+                width: '100%',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 gap: 2,
-                position: 'absolute',
-                top: '-43px',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '100%',
+                position: 'sticky',
+                background: 'white',
+                top: 0,
+                zIndex: 10,
+                left: 0,
+                height: '100px',
+                // transform: 'translate(-50%, -50%)',
               }}
             >
               <Box
                 sx={{
                   position: 'absolute',
-                  top: '16%',
+                  top: '40%',
                   right: '-1%',
                   transform: 'translate(-50%, -50%)',
                   fontSize: 30,
@@ -190,7 +195,7 @@ const AddLanguageModal = ({
               </FormControl>
               <Divider light />
             </Box>
-            <Box sx={{ mt: 13 }}>
+            <Box sx={{ mt: 2 }}>
               <ResponsiveMasonry
                 columnsCountBreakPoints={{
                   100: 1,

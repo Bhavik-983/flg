@@ -6,15 +6,15 @@ import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
 import { Box } from '@mui/material';
 
-import { selectCurrentPage } from 'src/store/slices/pageSlice';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { addKeys, setKeys, KeyType, selectKeys } from 'src/store/slices/keySlice';
-import { ProjectLanguage, selectProjectLanguage } from 'src/store/slices/LanguageSlice';
+import useKeyHook from 'src/hooks/use-key-hook';
+import usePageHook from 'src/hooks/use-page-hook';
+import useLanguageHook from 'src/hooks/use-language-hook';
+
+import { useAppDispatch } from 'src/store/hooks';
+import { ProjectLanguage } from 'src/store/slices/LanguageSlice';
+import { addKeys, setKeys, KeyType } from 'src/store/slices/keySlice';
 
 import KeyHeader from './KeyHeader';
-import useLanguageHook from 'src/hooks/use-language-hook';
-import usePageHook from 'src/hooks/use-page-hook';
-import useKeyHook from 'src/hooks/use-key-hook';
 
 interface Item {
   key: string;
@@ -125,13 +125,13 @@ export default function KeyView() {
   const save = async (keyID: string) => {
     try {
       const row = (await form.validateFields()) as any;
-      console.log({ row });
-      console.log({ data });
+
       const newData = data.map((item: KeyType) => {
         if (item.keyID === keyID) {
           return {
             ...item,
-            ...row,
+            details: row.details,
+            name: row.name,
             languages: projectLanguage.map((lang: any) => ({
               language: lang,
               value: row[lang.id],
@@ -143,6 +143,7 @@ export default function KeyView() {
 
       setData(newData);
       setEditingKey('');
+      console.log({ newData });
       dispatch(setKeys(newData));
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);

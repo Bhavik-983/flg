@@ -6,13 +6,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
+import useProjectHook from 'src/hooks/use-project-hook';
+
+import { useAppDispatch } from 'src/store/hooks';
 import { Page, addPages } from 'src/store/slices/pageSlice';
-import { currentProjects } from 'src/store/slices/projectSlice';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
-import useProjectHook from 'src/hooks/use-project-hook';
 
 const style = {
   position: 'absolute' as 'absolute',
