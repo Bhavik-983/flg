@@ -1,4 +1,3 @@
-// import { v4 as uuidv4 } from 'uuid';
 import { m } from 'framer-motion';
 import { VscAdd } from 'react-icons/vsc';
 
@@ -6,19 +5,12 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import { Box, Divider, MenuItem, Typography } from '@mui/material';
 
-// import { useRouter } from 'src/routes/hooks';
-
-import useProject from 'src/hooks/use-projects-modal';
+import useProjectHook from 'src/hooks/use-project-hook';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
+import useProjectModal from 'src/hooks/use-projects-modal';
 
 import { hideScroll } from 'src/theme/css';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import {
-  ProjectType,
-  selectProjects,
-  currentProjects,
-  setCurrentProject,
-} from 'src/store/slices/projectSlice';
+import { ProjectType } from 'src/store/slices/projectSlice';
 
 import Logo from 'src/components/logo';
 import { NavSectionMini } from 'src/components/nav-section';
@@ -29,48 +21,17 @@ import { NAV } from '../config-layout';
 import { useNavData } from './config-navigation';
 import AccountPopover from '../common/account-popover';
 
-// ----------------------------------------------------------------------
-
-// const OPTIONS = [
-//   {
-//     label: 'Home',
-//     linkTo: '/dashboard',
-//   },
-//   {
-//     label: 'Language',
-//     linkTo: '/dashboard/languages',
-//   },
-//   {
-//     label: 'Member',
-//     linkTo: '/dashboard/member',
-//   },
-//   {
-//     label: 'Settings',
-//     linkTo: '/dashboard/setting',
-//   },
-//   {
-//     label: 'Settings',
-//     linkTo: '/#2',
-//   },
-//   {
-//     label: 'Settings',
-//     linkTo: '/#2',
-//   },
-// ];
-
 export default function NavMini() {
   const { user } = useMockedUser();
   const popover = usePopover();
-  // const router = useRouter();
-  const projectModal = useProject();
-  const dispatch = useAppDispatch();
-  const projects = useAppSelector(selectProjects);
-  const currentProject = useAppSelector(currentProjects);
+
+  const projectModal = useProjectModal();
+  const { allProjects, currentProject, handleSetCurrentProject } = useProjectHook();
 
   const navData = useNavData();
 
   const handleClickItem = (project: ProjectType) => {
-    dispatch(setCurrentProject(project));
+    handleSetCurrentProject(project);
     projectModal.closeAddProjectModal();
     popover.onClose();
   };
@@ -163,7 +124,7 @@ export default function NavMini() {
           <Divider sx={{ borderStyle: 'dashed' }} />
 
           <Stack sx={{ p: 1, height: 289, ...hideScroll.y }}>
-            {projects?.map((project: ProjectType) => (
+            {allProjects?.map((project: ProjectType) => (
               <MenuItem
                 key={project.projectName}
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}

@@ -2,11 +2,9 @@ import { useEffect } from 'react';
 
 import Box, { BoxProps } from '@mui/material/Box';
 
-import useProject from 'src/hooks/use-projects-modal';
+import useProjectHook from 'src/hooks/use-project-hook';
 import { useResponsive } from 'src/hooks/use-responsive';
-
-import { useAppSelector } from 'src/store/hooks';
-import { selectProjects } from 'src/store/slices/projectSlice';
+import useProjectModal from 'src/hooks/use-projects-modal';
 
 import { useSettingsContext } from 'src/components/settings';
 import AddProjectModal from 'src/components/modal/AddProjectModal';
@@ -19,15 +17,12 @@ import { NAV, HEADER } from '../config-layout';
 
 export default function Main({ children, sx, ...other }: BoxProps) {
   const settings = useSettingsContext();
-
   const lgUp = useResponsive('up', 'lg');
-
   const isNavHorizontal = settings.themeLayout === 'horizontal';
-
   const isNavMini = settings.themeLayout === 'mini';
 
-  const addProjectModal = useProject();
-  const allProjects = useAppSelector(selectProjects);
+  const addProjectModal = useProjectModal();
+  const { allProjects } = useProjectHook();
   useEffect(() => {
     if (allProjects.length === 0) {
       addProjectModal.openAddProjectModal();

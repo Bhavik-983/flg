@@ -17,7 +17,7 @@ export interface keyLanguage {
 
 export interface KeyType {
   keyID: string;
-  name: string;
+  keyName: string;
   page: Page;
   projectID: string;
   details: string;

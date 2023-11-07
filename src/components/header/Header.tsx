@@ -1,18 +1,12 @@
 import { Box, Typography } from '@mui/material';
 
-import { useAppSelector } from 'src/store/hooks';
-import { currentProjects } from 'src/store/slices/projectSlice';
-import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
+import useProjectHook from 'src/hooks/use-project-hook';
+import useLanguageHook from 'src/hooks/use-language-hook';
 
 export default function CustomHeader() {
-  const currentProject = useAppSelector(currentProjects);
-  const currentLanguage = useAppSelector(selectProjectLanguage);
+  const { currentProject } = useProjectHook();
+  const { projectLanguages } = useLanguageHook();
 
-  const projectId = currentProject?.projectID;
-
-  const projectLanguages = currentLanguage.filter(
-    (language: any) => language.projectID === projectId
-  );
   const languageCount = projectLanguages.length;
 
   return (

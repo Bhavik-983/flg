@@ -1,36 +1,80 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-import { useAppSelector } from 'src/store/hooks';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import {
   Language,
-  ProjectLanguage,
-  selectLanguageData,
-  selectProjectLanguage,
+  DefaultLanguage,
+  addProjectLanguage,
+  editProjectLanguage,
+  selectAllLanguagesData,
+  selectDefaultLanguagesData,
 } from 'src/store/slices/LanguageSlice';
 
 import useProjectHook from './use-project-hook';
 
 const useLanguageHook = () => {
-  const { currentProject } = useProjectHook();
-  const allLanguages = useAppSelector(selectLanguageData);
-  const projectLanguage = useAppSelector(selectProjectLanguage);
-  const [languageData, setLanguageData] = useState<Language[]>(allLanguages);
+  const dispatch = useAppDispatch();
 
-  const languages: ProjectLanguage[] = useAppSelector(selectProjectLanguage);
-  const [selectedID, setSelectedId] = useState<string | undefined>('');
-  const projLanguage = languages.filter(
-    (data: ProjectLanguage) => data.projectID === currentProject.projectID
-  );
+  const { currentProject } = useProjectHook();
+  const defaultLanguages: DefaultLanguage[] = useAppSelector(selectDefaultLanguagesData);
+  const allLanguages: Language[] = useAppSelector(selectAllLanguagesData);
+
+  const [languages, setLanguages] = useState<DefaultLanguage[]>(defaultLanguages);
+
+  const projectLanguages = allLanguages
+    ? allLanguages.filter((language: Language) => language.projectID === currentProject.projectID)
+    : [];
+
+  const handleSearch = (language: string) => {
+    const updatedData =
+      defaultLanguages &&
+      defaultLanguages.filter((data: DefaultLanguage) => {
+        if (data.name.toLowerCase().includes(language.toLowerCase())) {
+          return data;
+        }
+        return undefined;
+      });
+    setLanguages(updatedData);
+  };
+
+  const resetLanguages = () => {
+    setLanguages(defaultLanguages);
+  };
+
+  const handleAddLanguage = (data: DefaultLanguage, onClose?: any) => {
+    const newLanguage: Language = {
+      id: uuidv4(),
+      projectID: currentProject.projectID,
+      name: data.name,
+      code: data.code,
+      nativeName: data.nativeName,
+    };
+    dispatch(addProjectLanguage(newLanguage));
+    onClose && onClose();
+  };
+
+  const handleEditLanguage = (data: DefaultLanguage, id: string, onClose?: any) => {
+    const language = {
+      id,
+      name: data.name,
+      code: data.code,
+      nativeName: data.nativeName,
+    };
+
+    dispatch(editProjectLanguage(language));
+    onClose && onClose();
+  };
 
   return {
-    languageData,
-    setLanguageData,
-    languages,
-    selectedID,
-    setSelectedId,
-    projLanguage,
+    defaultLanguages,
     allLanguages,
-    projectLanguage,
+    projectLanguages,
+    languages,
+    handleSearch,
+    resetLanguages,
+    handleAddLanguage,
+    handleEditLanguage,
   };
 };
 

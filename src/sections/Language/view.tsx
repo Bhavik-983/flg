@@ -5,10 +5,10 @@ import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import useLanguage from 'src/hooks/use-language-modal';
 import useLanguageHook from 'src/hooks/use-language-hook';
+import useLanguageModal from 'src/hooks/use-language-modal';
 
-import { ProjectLanguage } from 'src/store/slices/LanguageSlice';
+import { Language } from 'src/store/slices/LanguageSlice';
 
 import AddLanguageModal from 'src/components/languages/AddLanguageModal';
 import LanguageListCard from 'src/components/languages/LanguageListCard';
@@ -17,12 +17,22 @@ import AddLanguageButton from 'src/components/languages/AddLanguageButton';
 // ----------------------------------------------------------------------
 
 export default function LanguageView() {
-  const languageModal = useLanguage();
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const languageModal = useLanguageModal();
 
-  const { projLanguage, selectedID, setSelectedId } = useLanguageHook();
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<string>('');
+
+  const { projectLanguages } = useLanguageHook();
 
   const handleAddLanguage = () => {
+    setIsEdit(false);
+    setSelectedId('');
+    languageModal.openAddLanguage();
+  };
+
+  const handleEditLanguage = (id: string) => {
+    setIsEdit(true);
+    setSelectedId(id);
     languageModal.openAddLanguage();
   };
 
@@ -65,18 +75,13 @@ export default function LanguageView() {
         >
           <Masonry>
             <AddLanguageButton handleClick={handleAddLanguage} />
-            {projLanguage.length > 0
-              ? projLanguage?.map((data: ProjectLanguage) => (
+            {projectLanguages.length > 0
+              ? projectLanguages?.map((data: Language) => (
                   <LanguageListCard
                     name={data.name}
                     code={data.code}
-                    handleOpen={languageModal.openAddLanguage}
-                    handleClick={() => {
-                      console.log('click');
-                    }}
-                    setIsEdit={setIsEdit}
-                    setSelectedId={setSelectedId}
                     data={data}
+                    handleEdit={handleEditLanguage}
                   />
                 ))
               : ''}
@@ -90,7 +95,7 @@ export default function LanguageView() {
         open={languageModal.open}
         handleClose={languageModal.closeAddLanguage}
         setIsEdit={setIsEdit}
-        selectedID={selectedID}
+        selectedId={selectedId}
       />
     </>
   );
