@@ -1,27 +1,21 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import React, { useState } from 'react';
 import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
 import { Box } from '@mui/material';
+import usePageHook from 'src/hooks/use-page-hook';
+import { useAppDispatch } from 'src/store/hooks';
+import { KeyType, addKeys, setKeys } from 'src/store/slices/keySlice';
+import useLanguageHook from 'src/hooks/use-language-hook';
 
 interface Item {
   key: string;
-  name: string;
-  age: number;
-  address: string;
+  keyName: string;
+  details: string;
 }
 
-const originData: Item[] = [];
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
@@ -67,27 +61,43 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 const AddKeyTable = () => {
+  const dispatch = useAppDispatch();
+  const { currentPage } = usePageHook();
+  const { projectLanguage } = useLanguageHook();
   const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
 
-  const isEditing = (record: Item) => record.key === editingKey;
+  const originData: any = [];
+  for (let i = 0; i < 1; i++) {
+    originData.push({
+      keyID: uuidv4(),
+      keyName: `Edward ${i}`,
+      details: `London Park no. ${i}`,
+      page: currentPage,
+      projectID: currentPage.projectID,
+      languages: [],
+    });
+  }
 
-  const edit = (record: Partial<Item> & { key: React.Key }) => {
-    form.setFieldsValue({ name: '', age: '', address: '', ...record });
-    setEditingKey(record.key);
+  const [data, setData] = useState<KeyType[]>(originData);
+
+  const isEditing = (record: KeyType) => record.keyID === editingKey;
+
+  const edit = (record: Partial<KeyType> & { keyID: React.Key }) => {
+    form.setFieldsValue({ keyName: '', details: '', ...record });
+    setEditingKey(record.keyID);
   };
 
   const cancel = () => {
     setEditingKey('');
   };
 
-  const save = async (key: React.Key) => {
+  const save = async (keyID: React.Key) => {
     try {
-      const row = (await form.validateFields()) as Item;
+      const row = (await form.validateFields()) as KeyType;
 
       const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
+      const index = newData.findIndex((item) => keyID === item.keyID);
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -95,6 +105,8 @@ const AddKeyTable = () => {
           ...row,
         });
         setData(newData);
+        console.log(newData);
+        dispatch(setKeys(newData));
         setEditingKey('');
       } else {
         newData.push(row);
@@ -108,31 +120,25 @@ const AddKeyTable = () => {
 
   const columns = [
     {
-      title: 'name',
-      dataIndex: 'name',
+      title: 'key Name',
+      dataIndex: 'keyName',
       width: '25%',
       editable: true,
     },
     {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
-      editable: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
+      title: 'Details',
+      dataIndex: 'details',
       width: '40%',
       editable: true,
     },
     {
       title: 'operation',
       dataIndex: 'operation',
-      render: (_: any, record: Item) => {
+      render: (_: any, record: KeyType) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <Typography.Link onClick={() => save(record.key)} style={{ marginRight: 8 }}>
+            <Typography.Link onClick={() => save(record.keyID)} style={{ marginRight: 8 }}>
               Save
             </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
@@ -153,7 +159,7 @@ const AddKeyTable = () => {
     }
     return {
       ...col,
-      onCell: (record: Item) => ({
+      onCell: (record: KeyType) => ({
         record,
         inputType: col.dataIndex === 'age' ? 'number' : 'text',
         dataIndex: col.dataIndex,
@@ -162,8 +168,28 @@ const AddKeyTable = () => {
       }),
     };
   });
+
+  const handleAddRow = () => {
+    const newRow: any = {
+      keyID: uuidv4(),
+      keyName: '',
+      details: '',
+      page: currentPage,
+      projectID: currentPage.projectID,
+      languages: [],
+    };
+    setData([newRow, ...data]);
+    setEditingKey(newRow.keyID);
+    dispatch(addKeys(newRow));
+
+    form.resetFields();
+  };
+
   return (
     <Box>
+      <button type="button" onClick={handleAddRow}>
+        click
+      </button>
       <Form form={form} component={false}>
         <Table
           components={{
