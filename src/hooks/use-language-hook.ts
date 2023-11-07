@@ -10,8 +10,6 @@ import {
 
 import useProjectHook from './use-project-hook';
 
-import useProjectHook from './use-project-hook';
-
 const useLanguageHook = () => {
   const { currentProject } = useProjectHook();
   const allLanguages = useAppSelector(selectLanguageData);
