@@ -7,7 +7,7 @@ import useLanguageHook from 'src/hooks/use-language-hook';
 import { hideScroll } from 'src/theme/css';
 import { DefaultLanguage } from 'src/store/slices/LanguageSlice';
 
-import ModalSearchBar from 'src/sections/language/ModalSearchBar';
+import ModalSearchBar from 'src/sections/Language/ModalSearchBar';
 
 import ListButton from '../button/ListButton';
 import CloseLanguageModalButton from '../button/CloseLanguageModalButton';

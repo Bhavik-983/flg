@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import LanguageView from 'src/sections/language/view';
+import LanguageView from 'src/sections/Language/view';
 
 // ----------------------------------------------------------------------
 
@@ -15,4 +15,3 @@ export default function Page() {
     </>
   );
 }
- 

@@ -3,12 +3,13 @@ import { BsSend } from 'react-icons/Bs';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Modal, Stack, Button, Typography } from '@mui/material';
+import { Box, Modal, Stack } from '@mui/material';
 
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 
+import ModalTitle from '../title/ModalTitle';
+import ModalButton from '../button/ModalButton';
 import RHFSelectField from '../hook-form/rhf-select-field';
 
 const style = {
@@ -69,30 +70,22 @@ export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
     console.log(data);
   });
 
+  const handleClick = () => {
+    reset();
+    onClose();
+  };
+
   const renderForm = (
     <Stack spacing={2.5}>
       <RHFTextField name="name" label="Name" />
       <RHFTextField name="email" label="Email" />
       <RHFSelectField options={defaultLanguages} handleChange={setValue} name="role" label="Role" />
-      <Box display="flex" justifyContent="flex-end" gap={2}>
-        <Button
-          sx={{
-            border: '1px solid rgba(145, 158, 171, 0.32)',
-          }}
-          onClick={() => {
-            reset();
-            onClose();
-          }}
-        >
-          Cancel
-        </Button>
-        <LoadingButton
-          color="inherit"
-          size="medium"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-        >
+      <ModalButton
+        handleClick={handleClick}
+        isSubmitting={isSubmitting}
+        loadingText="Invite"
+        title="Cancel"
+        icon={
           <BsSend
             style={{
               height: 15,
@@ -101,28 +94,20 @@ export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
               marginRight: 5,
             }}
           />
-          Invite
-        </LoadingButton>
-      </Box>
-    </Stack>
-  );
-
-  const renderHead = (
-    <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Add Member</Typography>
+        }
+      />
     </Stack>
   );
 
   return (
     <Modal
       open={isOpen}
-      //   onClose={onClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
         <FormProvider methods={methods} onSubmit={onSubmit}>
-          {renderHead}
+          <ModalTitle title="Add Member" />
           {renderForm}
         </FormProvider>
       </Box>
