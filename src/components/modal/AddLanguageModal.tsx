@@ -99,7 +99,6 @@ const AddLanguageModal = ({
                 zIndex: 10,
                 left: 0,
                 height: '100px',
-                // transform: 'translate(-50%, -50%)',
               }}
             >
               <Box

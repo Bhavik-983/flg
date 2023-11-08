@@ -1,24 +1,21 @@
 import { Box, Typography } from '@mui/material';
 
-// import useProjectHook from 'src/hooks/use-project-hook';
-// import useLanguageHook from 'src/hooks/use-language-hook';
+import useProjectHook from 'src/hooks/use-project-hook';
+import useLanguageHook from 'src/hooks/use-language-hook';
 
 export default function CustomHeader() {
-  // const currentProject = useAppSelector(currentProjects);
-  // const currentLanguage = useAppSelector(selectProjectLanguage);
+  const { currentProject } = useProjectHook();
+  const { projectLanguages } = useLanguageHook();
 
-  // const projectId = currentProject?.projectID;
+  let languageText;
 
-  // const projectLanguages = currentLanguage.filter(
-  //   (language: any) => language.projectID === projectId
-  // );
-  // const languageCount = projectLanguages.length;
-
-  // const { currentProject } = useProjectHook();
-  // const { projectLanguages } = useLanguageHook();
-
-  // const languageCount = projectLanguages.length;
-
+  if (projectLanguages.length === 0) {
+    languageText = 'Language ';
+  } else if (projectLanguages.length === 1) {
+    languageText = 'Language ';
+  } else {
+    languageText = 'Languages ';
+  }
   return (
     <Box
       sx={{
@@ -47,11 +44,12 @@ export default function CustomHeader() {
         }}
         variant="h4"
       >
-        {/* {currentProject?.projectName} */}
+        {currentProject?.projectName}
       </Typography>
       <Box sx={{ border: '1px solid #dbdbdb', px: 1, py: '2px', borderRadius: '3px' }}>
         <Typography variant="h5" sx={{ fontSize: '14px', color: 'gray' }}>
-          {/* {languageCount} {languageCount === 1 ? 'Language' : 'Languages'} */}
+          {languageText}
+          {projectLanguages.length}
         </Typography>
       </Box>
     </Box>

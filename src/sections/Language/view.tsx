@@ -10,8 +10,8 @@ import useLanguageModal from 'src/hooks/use-language-modal';
 
 import { Language } from 'src/store/slices/LanguageSlice';
 
-import AddLanguageModal from 'src/components/languages/AddLanguageModal';
-import LanguageListCard from 'src/components/languages/LanguageListCard';
+import AddLanguageModal from 'src/components/modal/AddLanguageModal';
+import LanguageListCard from 'src/sections/language/LanguageListCard';
 import AddLanguageButton from 'src/components/languages/AddLanguageButton';
 
 // ----------------------------------------------------------------------
