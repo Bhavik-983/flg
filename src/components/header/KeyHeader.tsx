@@ -39,7 +39,6 @@ const KeyHeader = ({ page, projectPages, handleChange, handleAddString }: KeyHea
           </Toolbar>
         </AppBar>
       </Box>
-
       <AddPageModal isOpen={pageModal.open} onClose={pageModal.closeAddPageModal} />
     </>
   );

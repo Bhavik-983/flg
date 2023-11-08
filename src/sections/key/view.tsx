@@ -10,10 +10,9 @@ import usePageHook from 'src/hooks/use-page-hook';
 
 import { KeyType } from 'src/store/slices/keySlice';
 
+import KeyHeader from 'src/components/header/KeyHeader';
 // components
 import AntDesignTable from 'src/components/table/AntDesignTable';
-
-import KeyHeader from './KeyHeader';
 
 interface LabelValue {
   label: string;

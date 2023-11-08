@@ -1,24 +1,16 @@
-import { BsSearch } from 'react-icons/Bs';
-import { AiOutlineClose } from 'react-icons/Ai';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
-import {
-  Box,
-  Fade,
-  Modal,
-  Button,
-  Divider,
-  Backdrop,
-  IconButton,
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-} from '@mui/material';
+import { Box, Fade, Modal, Divider, Backdrop } from '@mui/material';
 
 import useLanguageHook from 'src/hooks/use-language-hook';
 
 import { hideScroll } from 'src/theme/css';
 import { DefaultLanguage } from 'src/store/slices/LanguageSlice';
+
+import ModalSearchBar from 'src/sections/language/ModalSearchBar';
+
+import ListButton from '../button/ListButton';
+import CloseLanguageModalButton from '../button/CloseLanguageModalButton';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -34,6 +26,20 @@ const style = {
   p: 4,
   pt: 0,
   ...hideScroll.y,
+};
+
+const wrapperStyle = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: 2,
+  position: 'sticky',
+  background: 'white',
+  top: 0,
+  zIndex: 10,
+  left: 0,
+  height: '100px',
 };
 
 interface AddLanguageModalType {
@@ -86,60 +92,9 @@ const AddLanguageModal = ({
       <Fade in={open}>
         <Box sx={style}>
           <Box>
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-                position: 'sticky',
-                background: 'white',
-                top: 0,
-                zIndex: 10,
-                left: 0,
-                height: '100px',
-              }}
-            >
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '40%',
-                  right: '-1%',
-                  transform: 'translate(-50%, -50%)',
-                  fontSize: 30,
-                  cursor: 'pointer',
-                  zIndex: 30,
-                  '@media (max-width: 804px)': {
-                    fontSize: 24,
-                    top: '-36%',
-                    right: '-1%',
-                    transform: 'translate(50%, 50%)',
-                  },
-                }}
-                onClick={handleCloseModal}
-              >
-                <AiOutlineClose />
-              </Box>
-              <FormControl sx={{ m: 1, width: '65ch' }} variant="outlined">
-                <OutlinedInput
-                  id="outlined-adornment-password"
-                  placeholder="Search"
-                  type="text"
-                  onChange={(e) => handleSearch(e.target.value)}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        edge="end"
-                        sx={{ fontSize: '16px', pr: 2 }}
-                      >
-                        <BsSearch />
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
+            <Box sx={wrapperStyle}>
+              <CloseLanguageModalButton handleCloseModal={handleCloseModal} />
+              <ModalSearchBar handleSearch={handleSearch} />
               <Divider light />
             </Box>
             <Box sx={{ mt: 2 }}>
@@ -159,23 +114,7 @@ const AddLanguageModal = ({
                 <Masonry>
                   {languages.length > 0 &&
                     languages.map((language: DefaultLanguage) => (
-                      <Button
-                        key={language.name}
-                        sx={{
-                          textAlign: 'left',
-                          fontSize: '15px',
-                          py: 1,
-                          pr: 1,
-                          display: 'flex',
-                          justifyContent: 'start',
-                          alignItems: 'center',
-                          cursor: 'pointer',
-                          color: 'gray',
-                        }}
-                        onClick={() => handleLanguage(language)}
-                      >
-                        {language?.name}
-                      </Button>
+                      <ListButton languageData={language} handleLanguage={handleLanguage} />
                     ))}
                 </Masonry>
               </ResponsiveMasonry>
