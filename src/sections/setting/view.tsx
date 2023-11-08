@@ -1,15 +1,15 @@
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
+
+import PageHeading from 'src/components/heading/PageHeading';
 
 // ----------------------------------------------------------------------
 
 export default function SettingView() {
+  const headingText = 'Setting';
   return (
     <>
-      <Typography variant="h4" sx={{ my: '10px', color: '#444444' }}>
-        Setting{' '}
-      </Typography>
+      <PageHeading name={headingText} />
 
       <Box
         sx={{

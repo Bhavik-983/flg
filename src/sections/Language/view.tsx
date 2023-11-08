@@ -3,13 +3,13 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 
 import useLanguageHook from 'src/hooks/use-language-hook';
 import useLanguageModal from 'src/hooks/use-language-modal';
 
 import { Language } from 'src/store/slices/LanguageSlice';
 
+import PageHeading from 'src/components/heading/PageHeading';
 import AddLanguageModal from 'src/components/modal/AddLanguageModal';
 import AddLanguageButton from 'src/components/languages/AddLanguageButton';
 
@@ -36,12 +36,10 @@ export default function LanguageView() {
     setSelectedId(id);
     languageModal.openAddLanguage();
   };
-
+  const headingText = 'Language';
   return (
     <>
-      <Typography variant="h4" sx={{ my: '10px', color: '#444444' }}>
-        Languages
-      </Typography>
+      <PageHeading name={headingText} />
       <Box
         sx={{
           minHeight: 400,

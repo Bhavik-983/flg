@@ -8,6 +8,7 @@ import { Box, Stack, Avatar, Button } from '@mui/material';
 
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
+import PageHeading from 'src/components/heading/PageHeading';
 import AddMemberModal from 'src/components/modal/AddMemberModal';
 
 // ----------------------------------------------------------------------
@@ -22,13 +23,10 @@ export default function MemberView() {
   const handleModalClose = () => {
     setIsOpen(false);
   };
-
+  const headingText = 'Member';
   return (
     <>
-      <Typography variant="h4" sx={{ my: '10px', color: '#444444' }}>
-        Member
-      </Typography>
-
+      <PageHeading name={headingText} />
       <Box
         sx={{
           minHeight: 400,
