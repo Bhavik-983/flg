@@ -13,7 +13,7 @@ import { Language } from 'src/store/slices/LanguageSlice';
 import AddLanguageModal from 'src/components/modal/AddLanguageModal';
 import AddLanguageButton from 'src/components/languages/AddLanguageButton';
 
-import LanguageListCard from 'src/sections/language/LanguageListCard';
+import LanguageListCard from './LanguageListCard';
 
 // ----------------------------------------------------------------------
 
