@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { BsSearch } from 'react-icons/Bs';
 import { AiOutlineClose } from 'react-icons/Ai';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -16,14 +15,10 @@ import {
   InputAdornment,
 } from '@mui/material';
 
-import usePageHook from 'src/hooks/use-page-hook';
-import useProjectHook from 'src/hooks/use-project-hook';
 import useLanguageHook from 'src/hooks/use-language-hook';
 
 import { hideScroll } from 'src/theme/css';
-import { useAppDispatch } from 'src/store/hooks';
-import { addKeyLanguage } from 'src/store/slices/keySlice';
-import { Language, addProjectLanguage, editProjectLanguage } from 'src/store/slices/LanguageSlice';
+import { DefaultLanguage } from 'src/store/slices/LanguageSlice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -46,7 +41,7 @@ interface AddLanguageModalType {
   open: boolean;
   handleClose: () => void;
   setIsEdit: (x: boolean) => void;
-  selectedID: string | undefined;
+  selectedId: string;
 }
 
 const AddLanguageModal = ({
@@ -54,71 +49,24 @@ const AddLanguageModal = ({
   open,
   handleClose,
   setIsEdit,
-  selectedID,
+  selectedId,
 }: AddLanguageModalType) => {
-  const dispatch = useAppDispatch();
-  const { currentPage } = usePageHook();
-  const { currentProject } = useProjectHook();
-  const { allLanguages, projectLanguage, languageData, setLanguageData } = useLanguageHook();
+  const { languages, handleSearch, resetLanguages, handleAddLanguage, handleEditLanguage } =
+    useLanguageHook();
 
-  const handleSearch = (language: string) => {
-    const updatedData =
-      allLanguages &&
-      allLanguages.filter((data: Language) => {
-        if (data.name.toLowerCase().includes(language.toLowerCase())) {
-          return data;
-        }
-        return undefined;
-      });
-    setLanguageData(updatedData);
-  };
-
-  const handleLanguage = (data: Language) => {
+  const handleLanguage = (data: DefaultLanguage) => {
+    const language = data;
     if (isEdit === true) {
-      handleEditLanguage(data);
+      handleEditLanguage(language, selectedId, handleCloseModal);
     } else {
-      handleAddLanguage(data);
+      handleAddLanguage(language, handleCloseModal);
     }
-  };
-
-  const handleAddLanguage = (data: Language) => {
-    const newLanguage = {
-      id: uuidv4(),
-      projectID: currentProject.projectID,
-      name: data.name,
-      code: data.code,
-      nativeName: data.nativeName,
-      pageID: currentPage.pageID,
-    };
-    dispatch(addKeyLanguage({ newLanguage, value: '' }));
-    dispatch(addProjectLanguage(newLanguage));
-    setIsEdit(false);
-    handleClose();
-    setLanguageData(allLanguages);
-  };
-
-  const handleEditLanguage = (data: Language) => {
-    const AlllanguageData = [...projectLanguage];
-    const updatedLanguageData = AlllanguageData?.map((items) =>
-      items.id === selectedID
-        ? {
-            ...items,
-            name: data.name,
-            code: data.code,
-            nativeName: data.nativeName,
-          }
-        : items
-    );
-    dispatch(editProjectLanguage(updatedLanguageData));
-    setIsEdit(false);
-    handleClose();
-    setLanguageData(allLanguages);
   };
 
   const handleCloseModal = () => {
     setIsEdit(false);
     handleClose();
-    setLanguageData(allLanguages);
+    resetLanguages();
   };
 
   return (
@@ -210,10 +158,10 @@ const AddLanguageModal = ({
                 }}
               >
                 <Masonry>
-                  {languageData.length > 0 &&
-                    languageData.map((data: Language) => (
+                  {languages.length > 0 &&
+                    languages.map((language: DefaultLanguage) => (
                       <Button
-                        key={data.name}
+                        key={language.name}
                         sx={{
                           textAlign: 'left',
                           fontSize: '15px',
@@ -225,9 +173,9 @@ const AddLanguageModal = ({
                           cursor: 'pointer',
                           color: 'gray',
                         }}
-                        onClick={() => handleLanguage(data)}
+                        onClick={() => handleLanguage(language)}
                       >
-                        {data.name}
+                        {language?.name}
                       </Button>
                     ))}
                 </Masonry>

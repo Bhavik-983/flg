@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useAppSelector } from 'src/store/hooks';
+import { KeyType, selectKeys } from 'src/store/slices/keySlice';
 
-import { useAppSelector } from "src/store/hooks";
-import { KeyType, selectKeys } from "src/store/slices/keySlice";
+import useProjectHook from './use-project-hook';
 
 const useKeyHook = () => {
-    const allKeys: KeyType[] = useAppSelector(selectKeys);
-    const [data, setData] = useState<KeyType[]>(allKeys);
+  const { currentProject } = useProjectHook();
+  const allKeys: KeyType[] = useAppSelector(selectKeys);
 
+  const projectKeys = allKeys.filter((key) => key.projectID === currentProject.projectID);
 
-    return { allKeys, data, setData };
+  return { projectKeys };
 };
 
 export default useKeyHook;

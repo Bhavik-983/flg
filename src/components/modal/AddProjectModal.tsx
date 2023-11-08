@@ -1,14 +1,11 @@
 import * as Yup from 'yup';
-import { v4 as uuidv4 } from 'uuid';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
-import { useAppDispatch } from 'src/store/hooks';
-import { addPages, addCurrentPage } from 'src/store/slices/pageSlice';
-import { addProject, setCurrentProject } from 'src/store/slices/projectSlice';
+import useProjectHook from 'src/hooks/use-project-hook';
 
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
@@ -31,8 +28,6 @@ interface ModalProps {
 }
 
 export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
-  const dispatch = useAppDispatch();
-
   const LanguageSchema = Yup.object().shape({
     name: Yup.string().min(2).required('Project Name is required'),
   });
@@ -52,27 +47,16 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
     formState: { isSubmitting },
   } = methods;
 
+  const { handleAddNewProject } = useProjectHook();
+
+  const handleClose = () => {
+    onClose();
+    reset();
+  };
+
   const onSubmit = handleSubmit(async (data: any) => {
     if (data.name !== '') {
-      const newProject = {
-        projectID: uuidv4(),
-        projectName: data.name,
-      };
-      const defaultProject = {
-        projectName: newProject.projectName,
-        projectID: newProject.projectID,
-      };
-      const defaultPage = {
-        projectID: newProject.projectID,
-        pageID: uuidv4(),
-        pageName: 'Default',
-      };
-      dispatch(addPages(defaultPage));
-      dispatch(addCurrentPage(defaultPage));
-      dispatch(addProject(newProject));
-      dispatch(setCurrentProject(defaultProject));
-      onClose();
-      reset();
+      handleAddNewProject(data.name, handleClose);
     }
   });
 
@@ -93,10 +77,7 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
           sx={{
             border: '1px solid rgba(145, 158, 171, 0.32)',
           }}
-          onClick={() => {
-            reset();
-            onClose();
-          }}
+          onClick={handleClose}
         >
           Cancel
         </Button>

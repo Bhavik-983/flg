@@ -2,33 +2,16 @@ import { FiEdit } from 'react-icons/Fi';
 
 import { Box, Card, Button, Typography, CardContent, CardActions } from '@mui/material';
 
-import { ProjectLanguage } from 'src/store/slices/LanguageSlice';
+import { Language } from 'src/store/slices/LanguageSlice';
 
 interface LanguageTypes {
-  name?: string;
-  code?: string;
-  handleClick: () => void;
-  handleOpen: () => void;
-  setIsEdit: (x: boolean) => void;
-  setSelectedId: (x: string | undefined) => void;
-  data: ProjectLanguage;
+  name: string;
+  code: string;
+  data: Language;
+  handleEdit: (id: string) => void;
 }
 
-const LanguageListCard = ({
-  handleClick,
-  name,
-  code,
-  handleOpen,
-  setIsEdit,
-  setSelectedId,
-  data,
-}: LanguageTypes) => {
-  const handleEdit = (value: string | undefined) => {
-    setSelectedId(value);
-    setIsEdit(true);
-    handleOpen();
-  };
-  return (
+const LanguageListCard = ({ name, code, data, handleEdit }: LanguageTypes) => (
     <Card
       sx={{
         width: '90%',
@@ -49,7 +32,6 @@ const LanguageListCard = ({
             gap: 1,
             cursor: 'pointer',
           }}
-          onClick={handleClick}
         >
           <Typography variant="h5" component="div" sx={{ fontWeight: 'normal' }}>
             {name}
@@ -77,6 +59,5 @@ const LanguageListCard = ({
       </CardActions>
     </Card>
   );
-};
 
 export default LanguageListCard;

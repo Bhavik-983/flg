@@ -54,6 +54,11 @@ export default function AddPageModal({ isOpen, onClose }: ModalProps) {
     formState: { isSubmitting },
   } = methods;
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = handleSubmit(async (data: any) => {
     if (data.pageName !== '') {
       const newProject: Page = {
@@ -61,9 +66,8 @@ export default function AddPageModal({ isOpen, onClose }: ModalProps) {
         pageID: uuidv4(),
         pageName: data.pageName,
       };
-      onClose();
       dispatch(addPages(newProject));
-      reset();
+      handleClose();
     }
   });
 
@@ -84,10 +88,7 @@ export default function AddPageModal({ isOpen, onClose }: ModalProps) {
           sx={{
             border: '1px solid rgba(145, 158, 171, 0.32)',
           }}
-          onClick={() => {
-            reset();
-            onClose();
-          }}
+          onClick={handleClose}
         >
           Cancel
         </Button>
