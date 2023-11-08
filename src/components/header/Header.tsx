@@ -5,15 +5,15 @@ import { currentProjects } from 'src/store/slices/projectSlice';
 import { selectProjectLanguage } from 'src/store/slices/LanguageSlice';
 
 export default function CustomHeader() {
-  const currentProject = useAppSelector(currentProjects);
-  const currentLanguage = useAppSelector(selectProjectLanguage);
+  // const currentProject = useAppSelector(currentProjects);
+  // const currentLanguage = useAppSelector(selectProjectLanguage);
 
-  const projectId = currentProject?.projectID;
+  // const projectId = currentProject?.projectID;
 
-  const projectLanguages = currentLanguage.filter(
-    (language: any) => language.projectID === projectId
-  );
-  const languageCount = projectLanguages.length;
+  // const projectLanguages = currentLanguage.filter(
+  //   (language: any) => language.projectID === projectId
+  // );
+  // const languageCount = projectLanguages.length;
 
   return (
     <Box
@@ -43,11 +43,11 @@ export default function CustomHeader() {
         }}
         variant="h4"
       >
-        {currentProject?.projectName}
+        {/* {currentProject?.projectName} */}
       </Typography>
       <Box sx={{ border: '1px solid #dbdbdb', px: 1, py: '2px', borderRadius: '3px' }}>
         <Typography variant="h5" sx={{ fontSize: '14px', color: 'gray' }}>
-          {languageCount} {languageCount === 1 ? 'Language' : 'Languages'}
+          {/* {languageCount} {languageCount === 1 ? 'Language' : 'Languages'} */}
         </Typography>
       </Box>
     </Box>
