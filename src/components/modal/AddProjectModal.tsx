@@ -47,16 +47,17 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const { handleAddNewProject } = useProjectHook();
-
+  const { handleCreateProject } = useProjectHook();
   const handleClose = () => {
     onClose();
     reset();
   };
 
   const onSubmit = handleSubmit(async (data: any) => {
+    console.log(data);
+    // addProject(data);
     if (data.name !== '') {
-      handleAddNewProject(data.name, handleClose);
+      handleCreateProject(data, handleClose);
     }
   });
 

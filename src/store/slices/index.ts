@@ -18,7 +18,7 @@ const encryptor = encryptTransform({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'projects', 'languages', 'pages', 'member', 'keys'],
+  whitelist: ['auth', 'projects'],
   // blacklist: ["auth"],
   // stateReconciler: hardSet,
   transforms: [encryptor],

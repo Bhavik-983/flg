@@ -7,7 +7,7 @@ import { alpha } from '@mui/material/styles';
 import useLanguageHook from 'src/hooks/use-language-hook';
 import useLanguageModal from 'src/hooks/use-language-modal';
 
-import { Language } from 'src/store/slices/LanguageSlice';
+import { NewLanguage } from 'src/store/slices/LanguageSlice';
 
 import PageHeading from 'src/components/heading/PageHeading';
 import AddLanguageModal from 'src/components/modal/AddLanguageModal';
@@ -23,8 +23,8 @@ export default function LanguageView() {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<string>('');
 
-  const { projectLanguages } = useLanguageHook();
-
+  const { projectLanguage } = useLanguageHook();
+  console.log(projectLanguage);
   const handleAddLanguage = () => {
     setIsEdit(false);
     setSelectedId('');
@@ -37,6 +37,8 @@ export default function LanguageView() {
     languageModal.openAddLanguage();
   };
   const headingText = 'Language';
+
+  console.log({ projectLanguage });
   return (
     <>
       <PageHeading name={headingText} />
@@ -74,8 +76,8 @@ export default function LanguageView() {
         >
           <Masonry>
             <AddLanguageButton handleClick={handleAddLanguage} />
-            {projectLanguages.length > 0
-              ? projectLanguages?.map((data: Language) => (
+            {projectLanguage.length > 0
+              ? projectLanguage?.map((data: NewLanguage) => (
                   <LanguageListCard
                     name={data.name}
                     code={data.code}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { m } from 'framer-motion';
 import { VscAdd } from 'react-icons/vsc';
@@ -10,17 +11,13 @@ import { Divider, MenuItem, IconButton, Typography } from '@mui/material';
 import { usePathname } from 'src/routes/hooks';
 
 import useProject from 'src/hooks/use-projects-modal';
+import useProjectHook from 'src/hooks/use-project-hook';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
 import { hideScroll } from 'src/theme/css';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import {
-  ProjectType,
-  selectProjects,
-  currentProjects,
-  setCurrentProject,
-} from 'src/store/slices/projectSlice';
+import { ProjectType, currentProjects, setCurrentProject } from 'src/store/slices/projectSlice';
 
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
@@ -33,33 +30,6 @@ import AccountPopover from '../common/account-popover';
 
 // ----------------------------------------------------------------------
 
-// const OPTIONS = [
-//   {
-//     label: 'Home',
-//     linkTo: '/',
-//   },
-//   {
-//     label: 'Profile',
-//     linkTo: '/#1',
-//   },
-//   {
-//     label: 'Settings',
-//     linkTo: '/#2',
-//   },
-//   {
-//     label: 'Settings',
-//     linkTo: '/#2',
-//   },
-//   {
-//     label: 'Settings',
-//     linkTo: '/#2',
-//   },
-//   {
-//     label: 'Settings',
-//     linkTo: '/#2',
-//   },
-// ];
-
 type Props = {
   openNav: boolean;
   onCloseNav: VoidFunction;
@@ -68,11 +38,13 @@ type Props = {
 export default function NavVertical({ openNav, onCloseNav }: Props) {
   const { user } = useMockedUser();
   const dispatch = useAppDispatch();
-  const projects = useAppSelector(selectProjects);
+  // const projects = useAppSelector(selectProjects);
   const currentProject = useAppSelector(currentProjects);
   const projectModal = useProject();
   const pathname = usePathname();
   const popover = usePopover();
+  console.log(currentProject);
+  const { allProjects } = useProjectHook();
 
   const lgUp = useResponsive('up', 'lg');
 
@@ -83,8 +55,8 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
   };
 
   const handleAddProject = () => {
-    popover.onClose();
     projectModal.openAddProjectModal();
+    popover.onClose();
   };
 
   const navData = useNavData();
@@ -130,12 +102,12 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
             width: '100%',
             backgroundImage: `linear-gradient(to top, #e0e0e07d 0%, #d7d7d782 100%)`,
             display: 'flex',
-            justifyContent: 'center',
+            pl: 2,
             alignItems: 'center',
             textTransform: 'capitalize',
           }}
         >
-          {currentProject.projectName}
+          {currentProject.name}
         </Box>
       </IconButton>
 
@@ -156,20 +128,20 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
             noWrap
             sx={{ fontSize: '19px', textTransform: 'capitalize' }}
           >
-            {currentProject?.projectName}
+            {currentProject?.name[0]}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack sx={{ p: 1, height: 289, ...hideScroll.y }}>
-          {projects?.map((project: ProjectType) => (
+          {allProjects?.map((project: any) => (
             <MenuItem
-              key={project.projectName}
+              key={project.name}
               sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
               onClick={() => handleClickItem(project)}
             >
-              {project.projectName}
+              {project?.name}
             </MenuItem>
           ))}
         </Stack>

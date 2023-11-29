@@ -10,7 +10,7 @@ export interface keyLanguage {
     projectId: string;
     code: string;
     name: string;
-    nativeName: string;
+    key: string;
   };
   value: string;
 }
@@ -30,31 +30,7 @@ interface KeysTypes {
 
 // Define the initial state using that type
 const initialState: KeysTypes = {
-  allKeys: [
-    // {
-    //     keyID: "",
-    //     keyName: "",
-    //     page: {
-    //         projectID: "",
-    //         pageID: "",
-    //         pageName: "",
-    //     },
-    //     projectID: "",
-    //     details: "",
-    //     languages: [
-    //         {
-    //             language: {
-    //                 id: "7477b141-6d80-4472-a3e2-b5e464e094af",
-    //                 projectId: "34da3126-136f-3488-fsd6-e232a0c6123jf",
-    //                 code: "hz",
-    //                 name: "Herero",
-    //                 nativeName: "Otjiherero"
-    //             },
-    //             value: "",
-    //         }
-    //     ]
-    // }
-  ],
+  allKeys: [],
 };
 
 const keySlice = createSlice({
@@ -63,8 +39,11 @@ const keySlice = createSlice({
   reducers: {
     resetState: () => initialState,
     addKeyLanguage: (state, action) => {
-      // state.allKeys.forEach((data) => {
-      // })
+      state.allKeys.forEach((data) => {
+        if (data.keyID === action.payload.keyID) {
+          data.languages.push(action.payload);
+        }
+      });
     },
     addKeys: (state, action) => {
       state.allKeys.push(action.payload);

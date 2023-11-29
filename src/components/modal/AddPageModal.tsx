@@ -1,15 +1,12 @@
 import * as Yup from 'yup';
-import { v4 as uuidv4 } from 'uuid';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
+import usePageHook from 'src/hooks/use-page-hook';
 import useProjectHook from 'src/hooks/use-project-hook';
-
-import { useAppDispatch } from 'src/store/hooks';
-import { Page, addPages } from 'src/store/slices/pageSlice';
 
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
@@ -32,8 +29,8 @@ interface ModalProps {
 }
 
 export default function AddPageModal({ isOpen, onClose }: ModalProps) {
-  const dispatch = useAppDispatch();
   const { currentProject } = useProjectHook();
+  const { createPage } = usePageHook();
 
   const LanguageSchema = Yup.object().shape({
     pageName: Yup.string().min(2).required('Page Name is required'),
@@ -60,15 +57,16 @@ export default function AddPageModal({ isOpen, onClose }: ModalProps) {
   };
 
   const onSubmit = handleSubmit(async (data: any) => {
-    if (data.pageName !== '') {
-      const newProject: Page = {
-        projectID: currentProject.projectID,
-        pageID: uuidv4(),
-        pageName: data.pageName,
-      };
-      dispatch(addPages(newProject));
-      handleClose();
-    }
+    createPage(data.pageName, currentProject._id);
+    handleClose();
+    // if (data.pageName !== '') {
+    //   const newProject: Page = {
+    //     projectID: currentProject.projectID,
+    //     pageID: uuidv4(),
+    //     pageName: data.pageName,
+    //   };
+    //   dispatch(addPages(newProject));
+    // }
   });
 
   const renderForm = (

@@ -47,3 +47,8 @@
 ::-webkit-scrollbar-corner {
   background: #e0e0e0; /* Change the color */
 }
+
+.css-1dck3i8-MuiToolbar-root {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}

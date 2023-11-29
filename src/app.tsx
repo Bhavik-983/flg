@@ -43,6 +43,7 @@ export default function App() {
       >
         <ThemeProvider>
           <MotionLazy>
+            
             {/* <SettingsDrawer /> */}
             <ProgressBar />
             <Router />

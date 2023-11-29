@@ -4,8 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 export interface ProjectType {
-  projectID: string;
-  projectName: string;
+  _id: string;
+  name: string;
 }
 
 interface Projects {
@@ -17,8 +17,8 @@ interface Projects {
 const initialState: Projects = {
   allProject: [],
   currentProject: {
-    projectID: '',
-    projectName: '',
+    _id: '',
+    name: '',
   },
 };
 
@@ -30,13 +30,16 @@ const projectSlice = createSlice({
     addProject: (state, action) => {
       state.allProject.push(action.payload);
     },
+    setProject: (state, action) => {
+      state.allProject = action.payload;
+    },
     setCurrentProject: (state, action) => {
       state.currentProject = action.payload;
     },
   },
 });
 
-export const { resetState, addProject, setCurrentProject } = projectSlice.actions;
+export const { setProject, resetState, addProject, setCurrentProject } = projectSlice.actions;
 
 export default projectSlice.reducer;
 

@@ -5,12 +5,13 @@
 // import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
 // import { Box } from '@mui/material';
+
 // import usePageHook from 'src/hooks/use-page-hook';
-// import { useAppDispatch } from 'src/store/hooks';
-// import { KeyType, addKeys, setKeys } from 'src/store/slices/keySlice';
 // import useLanguageHook from 'src/hooks/use-language-hook';
+
+// import { useAppDispatch } from 'src/store/hooks';
 // import { ProjectLanguage } from 'src/store/slices/LanguageSlice';
-// import useKeyHook from 'src/hooks/use-key-hook';
+// import { KeyType, addKeys, setKeys } from 'src/store/slices/keySlice';
 
 // interface Item {
 //   key: string;
@@ -80,20 +81,18 @@
 //       editable: true,
 //       render: (text: any, record: any) =>
 //         isEditing(record) ? (
-//           <>
-//             <Form.Item
-//               name={`${language.id}.value`}
-//               style={{ margin: 0 }}
-//               rules={[
-//                 {
-//                   required: true,
-//                   message: 'Please Input language!',
-//                 },
-//               ]}
-//             >
-//               <Input />
-//             </Form.Item>
-//           </>
+//           <Form.Item
+//             name={`${language.id}.value`}
+//             style={{ margin: 0 }}
+//             rules={[
+//               {
+//                 required: true,
+//                 message: 'Please Input language!',
+//               },
+//             ]}
+//           >
+//             <Input />
+//           </Form.Item>
 //         ) : (
 //           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
 //         ),

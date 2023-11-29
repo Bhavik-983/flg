@@ -2,6 +2,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import { Box, Fade, Modal, Divider, Backdrop } from '@mui/material';
 
+import useProjectHook from 'src/hooks/use-project-hook';
 import useLanguageHook from 'src/hooks/use-language-hook';
 
 import { hideScroll } from 'src/theme/css';
@@ -59,13 +60,17 @@ const AddLanguageModal = ({
 }: AddLanguageModalType) => {
   const { languages, handleSearch, resetLanguages, handleAddLanguage, handleEditLanguage } =
     useLanguageHook();
+  const { currentProject } = useProjectHook();
 
-  const handleLanguage = (data: DefaultLanguage) => {
-    const language = data;
+  const handleLanguage = (data: any) => {
+    const language = {
+      name: data?.name,
+      code: data?.code,
+    };
     if (isEdit === true) {
       handleEditLanguage(language, selectedId, handleCloseModal);
     } else {
-      handleAddLanguage(language, handleCloseModal);
+      handleAddLanguage(language, currentProject?._id, handleCloseModal);
     }
   };
 

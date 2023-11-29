@@ -5,13 +5,13 @@ import useLanguageHook from 'src/hooks/use-language-hook';
 
 export default function CustomHeader() {
   const { currentProject } = useProjectHook();
-  const { projectLanguages } = useLanguageHook();
+  const { projectLanguage } = useLanguageHook();
 
   let languageText;
 
-  if (projectLanguages.length === 0) {
+  if (projectLanguage.length === 0) {
     languageText = 'Language ';
-  } else if (projectLanguages.length === 1) {
+  } else if (projectLanguage.length === 1) {
     languageText = 'Language ';
   } else {
     languageText = 'Languages ';
@@ -44,12 +44,12 @@ export default function CustomHeader() {
         }}
         variant="h4"
       >
-        {currentProject?.projectName}
+        {currentProject?.name}
       </Typography>
       <Box sx={{ border: '1px solid #dbdbdb', px: 1, py: '2px', borderRadius: '3px' }}>
         <Typography variant="h5" sx={{ fontSize: '14px', color: 'gray' }}>
           {languageText}
-          {projectLanguages.length}
+          {projectLanguage.length}
         </Typography>
       </Box>
     </Box>

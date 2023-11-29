@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { m } from 'framer-motion';
 import { VscAdd } from 'react-icons/vsc';
 
@@ -7,6 +8,7 @@ import { Box, Divider, MenuItem, Typography } from '@mui/material';
 
 import useProjectHook from 'src/hooks/use-project-hook';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
+import useLanguageHook from 'src/hooks/use-language-hook';
 import useProjectModal from 'src/hooks/use-projects-modal';
 
 import { hideScroll } from 'src/theme/css';
@@ -26,14 +28,16 @@ export default function NavMini() {
   const popover = usePopover();
 
   const projectModal = useProjectModal();
+  const { handleGetLanguages } = useLanguageHook();
   const { allProjects, currentProject, handleSetCurrentProject } = useProjectHook();
 
   const navData = useNavData();
-
   const handleClickItem = (project: ProjectType) => {
     handleSetCurrentProject(project);
+
     projectModal.closeAddProjectModal();
     popover.onClose();
+    handleGetLanguages(project?._id);
   };
 
   const handleAddProject = () => {
@@ -92,7 +96,7 @@ export default function NavMini() {
               textTransform: 'capitalize',
             }}
           >
-            {currentProject.projectName.charAt(0)}
+            {currentProject?.name.charAt(0)}
           </Box>
         </IconButton>
 
@@ -117,20 +121,27 @@ export default function NavMini() {
               noWrap
               sx={{ fontSize: '19px', textTransform: 'capitalize' }}
             >
-              {currentProject?.projectName}
+              {currentProject?.name}
             </Typography>
           </Box>
 
           <Divider sx={{ borderStyle: 'dashed' }} />
 
           <Stack sx={{ p: 1, height: 289, ...hideScroll.y }}>
-            {allProjects?.map((project: ProjectType) => (
+            {allProjects?.map((project: any) => (
               <MenuItem
-                key={project.projectName}
+                key={project.name}
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                onClick={() => handleClickItem(project)}
               >
-                {project?.projectName}
+                <Typography
+                  margin="auto"
+                  width="100%"
+                  variant="subtitle2"
+                  noWrap
+                  onClick={() => handleClickItem(project)}
+                >
+                  {project?.name}
+                </Typography>
               </MenuItem>
             ))}
           </Stack>

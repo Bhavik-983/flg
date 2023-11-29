@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
 import Box, { BoxProps } from '@mui/material/Box';
 
 import useProjectHook from 'src/hooks/use-project-hook';
 import { useResponsive } from 'src/hooks/use-responsive';
+import useLanguageHook from 'src/hooks/use-language-hook';
 import useProjectModal from 'src/hooks/use-projects-modal';
 
 import { useSettingsContext } from 'src/components/settings';
@@ -22,12 +24,16 @@ export default function Main({ children, sx, ...other }: BoxProps) {
   const isNavMini = settings.themeLayout === 'mini';
 
   const addProjectModal = useProjectModal();
-  const { allProjects } = useProjectHook();
+  const { handleGetAllProjects, currentProject } = useProjectHook();
+  const { handleGetLanguages } = useLanguageHook();
+
   useEffect(() => {
-    if (allProjects.length === 0) {
-      addProjectModal.openAddProjectModal();
-    }
-  });
+    handleGetAllProjects()
+      .then(() => {
+        handleGetLanguages(currentProject?._id);
+      })
+      .catch((e) => {});
+  }, []);
 
   if (isNavHorizontal) {
     return (

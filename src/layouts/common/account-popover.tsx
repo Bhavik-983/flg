@@ -51,7 +51,7 @@ export default function AccountPopover() {
     try {
       await logout();
       popover.onClose();
-      router.replace('/');
+      router.replace('/auth/login');
     } catch (error) {
       console.error(error);
     }

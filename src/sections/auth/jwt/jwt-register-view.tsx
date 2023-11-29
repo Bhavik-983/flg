@@ -16,9 +16,9 @@ import { RouterLink } from 'src/routes/components';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
+import useRegisterHook from 'src/hooks/use-register-hook';
 
-import { useAuthContext } from 'src/auth/hooks';
-import { PATH_AFTER_LOGIN } from 'src/config-global';
+import { PATH_AFTER_REGISTER } from 'src/config-global';
 
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
@@ -26,28 +26,28 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export default function JwtRegisterView() {
-  const { register } = useAuthContext();
+  // const { register } = useAuthContext();
+  const { registerUser } = useRegisterHook();
 
   const router = useRouter();
-
   const [errorMsg, setErrorMsg] = useState('');
 
   const searchParams = useSearchParams();
-
   const returnTo = searchParams.get('returnTo');
 
   const password = useBoolean();
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().required('First name required'),
-    lastName: Yup.string().required('Last name required'),
+    username: Yup.string().required('Username is required'),
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    password: Yup.string().required('Password is required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters')
+      .matches(/^[A-Z]/, 'First letter must be uppercase')
+      .required('Password is required'),
   });
 
   const defaultValues = {
-    firstName: '',
-    lastName: '',
+    username: '',
     email: '',
     password: '',
   };
@@ -65,9 +65,8 @@ export default function JwtRegisterView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await register?.(data.email, data.password, data.firstName, data.lastName);
-
-      router.push(returnTo || PATH_AFTER_LOGIN);
+      registerUser(data);
+      router.push(returnTo || PATH_AFTER_REGISTER);
     } catch (error) {
       console.error(error);
       reset();
@@ -117,8 +116,7 @@ export default function JwtRegisterView() {
         {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <RHFTextField name="firstName" label="First name" />
-          <RHFTextField name="lastName" label="Last name" />
+          <RHFTextField name="username" label="Name" />
         </Stack>
 
         <RHFTextField name="email" label="Email address" />

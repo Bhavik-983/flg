@@ -150,33 +150,29 @@ export function AuthProvider({ children }: Props) {
   }, []);
 
   // REGISTER
-  const register = useCallback(
-    async (email: string, password: string, firstName: string, lastName: string) => {
-      const data = {
-        email,
-        password,
-        firstName,
-        lastName,
-      };
+  const register = useCallback(async (email: string, password: string, username: string) => {
+    const data = {
+      email,
+      password,
+      username,
+    };
 
-      const res = await axios.post(endpoints.auth.register, data);
+    const res = await axios.post(endpoints.auth.register, data);
 
-      const { accessToken, user } = res.data;
+    const { accessToken, user } = res.data;
 
-      sessionStorage.setItem(STORAGE_KEY, accessToken);
+    sessionStorage.setItem(STORAGE_KEY, accessToken);
 
-      dispatch({
-        type: Types.REGISTER,
-        payload: {
-          user: {
-            ...user,
-            accessToken,
-          },
+    dispatch({
+      type: Types.REGISTER,
+      payload: {
+        user: {
+          ...user,
+          accessToken,
         },
-      });
-    },
-    []
-  );
+      },
+    });
+  }, []);
 
   // LOGOUT
   const logout = useCallback(async () => {

@@ -2,12 +2,12 @@ import { FiEdit } from 'react-icons/Fi';
 
 import { Box, Card, Button, Typography, CardContent, CardActions } from '@mui/material';
 
-import { Language } from 'src/store/slices/LanguageSlice';
+import { NewLanguage } from 'src/store/slices/LanguageSlice';
 
 interface LanguageTypes {
   name: string;
   code: string;
-  data: Language;
+  data: NewLanguage;
   handleEdit: (id: string) => void;
 }
 
@@ -52,7 +52,7 @@ const LanguageListCard = ({ name, code, data, handleEdit }: LanguageTypes) => (
           height: '40px',
           minWidth: 0,
         }}
-        onClick={() => handleEdit(data.id)}
+        onClick={() => handleEdit(data._id)}
       >
         <FiEdit />
       </Button>
