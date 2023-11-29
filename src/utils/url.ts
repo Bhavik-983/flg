@@ -14,3 +14,4 @@ export const GET_PAGE_NAME = '/page/name/list';
 // language
 export const ADD_LANGUAGE = '/language/add';
 export const GET_LANGUAGE = '/language/name/list';
+export const UPDATE_LANGUAGE = '/language/update';

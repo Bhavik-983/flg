@@ -30,11 +30,6 @@ const useLanguageHook = () => {
   console.log(allLanguages);
   const [languages, setLanguages] = useState<DefaultLanguage[]>(defaultLanguages);
 
-  // const projectLanguage = allLanguages
-  //   ? allLanguages.filter((language: Language) => language.projectID === currentProject._id)
-  //   : [];
-  // console.log()
-
   const handleSearch = (language: string) => {
     const updatedData =
       defaultLanguages &&
@@ -75,7 +70,6 @@ const useLanguageHook = () => {
         projectID: currentProject._id,
         name: response?.data?.name,
         code: response?.data?.code,
-        // key: response?.data?.key,
       };
       dispatch(addProjectLanguage(newLanguage));
       onClose?.();
@@ -94,16 +88,28 @@ const useLanguageHook = () => {
     }
   };
 
-  const handleEditLanguage = (data: DefaultLanguage, id: string, onClose?: any) => {
-    const language = {
-      id,
-      name: data.name,
-      code: data.code,
-      // key: data.key,
-    };
-    console.log(language);
-    dispatch(editProjectLanguage(language));
-    onClose?.();
+  const handleEditLanguage = async (
+    data: AddLanguageTypes,
+    languageid: string,
+    projectid: string,
+    onClose?: any
+  ) => {
+    try {
+      const response = await languageService.editLanguage(data, languageid, projectid);
+      console.log(response);
+      const newLanguage: any = {
+        languageid,
+        projectID: currentProject?._id,
+        name: response?.data?.name,
+        code: response?.data?.code,
+      };
+      dispatch(editProjectLanguage(newLanguage));
+      handleGetLanguages(currentProject?._id);
+      onClose?.();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return {

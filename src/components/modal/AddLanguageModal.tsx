@@ -68,7 +68,7 @@ const AddLanguageModal = ({
       code: data?.code,
     };
     if (isEdit === true) {
-      handleEditLanguage(language, selectedId, handleCloseModal);
+      handleEditLanguage(language, currentProject?._id, selectedId, handleCloseModal);
     } else {
       handleAddLanguage(language, currentProject?._id, handleCloseModal);
     }
