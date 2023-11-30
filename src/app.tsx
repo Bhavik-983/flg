@@ -11,9 +11,6 @@ import ProgressBar from 'src/components/progress-bar';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
 import { SettingsProvider } from 'src/components/settings';
 
-import { AuthProvider } from 'src/auth/context/jwt';
-
-
 // ----------------------------------------------------------------------
 
 export default function App() {
@@ -30,26 +27,23 @@ export default function App() {
   useScrollToTop();
 
   return (
-    <AuthProvider>
-      <SettingsProvider
-        defaultSettings={{
-          themeMode: 'light', // 'light' | 'dark'
-          themeDirection: 'ltr', //  'rtl' | 'ltr'
-          themeContrast: 'default', // 'default' | 'bold'
-          themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
-          themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-          themeStretch: false,
-        }}
-      >
-        <ThemeProvider>
-          <MotionLazy>
-            
-            {/* <SettingsDrawer /> */}
-            <ProgressBar />
-            <Router />
-          </MotionLazy>
-        </ThemeProvider>
-      </SettingsProvider>
-    </AuthProvider>
+    <SettingsProvider
+      defaultSettings={{
+        themeMode: 'light', // 'light' | 'dark'
+        themeDirection: 'ltr', //  'rtl' | 'ltr'
+        themeContrast: 'default', // 'default' | 'bold'
+        themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
+        themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+        themeStretch: false,
+      }}
+    >
+      <ThemeProvider>
+        <MotionLazy>
+          {/* <SettingsDrawer /> */}
+          <ProgressBar />
+          <Router />
+        </MotionLazy>
+      </ThemeProvider>
+    </SettingsProvider>
   );
 }

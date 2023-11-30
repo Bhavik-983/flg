@@ -58,7 +58,6 @@ export default function JwtRegisterView() {
   });
 
   const {
-    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
@@ -68,8 +67,6 @@ export default function JwtRegisterView() {
       registerUser(data);
       router.push(returnTo || PATH_AFTER_REGISTER);
     } catch (error) {
-      console.error(error);
-      reset();
       setErrorMsg(typeof error === 'string' ? error : error.message);
     }
   });

@@ -127,14 +127,10 @@ export default function KeyView() {
 
   useEffect(() => {
     if (page?.value !== currentPageId) {
-      console.log({ page, currentPageId });
-
       const updatedKeys = [...projectKeys];
       updatedKeys.filter((key) => key.page.pageID === page.value);
 
       seCurrentPageId(page.value);
-
-      console.log({ projectKeys, updatedKeys });
     }
   }, [page, currentPageId, projectKeys]);
 
@@ -179,7 +175,6 @@ export default function KeyView() {
   const save = async (keyID: string) => {
     try {
       const row = (await form.validateFields()) as any;
-      console.log('Row:', row);
 
       const newData = data.map((item: KeyType) => {
         if (item.keyID === keyID) {
@@ -192,13 +187,11 @@ export default function KeyView() {
               value: row[lang.id],
             })),
           };
-          console.log('Updated Item:', updatedItem);
+
           return updatedItem;
         }
         return item;
       });
-
-      console.log('New Data:', newData);
 
       setData(newData);
       setEditingKey('');

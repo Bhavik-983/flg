@@ -20,7 +20,7 @@ const usePageHook = () => {
   const allPages: Page[] = useAppSelector(selectAllPages);
   const currentPage = useAppSelector(selectCurrentPage);
 
-  console.log({ allPages });
+  
 
   const projectPages = allPages.reduce((result: LabelValue[], data: Page) => {
     if (data.projectID === currentProject._id) {

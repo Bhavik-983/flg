@@ -2,6 +2,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { handleLogOut } from 'src/utils/config';
+
+import { PATH_AFTER_REGISTER } from 'src/config-global';
 import { resetState, setCredentials } from 'src/store/slices/authSlice';
 
 import { RootState } from '../store';
@@ -16,8 +19,9 @@ const useAuth = () => {
   };
 
   const logoutAction = () => {
+    handleLogOut();
     dispatch(resetState());
-    navigate('/login');
+    navigate(PATH_AFTER_REGISTER);
   };
 
   return {

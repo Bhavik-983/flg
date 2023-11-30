@@ -16,9 +16,10 @@ import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
+import useAuth from 'src/hooks/use-auth-hook';
 import { useBoolean } from 'src/hooks/use-boolean';
-import useLoginHook from 'src/hooks/use-login-hook';
 
+import authService from 'src/services/authServices';
 import { PATH_AFTER_LOGIN } from 'src/config-global';
 
 import Iconify from 'src/components/iconify';
@@ -27,11 +28,11 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export default function JwtLoginView() {
-  const { loginUser } = useLoginHook();
-
   const router = useRouter();
+  const { setCredentialsAction } = useAuth();
 
   const [errorMsg, setErrorMsg] = useState('');
+  const [fetching, setIsFetching] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
 
@@ -57,23 +58,19 @@ export default function JwtLoginView() {
     defaultValues,
   });
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    loginUser(data);
-
-    router.push(returnTo || PATH_AFTER_LOGIN);
-    // try {
-    //   // await login(data.email, data.password);
-    //   console.log(data);
-    // } catch (error) {
-    //   console.error(error);
-    //   reset();
-    //   setErrorMsg(typeof error === 'string' ? error : error.message);
-    // }
+    setIsFetching(true);
+    try {
+      const response = await authService.userlogin(data);
+      setCredentialsAction(response?.data);
+      router.push(returnTo || PATH_AFTER_LOGIN);
+    } catch (error) {
+      setErrorMsg(typeof error === 'string' ? error : error?.response?.data?.message);
+    } finally {
+      setIsFetching(false);
+    }
   });
 
   const renderHead = (
@@ -121,7 +118,7 @@ export default function JwtLoginView() {
         size="large"
         type="submit"
         variant="contained"
-        loading={isSubmitting}
+        loading={fetching}
       >
         Login
       </LoadingButton>

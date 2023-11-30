@@ -11,7 +11,6 @@ export interface AddLanguageTypes {
 
 const languageService = {
   addLanguage: async (AddLanguageData: AddLanguageTypes, projectId: string): Promise<any> => {
-    console.log(AddLanguageData);
     const response: AxiosResponse<any> = await client.post(
       `${ADD_LANGUAGE}/${projectId}`,
       AddLanguageData
@@ -29,9 +28,6 @@ const languageService = {
     projectid: string,
     languageid: string
   ): Promise<any> => {
-    console.log(EditLanguageData);
-    console.log(projectid);
-    console.log(languageid);
     const response: AxiosResponse<any> = await client.put(
       `${UPDATE_LANGUAGE}/${languageid}/${projectid}`,
       EditLanguageData

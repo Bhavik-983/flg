@@ -54,8 +54,6 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
   };
 
   const onSubmit = handleSubmit(async (data: any) => {
-    console.log(data);
-    // addProject(data);
     if (data.name !== '') {
       handleCreateProject(data, handleClose);
     }

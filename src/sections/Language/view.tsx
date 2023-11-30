@@ -24,7 +24,6 @@ export default function LanguageView() {
   const [selectedId, setSelectedId] = useState<string>('');
 
   const { projectLanguage } = useLanguageHook();
-  console.log(projectLanguage);
   const handleAddLanguage = () => {
     setIsEdit(false);
     setSelectedId('');
@@ -38,7 +37,6 @@ export default function LanguageView() {
   };
   const headingText = 'Language';
 
-  console.log({ projectLanguage });
   return (
     <>
       <PageHeading name={headingText} />

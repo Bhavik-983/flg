@@ -38,12 +38,12 @@ type Props = {
 export default function NavVertical({ openNav, onCloseNav }: Props) {
   const { user } = useMockedUser();
   const dispatch = useAppDispatch();
-  // const projects = useAppSelector(selectProjects);
+
   const currentProject = useAppSelector(currentProjects);
   const projectModal = useProject();
   const pathname = usePathname();
   const popover = usePopover();
-  console.log(currentProject);
+
   const { allProjects } = useProjectHook();
 
   const lgUp = useResponsive('up', 'lg');
@@ -68,7 +68,6 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
     if (openNav) {
       onCloseNav();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderContent = (

@@ -14,10 +14,11 @@ const headers = {
     'Authorization',
   ],
 };
-
+ 
 const client = axios.create({
   baseURL: BASE_URL,
   headers,
 });
 
 export default client;
+ 

@@ -27,7 +27,6 @@ const useLanguageHook = () => {
   const defaultLanguages: DefaultLanguage[] = useAppSelector(selectDefaultLanguagesData);
   const allLanguages: Language[] = useAppSelector(selectAllLanguagesData);
   const projectLanguage: NewLanguage[] = useAppSelector(selectProjectLanguage);
-  console.log(allLanguages);
   const [languages, setLanguages] = useState<DefaultLanguage[]>(defaultLanguages);
 
   const handleSearch = (language: string) => {
@@ -76,7 +75,6 @@ const useLanguageHook = () => {
       handleGetLanguages(currentProject?._id);
       return response;
     } catch (error) {
-      console.log(error);
       enqueueSnackbar(error?.response?.data?.message, {
         variant: 'error',
         anchorOrigin: {
