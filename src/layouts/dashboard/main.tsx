@@ -24,13 +24,13 @@ export default function Main({ children, sx, ...other }: BoxProps) {
   const isNavMini = settings.themeLayout === 'mini';
 
   const addProjectModal = useProjectModal();
-  const { handleGetAllProjects, currentProject } = useProjectHook();
+  const { handleGetAllProjects } = useProjectHook();
   const { handleGetLanguages } = useLanguageHook();
 
   useEffect(() => {
     handleGetAllProjects()
-      .then(() => {
-        handleGetLanguages(currentProject?._id);
+      .then((res: any) => {
+        handleGetLanguages(res?._id);
       })
       .catch((e) => {});
   }, []);

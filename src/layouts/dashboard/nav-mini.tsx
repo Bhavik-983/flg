@@ -34,10 +34,9 @@ export default function NavMini() {
   const navData = useNavData();
   const handleClickItem = (project: ProjectType) => {
     handleSetCurrentProject(project);
-
+    handleGetLanguages(project?._id);
     projectModal.closeAddProjectModal();
     popover.onClose();
-    handleGetLanguages(project?._id);
   };
 
   const handleAddProject = () => {

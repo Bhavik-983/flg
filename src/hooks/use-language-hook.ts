@@ -49,7 +49,7 @@ const useLanguageHook = () => {
   const handleGetLanguages = async (project_id: string) => {
     try {
       const response = await languageService.getLanguages(project_id);
-      const language = response?.data?.rows || [];
+      const language = response?.data?.languages || [];
       dispatch(projectLanguages(language));
       console.log(response);
       return response;
