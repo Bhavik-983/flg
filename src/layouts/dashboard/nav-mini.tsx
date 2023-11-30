@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import { Box, Divider, MenuItem, Typography } from '@mui/material';
 
+import useMemberHook from 'src/hooks/use-member-hook';
 import useProjectHook from 'src/hooks/use-project-hook';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 import useLanguageHook from 'src/hooks/use-language-hook';
@@ -30,11 +31,13 @@ export default function NavMini() {
   const projectModal = useProjectModal();
   const { handleGetLanguages } = useLanguageHook();
   const { allProjects, currentProject, handleSetCurrentProject } = useProjectHook();
+  const { handleGetMembers } = useMemberHook();
 
   const navData = useNavData();
   const handleClickItem = (project: ProjectType) => {
     handleSetCurrentProject(project);
     handleGetLanguages(project?._id);
+    handleGetMembers(project?._id);
     projectModal.closeAddProjectModal();
     popover.onClose();
   };

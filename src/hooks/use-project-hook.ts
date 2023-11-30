@@ -20,7 +20,6 @@ import useProjectModal from './use-projects-modal';
 const useProjectHook = () => {
   const addProjectModal = useProjectModal();
   const { enqueueSnackbar } = useSnackbar();
-
   const dispatch = useAppDispatch();
   const currentProject: ProjectType = useAppSelector(currentProjects);
   const allProjects: ProjectType[] = useAppSelector(selectProjects);
@@ -32,6 +31,7 @@ const useProjectHook = () => {
   const handleCreateProject = async (AddProjectData: AddProjectTypes, handleClose: any) => {
     try {
       const response = await addProjectService.addProject(AddProjectData);
+      console.log(response);
       handleClose()?.();
       const newProject = {
         _id: response?.data?._id,
@@ -41,7 +41,6 @@ const useProjectHook = () => {
       handleGetAllProjects();
       return response;
     } catch (error) {
-      // toast(error?.response?.data?.message);
       enqueueSnackbar(error?.response?.data?.message, {
         variant: 'error',
         anchorOrigin: {

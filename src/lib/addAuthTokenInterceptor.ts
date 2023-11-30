@@ -75,9 +75,9 @@ export default function addAuthTokenInterceptor(store: any) {
           return client(originalConfig);
         } else {
           console.log('Token not found');
-          handleLogOut();
-          window.location = PATH_AFTER_REGISTER;
-          return Promise.reject(error.response.data);
+          // handleLogOut();
+          // window.location.assign(PATH_AFTER_REGISTER);
+          // return Promise.reject(error.response.data);
         }
       }
       return Promise.reject(error);
@@ -88,7 +88,7 @@ export default function addAuthTokenInterceptor(store: any) {
 /**
  * Stop Function excution still refresh token did't update
  */
-const isRefreshTokenDone = async () => {
+const isRefreshTokenDone = async (): Promise<boolean> => {
   if (isRefreshTokenUpdating) {
     await new Promise((resolve) => setTimeout(resolve, 300)); // Wait for one second
     return await isRefreshTokenDone();

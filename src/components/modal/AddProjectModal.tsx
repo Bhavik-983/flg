@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
+import usePageHook from 'src/hooks/use-page-hook';
 import useProjectHook from 'src/hooks/use-project-hook';
 
 import { RHFTextField } from 'src/components/hook-form';
@@ -47,7 +48,8 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const { handleCreateProject } = useProjectHook();
+  const { handleCreateProject, currentProject } = useProjectHook();
+  const { fetchDefaultPage } = usePageHook();
   const handleClose = () => {
     onClose();
     reset();
@@ -56,6 +58,7 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
   const onSubmit = handleSubmit(async (data: any) => {
     if (data.name !== '') {
       handleCreateProject(data, handleClose);
+      fetchDefaultPage(currentProject?._id);
     }
   });
 

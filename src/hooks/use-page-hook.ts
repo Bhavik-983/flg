@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable consistent-return */
 import { useState } from 'react';
 
@@ -19,8 +20,6 @@ const usePageHook = () => {
   const { currentProject } = useProjectHook();
   const allPages: Page[] = useAppSelector(selectAllPages);
   const currentPage = useAppSelector(selectCurrentPage);
-
-  
 
   const projectPages = allPages.reduce((result: LabelValue[], data: Page) => {
     if (data.projectID === currentProject._id) {
@@ -81,14 +80,14 @@ const usePageHook = () => {
     }
   };
 
-  const fetchDefaultPage = async () => {
+  const fetchDefaultPage = async (projectId: string) => {
     try {
-      const response = await pageService.addPage({ name: 'New Default Page' }, currentProject?._id);
+      const response = await pageService.addPage({ name: 'New Default Page' }, projectId);
       console.log(response);
       const newPage = {
         pageName: response?.data?.name,
         pageID: response?.data?._id,
-        projectID: currentProject?._id,
+        projectId: currentProject?._id,
       };
       dispatch(addCurrentPage(newPage));
       dispatch(addPages(newPage));

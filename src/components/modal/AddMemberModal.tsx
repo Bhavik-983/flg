@@ -5,6 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Box, Modal, Stack } from '@mui/material';
 
+import useMemberHook from 'src/hooks/use-member-hook';
+import useProjectHook from 'src/hooks/use-project-hook';
+
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 
@@ -30,8 +33,9 @@ interface ModalProps {
 }
 
 export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
+  const { handleCreateMember } = useMemberHook();
+  const { currentProject } = useProjectHook();
   const LanguageSchema = Yup.object().shape({
-    name: Yup.string().min(2).required('Name is required'),
     email: Yup.string().min(2).email('Please enter a valid email!').required('Email is required'),
     role: Yup.object().shape({
       label: Yup.string().required('Role is required'),
@@ -40,7 +44,6 @@ export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
   });
 
   const defaultValues = {
-    name: '',
     email: '',
     role: {
       label: '',
@@ -49,9 +52,8 @@ export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
   };
 
   const defaultLanguages = [
-    { label: 'Project Manager', value: 'PM' },
-    { label: 'Developer', value: 'DP' },
-    { label: 'Translator', value: 'TS' },
+    { label: 'ADMIN', value: 'ADMIN' },
+    { label: 'MEMBER', value: 'MEMBER' },
   ];
 
   const methods = useForm({
@@ -66,18 +68,22 @@ export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = handleSubmit(async (data: any) => {
-    console.log(data);
-  });
-
   const handleClick = () => {
     reset();
     onClose();
   };
 
+  const onSubmit = handleSubmit(async (data: any) => {
+    console.log({ data });
+    const member = {
+      email: data?.email,
+      role: data?.role?.value,
+    };
+    handleCreateMember(member, currentProject?._id, onClose);
+  });
+
   const renderForm = (
     <Stack spacing={2.5}>
-      <RHFTextField name="name" label="Name" />
       <RHFTextField name="email" label="Email" />
       <RHFSelectField options={defaultLanguages} handleChange={setValue} name="role" label="Role" />
       <ModalButton

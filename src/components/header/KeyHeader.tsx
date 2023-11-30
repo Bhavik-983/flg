@@ -8,6 +8,7 @@ import { Box, AppBar, Toolbar } from '@mui/material';
 import usePageHook from 'src/hooks/use-page-hook';
 // hooks
 import usePageModal from 'src/hooks/use-page-modal';
+import useProjectHook from 'src/hooks/use-project-hook';
 
 import { useAppSelector } from 'src/store/hooks';
 import { selectAllPages } from 'src/store/slices/pageSlice';
@@ -26,11 +27,11 @@ interface KeyHeaderProps {
 const KeyHeader = ({ page, projectPages, handleChange, handleAddString }: KeyHeaderProps) => {
   const getPageName = useAppSelector(selectAllPages);
   const { fetchDefaultPage } = usePageHook();
-  console.log({ getPageName });
+  const { currentProject } = useProjectHook();
 
   useEffect(() => {
     if (getPageName.length === 0) {
-      fetchDefaultPage();
+      fetchDefaultPage(currentProject?._id);
     }
   }, [getPageName]);
 

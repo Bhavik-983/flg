@@ -4,7 +4,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 export interface MemberProps {
-  name: string;
   email: string;
   role: {
     label: string;
@@ -20,7 +19,6 @@ interface Members {
 const initialState: Members = {
   allMembers: [
     {
-      name: '',
       email: '',
       role: {
         label: '',
@@ -38,10 +36,13 @@ const memberSlice = createSlice({
     addMembers: (state, action) => {
       state.allMembers.push(action.payload);
     },
+    setMembers: (state, action) => {
+      state.allMembers = action.payload;
+    },
   },
 });
 
-export const { resetState, addMembers } = memberSlice.actions;
+export const { resetState, setMembers, addMembers } = memberSlice.actions;
 
 export default memberSlice.reducer;
 
