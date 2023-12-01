@@ -127,7 +127,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
             noWrap
             sx={{ fontSize: '19px', textTransform: 'capitalize' }}
           >
-            {currentProject?.name[0]}
+            {currentProject?.name}
           </Typography>
         </Box>
 

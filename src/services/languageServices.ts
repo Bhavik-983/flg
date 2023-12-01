@@ -18,9 +18,7 @@ const languageService = {
     return response.data;
   },
   getLanguages: async (project_id: string): Promise<any> => {
-    const response: AxiosResponse<any> = await client.get(
-      `${GET_LANGUAGE}?project_id=${project_id}`
-    );
+    const response: AxiosResponse<any> = await client.get(`${GET_LANGUAGE}/${project_id}`);
     return response.data;
   },
   editLanguage: async (

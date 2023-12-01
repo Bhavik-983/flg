@@ -44,8 +44,7 @@ export default function JwtLoginView() {
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
     password: Yup.string()
       .required('Password is required')
-      .min(8, 'Password must be at least 8 characters')
-      .matches(/^[A-Z]/, 'First letter must be uppercase'),
+      .min(8, 'Password must be at least 8 characters'),
   });
 
   const defaultValues = {

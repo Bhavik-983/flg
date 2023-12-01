@@ -26,9 +26,10 @@ const style = {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isNotClose?: boolean;
 }
 
-export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
+export default function AddProjectModal({ isOpen, onClose, isNotClose }: ModalProps) {
   const LanguageSchema = Yup.object().shape({
     name: Yup.string().min(2).required('Project Name is required'),
   });
@@ -48,8 +49,9 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const { handleCreateProject, currentProject } = useProjectHook();
+  const { handleCreateProject } = useProjectHook();
   const { fetchDefaultPage } = usePageHook();
+
   const handleClose = () => {
     onClose();
     reset();
@@ -57,8 +59,13 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
 
   const onSubmit = handleSubmit(async (data: any) => {
     if (data.name !== '') {
-      handleCreateProject(data, handleClose);
-      fetchDefaultPage(currentProject?._id);
+      handleCreateProject(data, handleClose)
+        .then((res) => {
+          fetchDefaultPage(res?._id);
+        })
+        .catch((e: any) => {
+          console.log({ e });
+        });
     }
   });
 
@@ -75,14 +82,16 @@ export default function AddProjectModal({ isOpen, onClose }: ModalProps) {
         >
           Save
         </LoadingButton>
-        <Button
-          sx={{
-            border: '1px solid rgba(145, 158, 171, 0.32)',
-          }}
-          onClick={handleClose}
-        >
-          Cancel
-        </Button>
+        {!isNotClose && (
+          <Button
+            sx={{
+              border: '1px solid rgba(145, 158, 171, 0.32)',
+            }}
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+        )}
       </Box>
     </Stack>
   );

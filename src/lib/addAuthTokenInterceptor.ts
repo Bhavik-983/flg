@@ -25,8 +25,6 @@ export default function addAuthTokenInterceptor(store: any) {
       const originalConfig = error?.config;
       const { refreshToken, token } = store.getState().auth;
 
-      console.log({ error });
-
       // originalConfig._retry = true;
 
       if (error.response) {

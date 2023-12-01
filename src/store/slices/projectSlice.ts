@@ -28,7 +28,7 @@ const projectSlice = createSlice({
   reducers: {
     resetState: () => initialState,
     addProject: (state, action) => {
-      state.allProject.push(action.payload);
+      state.allProject.push(action.payload); 
     },
     setProject: (state, action) => {
       state.allProject = action.payload;

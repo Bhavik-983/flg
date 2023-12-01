@@ -82,15 +82,13 @@ const usePageHook = () => {
 
   const fetchDefaultPage = async (projectId: string) => {
     try {
-      const response = await pageService.addPage({ name: 'New Default Page' }, projectId);
-      console.log(response);
+      const response = await pageService.addPage({ name: 'Default' }, projectId);
       const newPage = {
         pageName: response?.data?.name,
         pageID: response?.data?._id,
-        projectId: currentProject?._id,
+        projectId,
       };
       dispatch(addCurrentPage(newPage));
-      dispatch(addPages(newPage));
       return response;
     } catch (error) {
       console.log(error);

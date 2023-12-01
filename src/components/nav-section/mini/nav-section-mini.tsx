@@ -25,9 +25,9 @@ export default memo(NavSectionMini);
 function Group({ items, slotProps }: NavGroupProps) {
   return (
     <>
-      {items.map((list) => (
-        <Box>
-          <NavList key={list.title} data={list} depth={1} slotProps={slotProps} />
+      {items.map((list, index) => (
+        <Box key={`${list.title}-${index}`}>
+          <NavList data={list} depth={1} slotProps={slotProps} />
         </Box>
       ))}
     </>

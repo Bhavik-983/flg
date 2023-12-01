@@ -5,11 +5,12 @@ import { DefaultLanguage } from 'src/store/slices/LanguageSlice';
 interface ListButtonType {
   languageData: DefaultLanguage;
   handleLanguage: (x: DefaultLanguage) => void;
+  key: string;
 }
 
-const ListButton = ({ languageData, handleLanguage }: ListButtonType) => (
+const ListButton = ({ languageData, handleLanguage, key }: ListButtonType) => (
   <Button
-    key={languageData.name}
+    key={key}
     sx={{
       textAlign: 'left',
       fontSize: '15px',

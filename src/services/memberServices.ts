@@ -1,10 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
 
-import { MemberProps } from 'src/store/slices/memberSlice';
-
 import client from '../lib/client';
 import { ADD_MEMBER, GET_MEMBER } from '../utils/url';
+
+interface MemberProps {
+  email: string;
+  role: {
+    value: string;
+    label: string;
+  };
+}
 
 const memberService = {
   addMember: async (AddMemberData: MemberProps, projectId: string): Promise<any> => {

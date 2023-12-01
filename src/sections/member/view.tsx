@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { Box, Stack, Avatar, Button } from '@mui/material';
 
 import useMemberHook from 'src/hooks/use-member-hook';
+import useProjectHook from 'src/hooks/use-project-hook';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
 import PageHeading from 'src/components/heading/PageHeading';
@@ -18,15 +19,14 @@ import AddMemberModal from 'src/components/modal/AddMemberModal';
 export default function MemberView() {
   const { user } = useMockedUser();
   const [isOpen, setIsOpen] = useState(false);
-  const { allMembers } = useMemberHook();
-  const [totalMembers, setTotalMembers] = useState(0); // State to store total member count
+
+  const { allMembers, handleGetMembers } = useMemberHook();
+  const { currentProject } = useProjectHook();
+  console.log(allMembers);
 
   useEffect(() => {
-    if (allMembers) {
-      const memberCount = allMembers.filter((member: any) => member.role === 'MEMBER').length;
-      setTotalMembers(memberCount);
-    }
-  }, [allMembers]);
+    handleGetMembers(currentProject?._id);
+  }, []);
 
   const handleModalOpen = () => {
     setIsOpen(true);
@@ -57,7 +57,7 @@ export default function MemberView() {
             }}
             variant="body2"
           >
-            Member({totalMembers})
+            Member({allMembers?.length ?? 0})
           </Typography>
           <Button
             variant="contained"
@@ -90,6 +90,7 @@ export default function MemberView() {
           </Button>
         </Box>
         {allMembers &&
+          allMembers.length > 0 &&
           allMembers?.map((member: any) => (
             <Stack sx={{ justifyContent: 'space-between', width: '100%', mt: 1 }}>
               <Box

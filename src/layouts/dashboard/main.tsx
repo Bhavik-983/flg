@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 
 import Box, { BoxProps } from '@mui/material/Box';
 
-import useMemberHook from 'src/hooks/use-member-hook';
 import useProjectHook from 'src/hooks/use-project-hook';
 import { useResponsive } from 'src/hooks/use-responsive';
 import useLanguageHook from 'src/hooks/use-language-hook';
@@ -25,15 +24,18 @@ export default function Main({ children, sx, ...other }: BoxProps) {
   const isNavMini = settings.themeLayout === 'mini';
 
   const addProjectModal = useProjectModal();
+
   const { handleGetAllProjects } = useProjectHook();
   const { handleGetLanguages } = useLanguageHook();
-  const { handleGetMembers } = useMemberHook();
 
   useEffect(() => {
     handleGetAllProjects()
       .then((res: any) => {
-        handleGetLanguages(res?._id);
-        handleGetMembers(res?._id);
+        if (res?._id) {
+          handleGetLanguages(res?._id);
+        } else {
+          addProjectModal.openAddProjectModal();
+        }
       })
       .catch((e) => {});
   }, []);
@@ -86,6 +88,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
       <AddProjectModal
         isOpen={addProjectModal.open}
         onClose={addProjectModal.closeAddProjectModal}
+        isNotClose
       />
     </>
   );

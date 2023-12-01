@@ -119,7 +119,11 @@ const AddLanguageModal = ({
                 <Masonry>
                   {languages.length > 0 &&
                     languages.map((language: DefaultLanguage) => (
-                      <ListButton languageData={language} handleLanguage={handleLanguage} />
+                      <ListButton
+                        key={language.code}
+                        languageData={language}
+                        handleLanguage={handleLanguage}
+                      />
                     ))}
                 </Masonry>
               </ResponsiveMasonry>

@@ -65,6 +65,14 @@ const useLanguageHook = () => {
     try {
       const response = await languageService.addLanguage(AddLanguageData, projectID);
       console.log(response);
+      enqueueSnackbar(response?.message, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
       const newLanguage = {
         projectID: currentProject._id,
         name: response?.data?.name,

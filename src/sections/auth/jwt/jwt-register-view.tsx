@@ -42,7 +42,6 @@ export default function JwtRegisterView() {
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
-      .matches(/^[A-Z]/, 'First letter must be uppercase')
       .required('Password is required'),
   });
 
