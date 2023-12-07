@@ -13,8 +13,8 @@ const pageService = {
     const response: AxiosResponse<any> = await client.post(`${ADD_PAGE}/${projectId}`, AddPageData);
     return response.data;
   },
-  getPageName: async (): Promise<any> => {
-    const response: AxiosResponse<any> = await client.get(GET_PAGE_NAME);
+  getPageName: async (projectId: string): Promise<any> => {
+    const response: AxiosResponse<any> = await client.get(`${GET_PAGE_NAME}/${projectId}`);
     return response.data;
   },
   getAllPage: async (): Promise<any> => {

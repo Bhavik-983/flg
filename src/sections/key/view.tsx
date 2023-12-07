@@ -75,16 +75,14 @@ export default function KeyView() {
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState('');
 
-  const currenPageString = data.filter(
-    (items: KeyType) => currentPage.pageID === items.page.pageID
-  );
+  const currenPageString = data.filter((items: KeyType) => currentPage._id === items.page._id);
 
   const languages = projectLanguage.reduce((result: any[], language: any) => {
     result.push({
       title: language.name,
       dataIndex: language.id,
       width: 200,
-      pageID: currentPage.pageID,
+      pageID: currentPage._id,
       editable: true,
       render: (text: any, record: any) => {
         let LangaugeValue = '';
@@ -128,7 +126,7 @@ export default function KeyView() {
   useEffect(() => {
     if (page?.value !== currentPageId) {
       const updatedKeys = [...projectKeys];
-      updatedKeys.filter((key) => key.page.pageID === page.value);
+      updatedKeys.filter((key) => key.page._id === page.value);
 
       seCurrentPageId(page.value);
     }

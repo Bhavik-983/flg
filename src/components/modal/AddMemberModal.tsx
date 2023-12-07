@@ -36,7 +36,7 @@ export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
   const { handleCreateMember } = useMemberHook();
   const { currentProject } = useProjectHook();
   const LanguageSchema = Yup.object().shape({
-    email: Yup.string().min(2).email('Please enter a valid email!').required('Email is required'),
+    email: Yup.string().email('Please enter a valid email!').required('Email is required'),
     role: Yup.object().shape({
       label: Yup.string().required('Role is required'),
       value: Yup.string().required('Role is required'),

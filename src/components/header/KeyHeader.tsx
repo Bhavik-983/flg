@@ -10,9 +10,6 @@ import usePageHook from 'src/hooks/use-page-hook';
 import usePageModal from 'src/hooks/use-page-modal';
 import useProjectHook from 'src/hooks/use-project-hook';
 
-import { useAppSelector } from 'src/store/hooks';
-import { selectAllPages } from 'src/store/slices/pageSlice';
-
 import AddButton from 'src/components/button/AddButton';
 import AddPageModal from 'src/components/modal/AddPageModal';
 import FormAutoComplete from 'src/components/form/FormAutoComplete';
@@ -24,25 +21,14 @@ interface KeyHeaderProps {
   handleAddString: any;
 }
 
-const KeyHeader = ({ page, projectPages, handleChange, handleAddString }: KeyHeaderProps) => {
-  const getPageName = useAppSelector(selectAllPages);
-  const { fetchDefaultPage } = usePageHook();
+const KeyHeader = ({ page, handleChange, projectPages, handleAddString }: KeyHeaderProps) => {
+  console.log({ projectPages });
+  const { handleGetPagesName } = usePageHook();
   const { currentProject } = useProjectHook();
 
   useEffect(() => {
-    if (getPageName.length === 0) {
-      fetchDefaultPage(currentProject?._id);
-    }
-  }, [getPageName]);
-
-  const allPages = getPageName[0]?.rows || []; // Extracting all pages from the store
-
-  const pageOptions =
-    allPages &&
-    allPages.map((item: any) => ({
-      label: item?.name,
-      value: item?._id,
-    }));
+    handleGetPagesName(currentProject?._id);
+  }, []);
 
   const pageModal = usePageModal();
   return (
@@ -50,7 +36,7 @@ const KeyHeader = ({ page, projectPages, handleChange, handleAddString }: KeyHea
       <Box sx={{ flexGrow: 1, py: 1 }}>
         <AppBar position="static">
           <Toolbar sx={{ px: '0 !i.mportant' }}>
-            <FormAutoComplete value={page} options={pageOptions} handleChange={handleChange} />
+            <FormAutoComplete value={page} options={projectPages} handleChange={handleChange} />
 
             <Box sx={{ mr: 2, flexGrow: 1 }}>
               <AddButton

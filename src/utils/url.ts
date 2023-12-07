@@ -21,3 +21,6 @@ export const UPDATE_LANGUAGE = '/language/update';
 // member
 export const ADD_MEMBER = '/project/referd-user';
 export const GET_MEMBER = '/project/member-admin-data';
+
+// key
+export const ADD_KEY = '/key/create';

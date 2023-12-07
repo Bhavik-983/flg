@@ -1,12 +1,12 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable consistent-return */
 import { useState } from 'react';
+import { useSnackbar } from 'notistack';
 
 import pageService from 'src/services/pageServices';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import {
   Page,
-  addPages,
   setPages,
   addCurrentPage,
   selectAllPages,
@@ -16,22 +16,35 @@ import {
 import useProjectHook from './use-project-hook';
 
 const usePageHook = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const dispatch = useAppDispatch();
   const { currentProject } = useProjectHook();
   const allPages: Page[] = useAppSelector(selectAllPages);
   const currentPage = useAppSelector(selectCurrentPage);
 
-  const projectPages = allPages.reduce((result: LabelValue[], data: Page) => {
-    if (data.projectID === currentProject._id) {
-      result.push({
-        label: data.pageName,
-        value: data.pageID,
-      });
-    }
-    return result;
-  }, []);
+  console.log(allPages);
 
-  const defaultPage = projectPages.find((projectPage) => projectPage.label === 'Default');
+  // const projectPages = Array.isArray(allPages)
+  //   ? allPages.reduce((result: LabelValue[], data: any) => {
+  //       // if (data.projectID === currentProject._id) {
+  //       result.push({
+  //         label: data?.name,
+  //         value: data?._id,
+  //       });
+  //       // }
+  //       return result;
+  //     }, [])
+  //   : [];
+
+  const projectPages =
+    allPages &&
+    allPages.map((page) => ({
+      label: page.name,
+      value: page._id,
+    }));
+
+  const defaultPage = projectPages.find((projectPage) => projectPage.label === 'default');
 
   const [page, setPage] = useState<LabelValue>(
     defaultPage !== undefined
@@ -46,13 +59,21 @@ const usePageHook = () => {
     try {
       const response = await pageService.addPage({ name: pageName }, projectID);
       console.log(response);
+      enqueueSnackbar(response?.message, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
       const newPage = {
-        pageName: response?.data?.name,
-        pageID: response?.data?._id,
+        name: response?.data?.name,
+        _id: response?.data?._id,
         projectID,
       };
+      await handleGetPagesName(currentProject?._id);
       dispatch(addCurrentPage(newPage));
-      dispatch(addPages(newPage));
       return response;
     } catch (error) {
       console.log(error);
@@ -62,19 +83,19 @@ const usePageHook = () => {
   const handleAddPage = (pageValue: LabelValue) => {
     setPage(pageValue);
     const newCurrentPage = {
-      projectID: currentProject._id,
-      pageName: pageValue.label,
-      pageID: pageValue.value,
+      _id: currentProject._id,
+      name: pageValue.label,
     };
     dispatch(addCurrentPage(newCurrentPage));
   };
 
-  const handleGetPagesName = async () => {
+  const handleGetPagesName = async (projectId: string) => {
     try {
-      const response = await pageService.getPageName();
+      const response = await pageService.getPageName(projectId);
       console.log(response);
-      dispatch(setPages(response?.data));
-      // return response;
+      const allgetpage = response?.data?.pages || [];
+      dispatch(setPages(allgetpage));
+      return response;
     } catch (error) {
       console.log(error);
     }

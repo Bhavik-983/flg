@@ -4,9 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 export interface Page {
-  projectID: string;
-  pageID: string;
-  pageName: string;
+  _id: string;
+  name: string;
 }
 
 interface Pages {
@@ -18,9 +17,8 @@ interface Pages {
 const initialState: Pages = {
   allPages: [],
   currentPage: {
-    projectID: '',
-    pageID: '',
-    pageName: '',
+    _id: '',
+    name: '',
   },
 };
 
