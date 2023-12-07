@@ -26,6 +26,14 @@ const useProjectHook = () => {
     try {
       const response = await addProjectService.addProject(AddProjectData);
       handleClose()?.();
+      enqueueSnackbar(response?.message, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
       const newProject = {
         _id: response?.data?._id,
         name: response?.data?.name,
