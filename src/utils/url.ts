@@ -24,3 +24,4 @@ export const GET_MEMBER = '/project/member-admin-data';
 
 // key
 export const ADD_KEY = '/key/create';
+export const GET_KEY = '/key';

@@ -1,79 +1,58 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable import/no-cycle */
 /* eslint-disable consistent-return */
 import { useState } from 'react';
-import { useSnackbar } from 'notistack';
 
+import { useAppDispatch } from 'src/store/hooks';
 import pageService from 'src/services/pageServices';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import {
-  Page,
-  setPages,
-  addCurrentPage,
-  selectAllPages,
-  selectCurrentPage,
-} from 'src/store/slices/pageSlice';
+import { addCurrentPage } from 'src/store/slices/pageSlice';
 
 import useProjectHook from './use-project-hook';
 
 const usePageHook = () => {
-  const { enqueueSnackbar } = useSnackbar();
-
   const dispatch = useAppDispatch();
   const { currentProject } = useProjectHook();
-  const allPages: Page[] = useAppSelector(selectAllPages);
-  const currentPage = useAppSelector(selectCurrentPage);
+  // const allPages: Page[] = useAppSelector(selectAllPages);
+  // const currentPage = useAppSelector(selectCurrentPage);
 
-  console.log(allPages);
+  // const projectPages = allPages.reduce((result: LabelValue[], data: Page) => {
+  //   if (data.projectID === currentProject._id) {
+  //     result.push({
+  //       label: data.pageName,
+  //       value: data.pageID,
+  //     });
+  //   }
+  //   return result;
+  // }, []);
 
-  // const projectPages = Array.isArray(allPages)
-  //   ? allPages.reduce((result: LabelValue[], data: any) => {
-  //       // if (data.projectID === currentProject._id) {
-  //       result.push({
-  //         label: data?.name,
-  //         value: data?._id,
-  //       });
-  //       // }
-  //       return result;
-  //     }, [])
-  //   : [];
+  // const defaultPage = projectPages.find((projectPage) => projectPage.label === 'Default');
 
-  const projectPages =
-    allPages &&
-    allPages.map((page) => ({
-      label: page.name,
-      value: page._id,
-    }));
+  const [allPages, setAllPages] = useState<LabelValue[]>([]);
+  const [currentPage, setcurrentPage] = useState<LabelValue>({
+    label: '',
+    value: '',
+  });
 
-  const defaultPage = projectPages.find((projectPage) => projectPage.label === 'default');
-
-  const [page, setPage] = useState<LabelValue>(
-    defaultPage !== undefined
-      ? defaultPage
-      : {
-          label: '',
-          value: '',
-        }
-  );
+  // const [page, setPage] = useState<LabelValue>(
+  //   defaultPage !== undefined
+  //     ? defaultPage
+  //     : {
+  //         label: '',
+  //         value: '',
+  //       }
+  // );
 
   const createPage = async (pageName: string, projectID: string) => {
     try {
       const response = await pageService.addPage({ name: pageName }, projectID);
       console.log(response);
-      enqueueSnackbar(response?.message, {
-        variant: 'success',
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'right',
-        },
-        autoHideDuration: 3000,
-      });
       const newPage = {
-        name: response?.data?.name,
-        _id: response?.data?._id,
+        pageName: response?.data?.name,
+        pageID: response?.data?._id,
         projectID,
       };
-      await handleGetPagesName(currentProject?._id);
       dispatch(addCurrentPage(newPage));
+      // dispatch(addPages(newPage));
       return response;
     } catch (error) {
       console.log(error);
@@ -81,21 +60,41 @@ const usePageHook = () => {
   };
 
   const handleAddPage = (pageValue: LabelValue) => {
-    setPage(pageValue);
+    // setPage(pageValue);
     const newCurrentPage = {
-      _id: currentProject._id,
-      name: pageValue.label,
+      projectID: currentProject._id,
+      pageName: pageValue.label,
+      pageID: pageValue.value,
     };
     dispatch(addCurrentPage(newCurrentPage));
   };
 
-  const handleGetPagesName = async (projectId: string) => {
+  const handleGetAllPages = async (id: string) => {
     try {
-      const response = await pageService.getPageName(projectId);
-      console.log(response);
-      const allgetpage = response?.data?.pages || [];
-      dispatch(setPages(allgetpage));
-      return response;
+      const response = await pageService.getPageName(id);
+
+      let currentPage: LabelValue = {
+        label: '',
+        value: '',
+      };
+
+      const allData: LabelValue[] = response.map((res: { name: string; _id: string }) => {
+        if (res?.name === 'default') {
+          currentPage = {
+            label: res?.name,
+            value: res?._id,
+          };
+        }
+        return {
+          label: res?.name,
+          value: res?._id,
+        };
+      });
+
+      setAllPages(allData);
+      setcurrentPage(currentPage);
+
+      return currentPage;
     } catch (error) {
       console.log(error);
     }
@@ -118,13 +117,14 @@ const usePageHook = () => {
 
   return {
     createPage,
-    projectPages,
-    defaultPage,
-    page,
+    // projectPages,
+    // defaultPage,
+    // page,
     handleAddPage,
     currentPage,
-    handleGetPagesName,
+    handleGetAllPages,
     fetchDefaultPage,
+    allPages,
   };
 };
 

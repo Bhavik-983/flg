@@ -16,15 +16,23 @@ import FormAutoComplete from 'src/components/form/FormAutoComplete';
 
 interface KeyHeaderProps {
   page: LabelValue;
-  projectPages: LabelValue[];
+  projectPages?: LabelValue[];
   handleChange: (event: React.SyntheticEvent, newValue: LabelValue | null) => void;
   handleAddString: any;
 }
 
 const KeyHeader = ({ page, handleChange, projectPages, handleAddString }: KeyHeaderProps) => {
   console.log({ projectPages });
-  const { handleGetPagesName } = usePageHook();
+  const { handleGetPagesName, pagedata } = usePageHook();
   const { currentProject } = useProjectHook();
+
+  console.log({ page });
+
+  const allPages =
+    pagedata && pagedata?.map((pages: any) => ({ label: pages?.name, value: pages?._id }));
+
+  const defaultPage = allPages[0];
+  console.log({ defaultPage });
 
   useEffect(() => {
     handleGetPagesName(currentProject?._id);
@@ -36,7 +44,12 @@ const KeyHeader = ({ page, handleChange, projectPages, handleAddString }: KeyHea
       <Box sx={{ flexGrow: 1, py: 1 }}>
         <AppBar position="static">
           <Toolbar sx={{ px: '0 !i.mportant' }}>
-            <FormAutoComplete value={page} options={projectPages} handleChange={handleChange} />
+            <FormAutoComplete
+              defaultValue={allPages.find((item) => item.label === 'default')}
+              value={page}
+              options={allPages}
+              handleChange={handleChange}
+            />
 
             <Box sx={{ mr: 2, flexGrow: 1 }}>
               <AddButton

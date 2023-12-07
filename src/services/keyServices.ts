@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosResponse } from 'axios';
 
-import { ADD_KEY } from 'src/utils/url';
+import { ADD_KEY, GET_KEY } from 'src/utils/url';
 
 import client from '../lib/client';
 
-const pageService = {
+const keyService = {
   addKey: async (AddKeyData: any, projectId: string, pageId: string): Promise<any> => {
     const response: AxiosResponse<any> = await client.post(
       `${ADD_KEY}/${projectId}/${pageId}`,
@@ -13,6 +13,10 @@ const pageService = {
     );
     return response.data;
   },
+  getKey: async (projectId: string, pageId: string): Promise<any> => {
+    const response: AxiosResponse<any> = await client.get(`${GET_KEY}/${projectId}/${pageId}`);
+    return response.data;
+  },
 };
 
-export default pageService;
+export default keyService;
