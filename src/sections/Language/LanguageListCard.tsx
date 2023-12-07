@@ -1,4 +1,4 @@
-import { FiEdit } from 'react-icons/Fi';
+import { FiEdit, FiDownload } from 'react-icons/Fi';
 
 import { Box, Card, Button, Typography, CardContent, CardActions } from '@mui/material';
 
@@ -9,9 +9,16 @@ interface LanguageTypes {
   code: string;
   data: NewLanguage;
   handleEdit: (id: string) => void;
+  // handleClick: () => void;
 }
 
-const LanguageListCard = ({ name, code, data, handleEdit }: LanguageTypes) => (
+const LanguageListCard = ({
+  name,
+  code,
+  data,
+  handleEdit,
+} //  handleClick
+: LanguageTypes) => (
   <Card
     sx={{
       width: '90%',
@@ -41,7 +48,20 @@ const LanguageListCard = ({ name, code, data, handleEdit }: LanguageTypes) => (
         </Typography>
       </Box>
     </CardContent>
-    <CardActions sx={{ position: 'absolute', top: 4, right: 2, p: 0 }}>
+    <CardActions
+      sx={{
+        position: 'absolute',
+        top: 4,
+        right: 2,
+        p: 0,
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+        alignItems: 'end',
+        height: '100%',
+      }}
+    >
       <Button
         sx={{
           cursor: 'pointer',
@@ -55,6 +75,21 @@ const LanguageListCard = ({ name, code, data, handleEdit }: LanguageTypes) => (
         onClick={() => handleEdit(data._id)}
       >
         <FiEdit />
+      </Button>
+      <Button
+        sx={{
+          cursor: 'pointer',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '40px',
+          height: '40px',
+          minWidth: 0,
+          mb: 1,
+        }}
+        // onClick={() => handleClick()}
+      >
+        <FiDownload />
       </Button>
     </CardActions>
   </Card>

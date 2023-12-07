@@ -81,6 +81,7 @@ export default function LanguageView() {
                     code={data.code}
                     data={data}
                     handleEdit={handleEditLanguage}
+                    // handleClick={() => {}}
                   />
                 ))
               : ''}
