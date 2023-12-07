@@ -1,337 +1,381 @@
-// /* eslint-disable react-hooks/exhaustive-deps */
-// /* eslint-disable array-callback-return */
-// /* eslint-disable no-plusplus */
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { v4 as uuidv4 } from 'uuid';
-// import React, { useState, useEffect } from 'react';
-// import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
+/* eslint-disable consistent-return */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable array-callback-return */
+import { v4 as uuidv4 } from 'uuid';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect } from 'react';
+/* eslint-disable no-plusplus */
+import { Form, Input, Table, Popconfirm, Typography, InputNumber } from 'antd';
 
-// import { Box } from '@mui/material';
+import { Box } from '@mui/material';
 
-// import useKeyHook from 'src/hooks/use-key-hook';
-// import usePageHook from 'src/hooks/use-page-hook';
-// import useProjectHook from 'src/hooks/use-project-hook';
-// import useLanguageHook from 'src/hooks/use-language-hook';
+import useKeyHook from 'src/hooks/use-key-hook';
+import usePageHook from 'src/hooks/use-page-hook';
+import useProjectHook from 'src/hooks/use-project-hook';
+import useLanguageHook from 'src/hooks/use-language-hook';
 
-// import { useAppDispatch } from 'src/store/hooks';
-// import { setKeys, KeyType } from 'src/store/slices/keySlice';
+import KeyHeader from 'src/components/header/KeyHeader';
+import { LoadingScreen } from 'src/components/loading-screen';
 
-// import KeyHeader from 'src/components/header/KeyHeader';
+export interface keyLanguage {
+  language: {
+    id: string;
+    projectId: string;
+    code: string;
+    name: string;
+    key: string;
+  };
+  value: string;
+}
 
-// interface Item {
-//   key: string;
-//   name: string;
-//   language: string;
-//   details: string;
-// }
+export interface KeyType {
+  _id: string;
+  keyName: string;
+  details: string;
+  page: LabelValue;
+  projectID: string;
+  language: keyLanguage[];
+}
 
-// interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
-//   editing: boolean;
-//   dataIndex: string;
-//   title: any;
-//   inputType: 'number' | 'text';
-//   children: React.ReactNode;
-// }
+interface Item {
+  key: string;
+  name: string;
+  language: string;
+  details: string;
+}
 
-// const EditableCell: React.FC<EditableCellProps> = ({
-//   editing,
-//   dataIndex,
-//   title,
-//   inputType,
-//   children,
-//   ...restProps
-// }) => {
-//   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
+  editing: boolean;
+  dataIndex: string;
+  title: any;
+  inputType: 'number' | 'text';
+  children: React.ReactNode;
+}
 
-//   return (
-//     <td {...restProps}>
-//       {editing ? (
-//         <Form.Item
-//           name={dataIndex}
-//           style={{ margin: 0 }}
-//           rules={[
-//             {
-//               required: true,
-//               message: `Please Input ${title}!`,
-//             },
-//           ]}
-//         >
-//           {inputNode}
-//         </Form.Item>
-//       ) : (
-//         children
-//       )}
-//     </td>
-//   );
-// };
+const EditableCell: React.FC<EditableCellProps> = ({
+  editing,
+  dataIndex,
+  title,
+  inputType,
+  children,
+  ...restProps
+}) => {
+  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
 
-// export default function KeyView() {
-//   const { data, setData, projectKeys, handleGetKey } = useKeyHook();
-//   const dispatch = useAppDispatch();
-//   const { currentPage, handleAddPage, page, projectPages, handleGetPagesName } = usePageHook();
+  return (
+    <td {...restProps}>
+      {editing ? (
+        <Form.Item
+          name={dataIndex}
+          style={{ margin: 0 }}
+          rules={[
+            {
+              required: true,
+              message: `Please Input ${title}!`,
+            },
+          ]}
+        >
+          {inputNode}
+        </Form.Item>
+      ) : (
+        children
+      )}
+    </td>
+  );
+};
 
-//   console.log(currentPage?._id);
-//   const { currentProject } = useProjectHook();
+export default function KeyView() {
+  const { currentProject } = useProjectHook();
+  const { projectLanguage } = useLanguageHook();
 
-//   const { projectLanguage } = useLanguageHook();
-//   const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
-//     if (newValue !== null) handleAddPage(newValue);
-//   };
+  const { allPages, handleGetAllPages, currentPage, handleCreatePage, setcurrentPage } =
+    usePageHook();
 
-//   useEffect(() => {
-//     handleGetPagesName(currentProject?._id)
-//       .then((res) => {
-//         handleGetKey(currentProject?._id, currentPage?._id);
-//       })
-//       .catch((e) => {
-//         console.log({ e });
-//       });
-//   }, []);
+  const { handleGetKey, allKeys, handleAddKey, setAllKeys } = useKeyHook();
 
-//   const [form] = Form.useForm();
-//   const [editingKey, setEditingKey] = useState('');
+  const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
+    if (newValue !== null) setcurrentPage(newValue);
+  };
 
-//   const currenPageString = data.filter((items: KeyType) => currentPage._id === items.page._id);
+  const [loading, setLoading] = useState<boolean>(false);
 
-//   const languages = projectLanguage.reduce((result: any[], language: any) => {
-//     result.push({
-//       title: language.name,
-//       dataIndex: language.id,
-//       width: 200,
-//       pageID: currentPage._id,
-//       editable: true,
-//       render: (text: any, record: any) => {
-//         let LangaugeValue = '';
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const res: any = await handleGetAllPages(currentProject?._id, 'default');
+      await handleGetKey(currentProject?._id, res?.value);
+      setLoading(false);
+    } catch (error) {
+      console.log({ error });
+    }
+  };
 
-//         if (currenPageString && currenPageString.length > 0) {
-//           currenPageString.map((item: KeyType) => {
-//             if (item.keyID === record.keyID) {
-//               if (item.languages && item.languages.length > 0) {
-//                 item.languages.map((lang: any) => {
-//                   if (lang.language.id === language.id) {
-//                     LangaugeValue = lang.value;
-//                   }
-//                 });
-//               }
-//             }
-//           });
-//         }
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-//         return isEditing(record) ? (
-//           // <Form.Item
-//           //   name={`${language.id}.value`}
-//           //   style={{ margin: 0 }}
-//           //   rules={[
-//           //     {
-//           //       required: true,
-//           //       message: 'Please Input language!',
-//           //     },
-//           //   ]}
-//           // >
-//           <Input defaultValue={LangaugeValue} />
-//         ) : (
-//           // </Form.Item>
-//           <Typography.Text onDoubleClick={() => edit(record)}>{LangaugeValue}</Typography.Text>
-//         );
-//       },
-//     });
-//     return result;
-//   }, []);
-//   const [currentPageId, seCurrentPageId] = useState<string>('');
+  const [form] = Form.useForm();
+  const [editingKey, setEditingKey] = useState('');
 
-//   useEffect(() => {
-//     if (page?.value !== currentPageId) {
-//       const updatedKeys = [...projectKeys];
-//       updatedKeys.filter((key) => key.page._id === page.value);
+  const languages = projectLanguage.reduce((result: any[], language: any) => {
+    result.push({
+      title: language.name,
+      dataIndex: language?._id,
+      width: 200,
+      pageID: currentPage._id,
+      editable: true,
+      render: (text: any, record: any) => {
+        let LangaugeValue = '';
 
-//       seCurrentPageId(page.value);
-//     }
-//   }, [page, currentPageId, projectKeys]);
+        if (allKeys && allKeys.length > 0) {
+          allKeys.map((item: KeyType) => {
+            if (item?._id === record?._id) {
+              if (item.language && item.language.length > 0) {
+                item.language.map((lang: any) => {
+                  if (lang.lg === language?._id) {
+                    LangaugeValue = lang.value;
+                  }
+                });
+              }
+            }
+          });
+        }
 
-//   const isEditing = (record: any) => record.keyID === editingKey;
+        return isEditing(record) ? (
+          <Form.Item
+            name={`${language?._id}.value`}
+            style={{ margin: 0 }}
+            rules={[
+              {
+                required: true,
+                message: 'Please Input language!',
+              },
+            ]}
+          >
+            <Input defaultValue={LangaugeValue} />
+          </Form.Item>
+        ) : (
+          //
+          <Typography.Text onDoubleClick={() => edit(record)}>{LangaugeValue}</Typography.Text>
+        );
+      },
+    });
+    return result;
+  }, []);
 
-//   const edit = (record: Partial<KeyType> & { keyID: string }) => {
-//     form.setFieldsValue({ name: '', details: '', ...record });
-//     setEditingKey(record.keyID);
-//   };
+  const isEditing = (record: any) => record.keyID === editingKey;
 
-//   const cancel = () => {
-//     setEditingKey('');
-//   };
+  const edit = (record: Partial<KeyType> & { keyID: string }) => {
+    form.setFieldsValue({ name: '', details: '', ...record });
+    setEditingKey(record.keyID);
+  };
 
-//   // const save = async (keyID: string) => {
-//   //   try {
-//   //     const row = (await form.validateFields()) as any;
-//   //     console.log({ row });
-//   //     const newData = data.map((item: KeyType) => {
-//   //       if (item.keyID === keyID) {
-//   //         return {
-//   //           ...item,
-//   //           details: row.details,
-//   //           name: row.name,
-//   //           languages: projectLanguage.map((lang: any) => ({
-//   //             language: lang,
-//   //             value: row[lang.id],
-//   //           })),
-//   //         };
-//   //       }
-//   //       return item;
-//   //     });
+  const cancel = () => {
+    setEditingKey('');
+  };
 
-//   //     setData(newData);
-//   //     setEditingKey('');
-//   //     console.log({ newData });
-//   //     dispatch(setKeys(newData));
-//   //   } catch (errInfo) {
-//   //     console.log('Validate Failed:', errInfo);
-//   //   }
-//   // };
-//   const save = async (keyID: string) => {
-//     try {
-//       const row = (await form.validateFields()) as any;
+  // const save = async (keyID: string) => {
+  //   try {
+  //     const row = (await form.validateFields()) as any;
+  //     console.log({ row });
+  //     const newData = data.map((item: KeyType) => {
+  //       if (item.keyID === keyID) {
+  //         return {
+  //           ...item,
+  //           details: row.details,
+  //           name: row.name,
+  //           languages: projectLanguage.map((lang: any) => ({
+  //             language: lang,
+  //             value: row[lang.id],
+  //           })),
+  //         };
+  //       }
+  //       return item;
+  //     });
 
-//       const newData = data.map((item: KeyType) => {
-//         if (item.keyID === keyID) {
-//           const updatedItem = {
-//             ...item,
-//             details: row.details,
-//             key: row.name,
-//             language: projectLanguage.map((lang: any) => ({
-//               value: lang,
-//               lg: row[lang.id],
-//             })),
-//           };
+  //     setData(newData);
+  //     setEditingKey('');
+  //     console.log({ newData });
+  //     dispatch(setKeys(newData));
+  //   } catch (errInfo) {
+  //     console.log('Validate Failed:', errInfo);
+  //   }
+  // };
 
-//           return updatedItem;
-//         }
-//         return item;
-//       });
+  const save = async (keyID: string) => {
+    try {
+      const row = (await form.validateFields()) as any;
 
-//       setData(newData);
-//       setEditingKey('');
-//       dispatch(setKeys(newData));
-//     } catch (errInfo) {
-//       console.log('Validate Failed:', errInfo);
-//     }
-//   };
+      console.log({ row });
 
-//   const columns = [
-//     {
-//       title: 'Name',
-//       dataIndex: 'name',
-//       width: 200,
-//       editable: true,
-//       render: (text: any, record: any) =>
-//         isEditing(record) ? (
-//           <Form.Item
-//             name="name"
-//             style={{ margin: 0 }}
-//             rules={[
-//               {
-//                 required: true,
-//                 message: 'Please Input Name!',
-//               },
-//             ]}
-//           >
-//             <Input />
-//           </Form.Item>
-//         ) : (
-//           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
-//         ),
-//     },
-//     ...languages,
-//     {
-//       title: 'Details',
-//       dataIndex: 'details',
-//       width: 150,
-//       editable: true,
-//       render: (text: any, record: any) =>
-//         isEditing(record) ? (
-//           <Form.Item name="details" style={{ margin: 0 }}>
-//             <Input />
-//           </Form.Item>
-//         ) : (
-//           <Typography.Text onDoubleClick={() => edit(record)}>{text}</Typography.Text>
-//         ),
-//     },
+      const backendData = projectLanguage.map((language) => {
+        if (row[language?._id]) {
+          const newKey = {
+            lg: language?._id,
+            value: row[language?._id],
+          };
+          return newKey;
+        }
+      });
 
-//     {
-//       title: 'Operation',
-//       dataIndex: 'operation',
-//       render: (_: any, record: any) => {
-//         const editable = isEditing(record);
-//         return editable ? (
-//           <span>
-//             <Typography.Link onClick={() => save(record.keyID)} style={{ marginRight: 8 }}>
-//               Save
-//             </Typography.Link>
-//             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-//               <a>Cancel</a>
-//             </Popconfirm>
-//           </span>
-//         ) : (
-//           <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-//             Edit
-//           </Typography.Link>
-//         );
-//       },
-//     },
-//   ];
+      const newKey = {
+        // keyID,
+        key: String(row.name)?.toUpperCase(),
+        // details: row.details,
+        language: backendData,
+      };
 
-//   const mergedColumns = columns.map((col) => {
-//     if (!col.editable) {
-//       return col;
-//     }
-//     return {
-//       ...col,
-//       onCell: (record: Item) => ({
-//         record,
-//         inputType: col.dataIndex === 'name' ? 'detail' : 'text',
-//         dataIndex: col.dataIndex,
-//         title: col.title,
-//         editing: isEditing(record),
-//       }),
-//     };
-//   });
+      handleAddKey(newKey, currentProject?._id, currentPage?.value);
 
-//   const handleAddString = () => {
-//     const newRow: KeyType = {
-//       keyID: uuidv4(),
-//       keyName: '',
-//       details: '',
-//       page: currentPage,
-//       projectID: currentPage.projectID,
-//       languages: [],
-//     };
-//     setData(() => [newRow, ...data]);
-//     edit({ ...newRow, keyID: newRow.keyID });
-//     // dispatch(addKeys(newRow));
-//   };
+      //   const newData = allKeys.map((item: KeyType) => {
+      //     if (item.keyID === keyID) {
+      //       const updatedItem = {
+      //         ...item,
+      //         details: row.details,
+      //         key: row.name,
+      //         language: projectLanguage.map((lang: any) => ({
+      //           value: lang,
+      //           lg: row[lang.id],
+      //         })),
+      //       };
 
-//   return (
-//     <Box sx={{ mt: 1 }}>
-//       <KeyHeader
-//         handleChange={handleChange}
-//         page={page}
-//         projectPages={projectPages}
-//         handleAddString={handleAddString}
-//       />
-//       <Form form={form} component={false}>
-//         <Table
-//           components={{
-//             body: {
-//               cell: EditableCell,
-//             },
-//           }}
-//           bordered
-//           scroll={{ x: 1500 }}
-//           dataSource={currenPageString}
-//           columns={mergedColumns}
-//           rowClassName="editable-row"
-//           pagination={false}
-//         />
-//       </Form>
-//     </Box>
-//   );
-// }
+      //       return updatedItem;
+      //     }
+      //     return item;
+      //   });
 
+      //   console.log({ newData });
+
+      //   setData(newData);
+      setEditingKey('');
+    } catch (errInfo) {
+      console.log('Validate Failed:', errInfo);
+    }
+  };
+
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      width: 200,
+      editable: true,
+      render: (text: any, record: any) =>
+        isEditing(record) ? (
+          <Form.Item
+            name="key"
+            style={{ margin: 0 }}
+            rules={[
+              {
+                required: true,
+                message: 'Please Input Name!',
+              },
+            ]}
+          >
+            <Input style={{ textTransform: 'uppercase' }} />
+          </Form.Item>
+        ) : (
+          <Typography.Text onDoubleClick={() => edit(record)}>
+            {console.log({ record, text })}
+            {record?.key}
+          </Typography.Text>
+        ),
+    },
+    ...languages,
+    {
+      title: 'Details',
+      dataIndex: 'details',
+      width: 150,
+      editable: true,
+      render: (text: any, record: any) =>
+        isEditing(record) ? (
+          <Form.Item name="details" style={{ margin: 0 }}>
+            <Input />
+          </Form.Item>
+        ) : (
+          <Typography.Text onDoubleClick={() => edit(record)}>--</Typography.Text>
+        ),
+    },
+
+    {
+      title: 'Operation',
+      dataIndex: 'operation',
+      render: (_: any, record: any) => {
+        const editable = isEditing(record);
+        return editable ? (
+          <span>
+            <Typography.Link onClick={() => save(record.keyID)} style={{ marginRight: 8 }}>
+              Save
+            </Typography.Link>
+            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+              <a>Cancel</a>
+            </Popconfirm>
+          </span>
+        ) : (
+          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+            Edit
+          </Typography.Link>
+        );
+      },
+    },
+  ];
+
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record: Item) => ({
+        record,
+        inputType: col.dataIndex === 'name' ? 'detail' : 'text',
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
+
+  const handleAddString = () => {
+    const newRow: KeyType = {
+      _id: uuidv4(),
+      keyName: '',
+      details: '',
+      page: currentPage,
+      projectID: currentPage.projectID,
+      language: [],
+    };
+    setAllKeys(() => [newRow, ...allKeys]);
+    edit({ ...newRow, keyID: newRow?._id });
+  };
+
+  return (
+    <Box sx={{ mt: 1 }}>
+      {loading ? <LoadingScreen /> : <div>hello</div>}
+      <KeyHeader
+        value={currentPage}
+        handleChange={handleChange}
+        options={allPages}
+        handleAddString={handleAddString}
+        handleAddPage={(pageName: string) => {
+          handleCreatePage(pageName, currentProject?._id);
+        }}
+      />
+
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          bordered
+          scroll={{ x: 1500 }}
+          dataSource={allKeys}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={false}
+        />
+      </Form>
+    </Box>
+  );
+}

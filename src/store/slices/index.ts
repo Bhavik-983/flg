@@ -3,9 +3,7 @@ import { persistReducer } from 'redux-persist';
 import { combineReducers } from '@reduxjs/toolkit';
 import { encryptTransform } from 'redux-persist-transform-encrypt';
 
-import keySlice from './keySlice';
 import authSlice from './authSlice';
-import pageSlice from './pageSlice';
 import projectSlice from './projectSlice';
 import LanguageSlice from './LanguageSlice';
 import { REDUX_SECRET_KEY } from '../../utils/environments';
@@ -27,8 +25,6 @@ const rootReducers = combineReducers({
   auth: authSlice,
   projects: projectSlice,
   languages: LanguageSlice,
-  pages: pageSlice,
-  keys: keySlice,
 });
 
 export default persistReducer(persistConfig, rootReducers);
