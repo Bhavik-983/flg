@@ -102,6 +102,14 @@ const useLanguageHook = () => {
     try {
       const response = await languageService.editLanguage(data, languageid, projectid);
       console.log(response);
+      enqueueSnackbar(response?.message, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
       const newLanguage: any = {
         languageid,
         projectID: currentProject?._id,
@@ -113,7 +121,14 @@ const useLanguageHook = () => {
       onClose?.();
       return response;
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar(error?.response?.data?.message, {
+        variant: 'error',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
     }
   };
 
