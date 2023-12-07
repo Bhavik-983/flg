@@ -15,7 +15,7 @@ const keyService = {
   },
   getKey: async (projectId: string, pageId: string): Promise<any> => {
     const response: AxiosResponse<any> = await client.get(`${GET_KEY}/${projectId}/${pageId}`);
-    return response.data;
+    return response.data?.data?.rows;
   },
 };
 

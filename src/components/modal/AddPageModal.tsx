@@ -5,9 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Modal, Stack, Button, Typography } from '@mui/material';
 
-import usePageHook from 'src/hooks/use-page-hook';
-import useProjectHook from 'src/hooks/use-project-hook';
-
 import { RHFTextField } from 'src/components/hook-form';
 import FormProvider from 'src/components/hook-form/form-provider';
 
@@ -26,12 +23,10 @@ const style = {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  handleAdd: (pageName: string) => void;
 }
 
-export default function AddPageModal({ isOpen, onClose }: ModalProps) {
-  const { currentProject } = useProjectHook();
-  const { createPage } = usePageHook();
-
+export default function AddPageModal({ isOpen, onClose, handleAdd }: ModalProps) {
   const LanguageSchema = Yup.object().shape({
     pageName: Yup.string().min(2).required('Page Name is required'),
   });
@@ -57,7 +52,13 @@ export default function AddPageModal({ isOpen, onClose }: ModalProps) {
   };
 
   const onSubmit = handleSubmit(async (data: any) => {
-    createPage(data.pageName, currentProject._id);
+    // createPage(data.pageName, currentProject._id);
+
+    try {
+      const res = await handleAdd(data?.pageName);
+    } catch (error) {
+      console.log({ error });
+    }
     handleClose();
     // if (data.pageName !== '') {
     //   const newProject: Page = {

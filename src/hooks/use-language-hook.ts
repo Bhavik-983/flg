@@ -50,7 +50,6 @@ const useLanguageHook = () => {
       const response = await languageService.getLanguages(project_id);
       const language = response?.data?.languages || [];
       dispatch(projectLanguages(language));
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
