@@ -56,6 +56,7 @@ export default function AddPageModal({ isOpen, onClose, handleAdd }: ModalProps)
 
     try {
       const res = await handleAdd(data?.pageName);
+      console.log({ res });
     } catch (error) {
       console.log({ error });
     }

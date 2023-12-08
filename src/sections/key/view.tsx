@@ -349,33 +349,38 @@ export default function KeyView() {
   };
 
   return (
-    <Box sx={{ mt: 1 }}>
-      {loading ? <LoadingScreen /> : <div>hello</div>}
-      <KeyHeader
-        value={currentPage}
-        handleChange={handleChange}
-        options={allPages}
-        handleAddString={handleAddString}
-        handleAddPage={(pageName: string) => {
-          handleCreatePage(pageName, currentProject?._id);
-        }}
-      />
+    <>
+      {loading ? (
+        <LoadingScreen />
+      ) : (
+        <Box sx={{ mt: 1 }}>
+          <KeyHeader
+            value={currentPage}
+            handleChange={handleChange}
+            options={allPages}
+            handleAddString={handleAddString}
+            handleAddPage={(pageName: string) => {
+              handleCreatePage(pageName, currentProject?._id);
+            }}
+          />
 
-      <Form form={form} component={false}>
-        <Table
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          bordered
-          scroll={{ x: 1500 }}
-          dataSource={allKeys}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          pagination={false}
-        />
-      </Form>
-    </Box>
+          <Form form={form} component={false}>
+            <Table
+              components={{
+                body: {
+                  cell: EditableCell,
+                },
+              }}
+              bordered
+              scroll={{ x: 1500 }}
+              dataSource={allKeys}
+              columns={mergedColumns}
+              rowClassName="editable-row"
+              pagination={false}
+            />
+          </Form>
+        </Box>
+      )}
+    </>
   );
 }
