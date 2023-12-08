@@ -31,7 +31,7 @@ export interface keyLanguage {
 export interface KeyType {
   _id: string;
   keyName: string;
-  details: string;
+  detail: string;
   page: LabelValue;
   projectID: string;
   language: keyLanguage[];
@@ -41,7 +41,7 @@ interface Item {
   key: string;
   name: string;
   language: string;
-  details: string;
+  detail: string;
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
@@ -87,12 +87,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export default function KeyView() {
   const { currentProject } = useProjectHook();
   const { projectLanguage } = useLanguageHook();
-
   const { allPages, handleGetAllPages, currentPage, handleCreatePage, setcurrentPage } =
     usePageHook();
 
-  const { handleGetKey, allKeys, handleAddKey, setAllKeys } = useKeyHook();
-
+  const { handleGetKey, allKeys, handleAddKey, setAllKeys, handleUpdateKey } = useKeyHook();
+  console.log({ allKeys });
   const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
     if (newValue !== null) setcurrentPage(newValue);
   };
@@ -118,6 +117,7 @@ export default function KeyView() {
   const [editingKey, setEditingKey] = useState<string>('');
 
   const languages = projectLanguage.reduce((result: any[], language: any) => {
+    console.log({ language });
     result.push({
       title: language.name,
       dataIndex: language?._id,
@@ -167,8 +167,7 @@ export default function KeyView() {
 
   const edit = (record: Partial<KeyType> & { keyID: string }) => {
     console.log({ record });
-    form.setFieldsValue({ keyName: '', details: '', ...record });
-
+    form.setFieldsValue({ key: '', detail: '', language: '', ...record });
     if (record?._id) {
       setEditingKey(record?._id);
     }
@@ -177,34 +176,6 @@ export default function KeyView() {
   const cancel = () => {
     setEditingKey('');
   };
-
-  // const save = async (keyID: string) => {
-  //   try {
-  //     const row = (await form.validateFields()) as any;
-  //     console.log({ row });
-  //     const newData = data.map((item: KeyType) => {
-  //       if (item.keyID === keyID) {
-  //         return {
-  //           ...item,
-  //           details: row.details,
-  //           name: row.name,
-  //           languages: projectLanguage.map((lang: any) => ({
-  //             language: lang,
-  //             value: row[lang.id],
-  //           })),
-  //         };
-  //       }
-  //       return item;
-  //     });
-
-  //     setData(newData);
-  //     setEditingKey('');
-  //     console.log({ newData });
-  //     dispatch(setKeys(newData));
-  //   } catch (errInfo) {
-  //     console.log('Validate Failed:', errInfo);
-  //   }
-  // };
 
   const save = async (keyID: string) => {
     try {
@@ -225,32 +196,31 @@ export default function KeyView() {
       const newKey = {
         // keyID,
         key: String(row.name)?.toUpperCase(),
-        // details: row.details,
+        detail: row.detail,
         language: backendData,
       };
 
       handleAddKey(newKey, currentProject?._id, currentPage?.value);
 
-      //   const newData = allKeys.map((item: KeyType) => {
-      //     if (item.keyID === keyID) {
-      //       const updatedItem = {
-      //         ...item,
-      //         details: row.details,
-      //         key: row.name,
-      //         language: projectLanguage.map((lang: any) => ({
-      //           value: lang,
-      //           lg: row[lang.id],
-      //         })),
-      //       };
+      // const newData = allKeys.map((item: any) => {
+      //   if (item._id === keyID) {
+      //     const updatedItem = {
+      //       ...item,
+      //       detail: row.detail,
+      //       key: row.name,
+      //       language: projectLanguage.map((lang: any) => ({
+      //         lg: lang?._id,
+      //         value: row[lang?._id],
+      //       })),
+      //     };
 
-      //       return updatedItem;
-      //     }
-      //     return item;
-      //   });
+      //     return updatedItem;
+      //   }
+      //   return item;
+      // });
+      // handleUpdateKey(keyID, newData);
 
-      //   console.log({ newData });
-
-      //   setData(newData);
+      // console.log({ newData });
       setEditingKey('');
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
@@ -260,7 +230,7 @@ export default function KeyView() {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
+      dataIndex: 'key',
       width: 200,
       editable: true,
       render: (text: any, record: any) =>
@@ -284,16 +254,16 @@ export default function KeyView() {
     ...languages,
     {
       title: 'Details',
-      dataIndex: 'details',
+      dataIndex: 'detail',
       width: 150,
       editable: true,
       render: (text: any, record: any) =>
         isEditing(record) ? (
-          <Form.Item name="details" style={{ margin: 0 }}>
+          <Form.Item name="detail" style={{ margin: 0 }}>
             <Input />
           </Form.Item>
         ) : (
-          <Typography.Text onDoubleClick={() => edit(record)}>--</Typography.Text>
+          <Typography.Text onDoubleClick={() => edit(record)}>{record?.detail}</Typography.Text>
         ),
     },
 
@@ -340,7 +310,7 @@ export default function KeyView() {
     const newRow: KeyType = {
       _id: uuidv4(),
       keyName: '',
-      details: '',
+      detail: '',
       page: currentPage,
       projectID: currentPage.projectID,
       language: [],

@@ -27,7 +27,16 @@ const useKeyHook = () => {
     }
   };
 
-  return { allKeys, handleAddKey, handleGetKey, setAllKeys };
+  const handleUpdateKey = async (keyId: string, keyData: any) => {
+    try {
+      const response = await keyService.updateKey(keyId, keyData);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return { allKeys, handleAddKey, handleGetKey, setAllKeys, handleUpdateKey };
 };
 
 export default useKeyHook;
