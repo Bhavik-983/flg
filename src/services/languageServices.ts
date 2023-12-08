@@ -2,7 +2,7 @@
 import { AxiosResponse } from 'axios';
 
 import client from '../lib/client';
-import { ADD_LANGUAGE, GET_LANGUAGE, UPDATE_LANGUAGE } from '../utils/url';
+import { ADD_LANGUAGE, GET_LANGUAGE, JSON_DOWNLOAD, UPDATE_LANGUAGE } from '../utils/url';
 
 export interface AddLanguageTypes {
   name: string;
@@ -29,6 +29,12 @@ const languageService = {
     const response: AxiosResponse<any> = await client.put(
       `${UPDATE_LANGUAGE}/${languageid}/${projectid}`,
       EditLanguageData
+    );
+    return response.data;
+  },
+  jsondownload: async (projectId: string, languageId: string): Promise<any> => {
+    const response: AxiosResponse<any> = await client.get(
+      `${JSON_DOWNLOAD}/${projectId}/${languageId}`
     );
     return response.data;
   },

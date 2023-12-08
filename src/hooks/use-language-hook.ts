@@ -22,6 +22,7 @@ import useProjectHook from './use-project-hook';
 const useLanguageHook = () => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { currentProject } = useProjectHook();
   const defaultLanguages: DefaultLanguage[] = useAppSelector(selectDefaultLanguagesData);
@@ -46,10 +47,12 @@ const useLanguageHook = () => {
   };
 
   const handleGetLanguages = async (project_id: string) => {
+    setIsLoading(true);
     try {
       const response = await languageService.getLanguages(project_id);
       const language = response?.data?.languages || [];
       dispatch(projectLanguages(language));
+      setIsLoading(false);
       return response;
     } catch (error) {
       console.log(error);
@@ -132,6 +135,16 @@ const useLanguageHook = () => {
     }
   };
 
+  const handleDownloadData = async (projectId: string, languageId: string) => {
+    try {
+      const response = await languageService.jsondownload(projectId, languageId);
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     defaultLanguages,
     allLanguages,
@@ -142,6 +155,8 @@ const useLanguageHook = () => {
     handleAddLanguage,
     handleEditLanguage,
     handleGetLanguages,
+    handleDownloadData,
+    isLoading,
   };
 };
 

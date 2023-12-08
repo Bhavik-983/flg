@@ -1,4 +1,4 @@
-import { FiEdit } from 'react-icons/Fi';
+import { FiDownload } from 'react-icons/Fi';
 
 import { Box, Card, Button, Typography, CardContent, CardActions } from '@mui/material';
 
@@ -8,16 +8,10 @@ interface LanguageTypes {
   name: string;
   code: string;
   data: NewLanguage;
-  handleEdit: (id: string) => void;
-  // handleClick: () => void;
+  handleClick: (id: string) => void;
 }
 
-const LanguageListCard = ({
-  name,
-  code,
-  data,
-  handleEdit, //  handleClick
-}: LanguageTypes) => (
+const LanguageListCard = ({ name, code, data, handleClick }: LanguageTypes) => (
   <Card
     sx={{
       width: '90%',
@@ -70,12 +64,12 @@ const LanguageListCard = ({
           width: '40px',
           height: '40px',
           minWidth: 0,
+          mb: 1,
         }}
-        onClick={() => handleEdit(data._id)}
+        onClick={() => handleClick(data._id)}
       >
-        <FiEdit />
+        <FiDownload />
       </Button>
-      
     </CardActions>
   </Card>
 );

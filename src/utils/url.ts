@@ -17,6 +17,7 @@ export const GET_PAGE = '/page/data';
 export const ADD_LANGUAGE = '/language/add';
 export const GET_LANGUAGE = '/language/name/list';
 export const UPDATE_LANGUAGE = '/language/update';
+export const JSON_DOWNLOAD = '/aggregation/all/data';
 
 // member
 export const ADD_MEMBER = '/project/referd-user';
