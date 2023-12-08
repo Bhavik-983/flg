@@ -11,7 +11,7 @@ interface AuthState {
 
 // Define the initial state using that type
 const initialState: AuthState = {
-  token: '',
+  token: null,
   refreshToken: '',
 };
 

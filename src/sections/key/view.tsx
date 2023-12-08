@@ -115,7 +115,7 @@ export default function KeyView() {
   }, []);
 
   const [form] = Form.useForm();
-  const [editingKey, setEditingKey] = useState('');
+  const [editingKey, setEditingKey] = useState<string>('');
 
   const languages = projectLanguage.reduce((result: any[], language: any) => {
     result.push({
@@ -163,11 +163,15 @@ export default function KeyView() {
     return result;
   }, []);
 
-  const isEditing = (record: any) => record.keyID === editingKey;
+  const isEditing = (record: any) => record?._id === editingKey;
 
   const edit = (record: Partial<KeyType> & { keyID: string }) => {
-    form.setFieldsValue({ name: '', details: '', ...record });
-    setEditingKey(record.keyID);
+    console.log({ record });
+    form.setFieldsValue({ keyName: '', details: '', ...record });
+
+    if (record?._id) {
+      setEditingKey(record?._id);
+    }
   };
 
   const cancel = () => {
@@ -274,10 +278,7 @@ export default function KeyView() {
             <Input style={{ textTransform: 'uppercase' }} />
           </Form.Item>
         ) : (
-          <Typography.Text onDoubleClick={() => edit(record)}>
-            {console.log({ record, text })}
-            {record?.key}
-          </Typography.Text>
+          <Typography.Text onDoubleClick={() => edit(record)}>{record?.key}</Typography.Text>
         ),
     },
     ...languages,
@@ -303,7 +304,7 @@ export default function KeyView() {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <Typography.Link onClick={() => save(record.keyID)} style={{ marginRight: 8 }}>
+            <Typography.Link onClick={() => save(record?._id)} style={{ marginRight: 8 }}>
               Save
             </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>

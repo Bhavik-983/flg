@@ -25,6 +25,8 @@ export default function addAuthTokenInterceptor(store: any) {
       const originalConfig = error?.config;
       const { refreshToken, token } = store.getState().auth;
 
+      console.log({ token });
+
       // originalConfig._retry = true;
 
       if (error.response) {
@@ -67,15 +69,14 @@ export default function addAuthTokenInterceptor(store: any) {
           }
         } else if (isRefreshTokenUpdating) {
           // If refresh token is updating\
-          console.log('Token not found');
           await isRefreshTokenDone();
-          console.log('isRefreshTokenUpdating');
           return client(originalConfig);
+        } else if (token && token.length === 0) {
+          handleLogOut();
+          window.location.assign(PATH_AFTER_REGISTER);
+          return Promise.reject(error.response.data);
         } else {
-          console.log('Token not found');
-          // handleLogOut();
-          // window.location.assign(PATH_AFTER_REGISTER);
-          // return Promise.reject(error.response.data);
+          return Promise.reject(error.response.data);
         }
       }
       return Promise.reject(error);
