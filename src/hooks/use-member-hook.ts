@@ -23,7 +23,6 @@ const useMemberHook = () => {
     setFetching(true);
     try {
       const response = await memberService.addMember(data, projectID);
-      handleGetMembers(projectID);
       enqueueSnackbar(response?.message, {
         variant: 'success',
         anchorOrigin: {
@@ -33,6 +32,7 @@ const useMemberHook = () => {
         autoHideDuration: 3000,
       });
       onClose()?.();
+      handleGetMembers(projectID);
       return response;
     } catch (error) {
       enqueueSnackbar(error?.message, {
@@ -64,7 +64,6 @@ const useMemberHook = () => {
   const handleUpdateMember = async (projectID: string, userId: string, data: any, onClose: any) => {
     try {
       const response = await memberService.updateMember(projectID, userId, data);
-      handleGetMembers(projectID);
       enqueueSnackbar(response?.message, {
         variant: 'success',
         anchorOrigin: {
@@ -73,6 +72,7 @@ const useMemberHook = () => {
         },
         autoHideDuration: 3000,
       });
+      handleGetMembers(projectID);
       onClose()?.();
       return response;
     } catch (error) {

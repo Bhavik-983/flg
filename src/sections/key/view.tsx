@@ -30,7 +30,7 @@ export interface keyLanguage {
 
 export interface KeyType {
   _id: string;
-  key: string;
+  keyName: string;
   detail: string;
   page: LabelValue;
   projectID: string;
@@ -90,7 +90,13 @@ export default function KeyView() {
   const { allPages, handleGetAllPages, currentPage, handleCreatePage, setcurrentPage } =
     usePageHook();
 
-  const { handleGetKey, allKeys, handleAddKey, setAllKeys, handleUpdateKey } = useKeyHook();
+  const {
+    handleGetKey,
+    allKeys,
+    handleAddKey,
+    setAllKeys,
+    // handleUpdateKey
+  } = useKeyHook();
   console.log({ allKeys });
   const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
     if (newValue !== null) setcurrentPage(newValue);
@@ -155,6 +161,7 @@ export default function KeyView() {
             <Input defaultValue={LangaugeValue} />
           </Form.Item>
         ) : (
+          //
           <Typography.Text onDoubleClick={() => edit(record)}>{LangaugeValue}</Typography.Text>
         );
       },
@@ -172,12 +179,7 @@ export default function KeyView() {
     }
   };
 
-  const cancel = (record: any) => {
-    const isNewRow = record._id && allKeys.find((item: any) => item._id === record._id);
-    if (isNewRow && !form.getFieldValue('key') && !form.getFieldValue('detail')) {
-      const updatedKeys = allKeys.filter((item: any) => item._id !== record._id);
-      setAllKeys(updatedKeys);
-    }
+  const cancel = () => {
     setEditingKey('');
   };
 
@@ -223,19 +225,6 @@ export default function KeyView() {
       //   return item;
       // });
       // handleUpdateKey(keyID, newData);
-      // const newData = allKeys.map((item: any) => {
-      //   if (item._id === keyID) {
-      //     return {
-      //       ...item,
-      //       detail: row.detail,
-      //       key: row.name,
-      //       language: backendData.filter(Boolean), // Filter out undefined/null
-      //     };
-      //   }
-      //   return item;
-      // });
-
-      // handleUpdateKey(keyID, newData);
 
       // console.log({ newData });
       setEditingKey('');
@@ -247,7 +236,7 @@ export default function KeyView() {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
+      dataIndex: 'key',
       width: 200,
       editable: true,
       render: (text: any, record: any) =>
@@ -294,7 +283,7 @@ export default function KeyView() {
             <Typography.Link onClick={() => save(record?._id)} style={{ marginRight: 8 }}>
               Save
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={() => cancel(record)}>
+            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
               <a>Cancel</a>
             </Popconfirm>
           </span>
@@ -326,10 +315,10 @@ export default function KeyView() {
   const handleAddString = () => {
     const newRow: KeyType = {
       _id: uuidv4(),
-      key: '',
+      keyName: '',
       detail: '',
       page: currentPage,
-      projectID: currentProject._id,
+      projectID: currentPage.projectID,
       language: [],
     };
     setAllKeys(() => [newRow, ...allKeys]);
