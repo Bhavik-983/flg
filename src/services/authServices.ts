@@ -2,7 +2,7 @@
 import { AxiosResponse } from 'axios';
 
 import client from '../lib/client';
-import { USER_LOGIN, USER_REGISTER } from '../utils/url';
+import { GET_USER, USER_LOGIN, USER_REGISTER } from '../utils/url';
 
 export interface RegisterTypes {
   email: string;
@@ -15,6 +15,10 @@ export interface LoginTypes {
   password: string;
 }
 
+export interface TokenTypes {
+  token: string;
+}
+
 const authService = {
   userRegister: async (Registerdata: RegisterTypes): Promise<any> => {
     const response: AxiosResponse<any> = await client.post(USER_REGISTER, Registerdata);
@@ -23,6 +27,10 @@ const authService = {
   userlogin: async (LoginData: LoginTypes): Promise<any> => {
     const response: AxiosResponse<any> = await client.post(USER_LOGIN, LoginData);
     return response.data;
+  },
+  getUser: async (): Promise<any> => {
+    const response: AxiosResponse<any> = await client.get(GET_USER);
+    return response.data?.data;
   },
 };
 

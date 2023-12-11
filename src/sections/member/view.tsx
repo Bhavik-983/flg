@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { CiEdit } from 'react-icons/ci';
 import { VscAdd } from 'react-icons/vsc';
 import { useState, useEffect } from 'react';
-import { BiDotsVerticalRounded } from 'react-icons/bi';
 
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -14,16 +14,17 @@ import { useMockedUser } from 'src/hooks/use-mocked-user';
 import PageHeading from 'src/components/heading/PageHeading';
 import { LoadingScreen } from 'src/components/loading-screen';
 import AddMemberModal from 'src/components/modal/AddMemberModal';
+import EditMemberModal from 'src/components/modal/EditMemberModal';
 
 // ----------------------------------------------------------------------
 
 export default function MemberView() {
   const { user } = useMockedUser();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [memberId, setMemberId] = useState('');
   const { allMembers, handleGetMembers, loading } = useMemberHook();
   const { currentProject } = useProjectHook();
-  console.log(allMembers);
 
   useEffect(() => {
     handleGetMembers(currentProject?._id);
@@ -34,6 +35,12 @@ export default function MemberView() {
   };
   const handleModalClose = () => {
     setIsOpen(false);
+  };
+  const handleEditModalOpen = (data: any) => {
+    setIsEditOpen(true);
+  };
+  const handleEditModalClose = () => {
+    setIsEditOpen(false);
   };
   const headingText = 'Member';
   return (
@@ -97,7 +104,10 @@ export default function MemberView() {
             {allMembers &&
               allMembers.length > 0 &&
               allMembers?.map((member: any) => (
-                <Stack sx={{ justifyContent: 'space-between', width: '100%', mt: 1 }}>
+                <Stack
+                  key={member?._id}
+                  sx={{ justifyContent: 'space-between', width: '100%', mt: 1 }}
+                >
                   <Box
                     sx={{
                       bgcolor: '#FFFFFF',
@@ -139,7 +149,7 @@ export default function MemberView() {
                           {member?.email ?? '--'}
                         </Typography>
                       </Box>
-                      <Box
+                      {/* <Box
                         position="absolute"
                         sx={{
                           width: '50%',
@@ -154,7 +164,7 @@ export default function MemberView() {
                             color: 'gray',
                           }}
                         />
-                      </Box>
+                      </Box> */}
                     </Box>
                   </Box>
                   <Box
@@ -165,9 +175,11 @@ export default function MemberView() {
                       py: '3px',
                       ml: 2,
                       boxShadow: '0 2px 4px 1px rgba(0,0,0,.11)',
+                      justifyContent: 'space-between',
                       width: '50%',
                       borderBottomLeftRadius: 5,
                       borderBottomRightRadius: 5,
+                      display: 'flex',
                     }}
                   >
                     <Typography
@@ -178,10 +190,29 @@ export default function MemberView() {
                     >
                       {member?.role ?? '--'}
                     </Typography>
+                    <CiEdit
+                      style={{
+                        height: 20,
+                        width: 20,
+                        cursor: 'pointer',
+                        paddingLeft: 1,
+                        paddingRight: '3px',
+                        marginRight: 10,
+                      }}
+                      onClick={() => {
+                        handleEditModalOpen(member._id);
+                        setMemberId(member._id);
+                      }}
+                    />
                   </Box>
                 </Stack>
               ))}
             <AddMemberModal isOpen={isOpen} onClose={handleModalClose} />
+            <EditMemberModal
+              memberId={memberId}
+              isOpen={isEditOpen}
+              onClose={handleEditModalClose}
+            />
           </Box>
         </>
       )}

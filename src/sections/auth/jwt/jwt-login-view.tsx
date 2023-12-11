@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as Yup from 'yup';
 import { useState } from 'react';
+import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -30,6 +31,7 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 export default function JwtLoginView() {
   const router = useRouter();
   const { setCredentialsAction } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [errorMsg, setErrorMsg] = useState('');
   const [fetching, setIsFetching] = useState<boolean>(false);
@@ -42,9 +44,7 @@ export default function JwtLoginView() {
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    password: Yup.string()
-      .required('Password is required')
-      .min(8, 'Password must be at least 8 characters'),
+    password: Yup.string().required('Password is required'),
   });
 
   const defaultValues = {
@@ -63,10 +63,26 @@ export default function JwtLoginView() {
     setIsFetching(true);
     try {
       const response = await authService.userlogin(data);
+      enqueueSnackbar(response?.message, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
       setCredentialsAction(response?.data);
       router.push(returnTo || PATH_AFTER_LOGIN);
     } catch (error) {
-      setErrorMsg(typeof error === 'string' ? error : error?.response?.data?.message);
+      enqueueSnackbar(error?.message, {
+        variant: 'error',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
+      // setErrorMsg(typeof error === 'string' ? error : error?.response?.data?.message);
     } finally {
       setIsFetching(false);
     }

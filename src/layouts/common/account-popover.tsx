@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { m } from 'framer-motion';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
@@ -19,20 +19,20 @@ import ProfilePopover from 'src/components/custom-popover/profile-popover';
 
 // ----------------------------------------------------------------------
 
-const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Profile',
-    linkTo: '/#1',
-  },
-  {
-    label: 'Settings',
-    linkTo: '/#2',
-  },
-];
+// const OPTIONS = [
+//   {
+//     label: 'Home',
+//     linkTo: '/',
+//   },
+//   {
+//     label: 'Profile',
+//     linkTo: '/#1',
+//   },
+//   {
+//     label: 'Settings',
+//     linkTo: '/#2',
+//   },
+// ];
 
 // ----------------------------------------------------------------------
 
@@ -52,10 +52,10 @@ export default function AccountPopover() {
     }
   };
 
-  const handleClickItem = (path: string) => {
-    popover.onClose();
-    router.push(path);
-  };
+  // const handleClickItem = (path: string) => {
+  //   popover.onClose();
+  //   router.push(path);
+  // };
 
   return (
     <>
@@ -102,13 +102,13 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Stack sx={{ p: 1 }}>
+        {/* <Stack sx={{ p: 1 }}>
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
               {option.label}
             </MenuItem>
           ))}
-        </Stack>
+        </Stack> */}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

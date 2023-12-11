@@ -23,6 +23,7 @@ const useMemberHook = () => {
     setFetching(true);
     try {
       const response = await memberService.addMember(data, projectID);
+      handleGetMembers(projectID);
       enqueueSnackbar(response?.message, {
         variant: 'success',
         anchorOrigin: {
@@ -32,10 +33,9 @@ const useMemberHook = () => {
         autoHideDuration: 3000,
       });
       onClose()?.();
-      handleGetMembers(projectID);
       return response;
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message, {
+      enqueueSnackbar(error?.message, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'top',
@@ -61,12 +61,40 @@ const useMemberHook = () => {
     }
   };
 
+  const handleUpdateMember = async (projectID: string, userId: string, data: any, onClose: any) => {
+    try {
+      const response = await memberService.updateMember(projectID, userId, data);
+      handleGetMembers(projectID);
+      enqueueSnackbar(response?.message, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
+      onClose()?.();
+      return response;
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar(error?.message, {
+        variant: 'error',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
+    }
+  };
+
   return {
     handleCreateMember,
     handleGetMembers,
     allMembers,
     loading,
     fetching,
+    handleUpdateMember,
   };
 };
 

@@ -85,7 +85,7 @@ const useLanguageHook = () => {
       handleGetLanguages(currentProject?._id);
       return response;
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message, {
+      enqueueSnackbar(error?.message, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'top',
@@ -93,6 +93,7 @@ const useLanguageHook = () => {
         },
         autoHideDuration: 3000,
       });
+      onClose?.();
     }
   };
 
@@ -124,7 +125,7 @@ const useLanguageHook = () => {
       onClose?.();
       return response;
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message, {
+      enqueueSnackbar(error?.message, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'top',
@@ -132,6 +133,7 @@ const useLanguageHook = () => {
         },
         autoHideDuration: 3000,
       });
+      onClose?.();
     }
   };
 

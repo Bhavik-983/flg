@@ -6,6 +6,7 @@ import Box, { BoxProps } from '@mui/material/Box';
 import useProjectHook from 'src/hooks/use-project-hook';
 import { useResponsive } from 'src/hooks/use-responsive';
 import useLanguageHook from 'src/hooks/use-language-hook';
+import useRegisterHook from 'src/hooks/use-register-hook';
 import useProjectModal from 'src/hooks/use-projects-modal';
 
 import { useSettingsContext } from 'src/components/settings';
@@ -27,6 +28,11 @@ export default function Main({ children, sx, ...other }: BoxProps) {
 
   const { handleGetAllProjects } = useProjectHook();
   const { handleGetLanguages } = useLanguageHook();
+  const { handleGetUser } = useRegisterHook();
+
+  useEffect(() => {
+    handleGetUser();
+  }, []);
 
   useEffect(() => {
     handleGetAllProjects()

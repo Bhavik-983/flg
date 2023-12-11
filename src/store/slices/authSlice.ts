@@ -7,12 +7,14 @@ import type { RootState } from '../index';
 interface AuthState {
   token: null | string;
   refreshToken: null | string;
+  user: any;
 }
 
 // Define the initial state using that type
 const initialState: AuthState = {
   token: null,
   refreshToken: '',
+  user: {},
 };
 
 const authSlice = createSlice({
@@ -30,11 +32,15 @@ const authSlice = createSlice({
       state.token = access_token;
       state.refreshToken = refresh_token;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
-export const { setCredentials, resetState, setRefreshToken } = authSlice.actions;
+export const { setCredentials, resetState, setUser, setRefreshToken } = authSlice.actions;
 
 export default authSlice.reducer;
 
 export const selectCurrentToken = (state: RootState) => state.auth.token;
+export const selectCurrentUser = (state: RootState) => state.auth.user;

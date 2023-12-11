@@ -1,4 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { _mock } from 'src/_mock';
+
+import useAuth from './use-auth-hook';
 
 // TO GET THE USER FROM THE AUTHCONTEXT, YOU CAN USE
 
@@ -13,10 +17,12 @@ import { _mock } from 'src/_mock';
 // ----------------------------------------------------------------------
 
 export function useMockedUser() {
+  const { userDetails } = useAuth();
+
   const user = {
     id: '8864c717-587d-472a-929a-8e5f298024da-0',
-    displayName: 'Jaydon Frankie',
-    email: 'demo@minimals.cc',
+    displayName: userDetails?.username ?? '--',
+    email: userDetails?.email ?? '--',
     password: 'demo1234',
     photoURL: _mock.image.avatar(24),
     phoneNumber: '+40 777666555',

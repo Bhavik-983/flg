@@ -77,6 +77,7 @@ export default function LanguageView() {
             {projectLanguage.length > 0
               ? projectLanguage?.map((data: NewLanguage) => (
                   <LanguageListCard
+                    key={data._id}
                     name={data.name}
                     code={data.code}
                     data={data}
