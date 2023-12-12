@@ -52,9 +52,14 @@ const useKeyHook = () => {
     }
   };
 
-  const handleUpdateKey = async (keyId: string, keyData: any) => {
+  const handleUpdateKey = async (
+    projectId: string,
+    pageId: string,
+    keyId: string,
+    keyData: any
+  ) => {
     try {
-      const response = await keyService.updateKey(keyId, keyData);
+      const response = await keyService.updateKey(projectId, pageId, keyId, keyData);
       return response;
     } catch (error) {
       console.log(error);

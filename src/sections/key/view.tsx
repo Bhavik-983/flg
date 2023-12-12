@@ -14,6 +14,8 @@ import usePageHook from 'src/hooks/use-page-hook';
 import useProjectHook from 'src/hooks/use-project-hook';
 import useLanguageHook from 'src/hooks/use-language-hook';
 
+import { NewLanguage } from 'src/store/slices/LanguageSlice';
+
 import KeyHeader from 'src/components/header/KeyHeader';
 import { LoadingScreen } from 'src/components/loading-screen';
 
@@ -30,7 +32,7 @@ export interface keyLanguage {
 
 export interface KeyType {
   _id: string;
-  keyName: string;
+  key: string;
   detail: string;
   page: LabelValue;
   projectID: string;
@@ -90,14 +92,7 @@ export default function KeyView() {
   const { allPages, handleGetAllPages, currentPage, handleCreatePage, setcurrentPage } =
     usePageHook();
 
-  const {
-    handleGetKey,
-    allKeys,
-    handleAddKey,
-    setAllKeys,
-    // handleUpdateKey
-  } = useKeyHook();
-  console.log({ allKeys });
+  const { handleGetKey, allKeys, handleAddKey, setAllKeys, handleUpdateKey } = useKeyHook();
   const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
     if (newValue !== null) setcurrentPage(newValue);
   };
@@ -123,7 +118,6 @@ export default function KeyView() {
   const [editingKey, setEditingKey] = useState<string>('');
 
   const languages = projectLanguage.reduce((result: any[], language: any) => {
-    console.log({ language });
     result.push({
       title: language.name,
       dataIndex: language?._id,
@@ -172,14 +166,42 @@ export default function KeyView() {
   const isEditing = (record: any) => record?._id === editingKey;
 
   const edit = (record: Partial<KeyType> & { keyID: string }) => {
-    console.log({ record });
-    form.setFieldsValue({ key: '', detail: '', language: '', ...record });
+    const EditRecord: any = {
+      key: '',
+      detail: '',
+    };
+
+    projectLanguage?.map((language) => {
+      if (record.language && record.language.length > 0) {
+        record.language.map((lang: any) => {
+          if (lang.lg === language?._id) {
+            EditRecord[lang.lg] = lang.value;
+          }
+        });
+      }
+    });
+
+    // return;
+    form.setFieldsValue({ EditRecord, ...record });
     if (record?._id) {
       setEditingKey(record?._id);
     }
   };
 
-  const cancel = () => {
+  const isUUIDv4 = (str: string) => {
+    const uuidv4Pattern =
+      /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+    return uuidv4Pattern.test(str);
+  };
+
+  const cancel = (record: any) => {
+    const isValidUUID = isUUIDv4(record?._id);
+
+    if (isValidUUID) {
+      const newData = allKeys.filter((item: any) => item._id !== record._id);
+      setAllKeys(newData);
+    }
+
     setEditingKey('');
   };
 
@@ -187,7 +209,7 @@ export default function KeyView() {
     try {
       const row = (await form.validateFields()) as any;
 
-      console.log({ row });
+      const isValidUUID = isUUIDv4(editingKey);
 
       const backendData = projectLanguage.map((language) => {
         if (row[language?._id]) {
@@ -200,33 +222,17 @@ export default function KeyView() {
       });
 
       const newKey = {
-        // keyID,
-        key: String(row.name)?.toUpperCase(),
+        key: String(row.key)?.toUpperCase(),
         detail: row.detail,
         language: backendData,
       };
 
-      handleAddKey(newKey, currentProject?._id, currentPage?.value);
+      if (isValidUUID) {
+        await handleAddKey(newKey, currentProject?._id, currentPage?.value);
+      } else {
+        await handleUpdateKey(currentProject?._id, currentPage?.value, editingKey, newKey);
+      }
 
-      // const newData = allKeys.map((item: any) => {
-      //   if (item._id === keyID) {
-      //     const updatedItem = {
-      //       ...item,
-      //       detail: row.detail,
-      //       key: row.name,
-      //       language: projectLanguage.map((lang: any) => ({
-      //         lg: lang?._id,
-      //         value: row[lang?._id],
-      //       })),
-      //     };
-
-      //     return updatedItem;
-      //   }
-      //   return item;
-      // });
-      // handleUpdateKey(keyID, newData);
-
-      // console.log({ newData });
       setEditingKey('');
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
@@ -283,7 +289,7 @@ export default function KeyView() {
             <Typography.Link onClick={() => save(record?._id)} style={{ marginRight: 8 }}>
               Save
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm title="Sure to cancel?" onConfirm={() => cancel(record)}>
               <a>Cancel</a>
             </Popconfirm>
           </span>
@@ -313,14 +319,19 @@ export default function KeyView() {
   });
 
   const handleAddString = () => {
-    const newRow: KeyType = {
+    const newRow: any = {
       _id: uuidv4(),
-      keyName: '',
+      key: '',
       detail: '',
       page: currentPage,
       projectID: currentPage.projectID,
       language: [],
     };
+
+    projectLanguage?.map((language: NewLanguage) => {
+      newRow[language?._id] = '';
+    });
+
     setAllKeys(() => [newRow, ...allKeys]);
     edit({ ...newRow, keyID: newRow?._id });
   };

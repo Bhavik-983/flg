@@ -17,8 +17,16 @@ const keyService = {
     const response: AxiosResponse<any> = await client.get(`${GET_KEY}/${projectId}/${pageId}`);
     return response.data?.data?.rows;
   },
-  updateKey: async (keyId: string, keyData: any): Promise<any> => {
-    const response: AxiosResponse<any> = await client.put(`${UPDATE_KEY}/${keyId}`, keyData);
+  updateKey: async (
+    projectId: string,
+    pageId: string,
+    keyId: string,
+    keyData: any
+  ): Promise<any> => {
+    const response: AxiosResponse<any> = await client.put(
+      `${UPDATE_KEY}/${projectId}/${pageId}/${keyId}`,
+      keyData
+    );
     return response.data;
   },
 };
