@@ -31,8 +31,7 @@ const useMemberHook = () => {
         },
         autoHideDuration: 3000,
       });
-      onClose()?.();
-      handleGetMembers(projectID);
+      onClose();
       return response;
     } catch (error) {
       enqueueSnackbar(error?.message, {
@@ -72,8 +71,7 @@ const useMemberHook = () => {
         },
         autoHideDuration: 3000,
       });
-      handleGetMembers(projectID);
-      onClose()?.();
+      onClose();
       return response;
     } catch (error) {
       console.log(error);

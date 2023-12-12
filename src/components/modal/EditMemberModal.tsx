@@ -30,10 +30,10 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   memberId: string;
+  getAll: () => void;
 }
 
-export default function EditMemberModal({ isOpen, onClose, memberId }: ModalProps) {
-  console.log({ memberId });
+export default function EditMemberModal({ isOpen, onClose, memberId, getAll }: ModalProps) {
   const { handleUpdateMember } = useMemberHook();
   const { currentProject } = useProjectHook();
 
@@ -73,16 +73,18 @@ export default function EditMemberModal({ isOpen, onClose, memberId }: ModalProp
     onClose();
   };
 
-  const handleUpdate = (res: any) => {
-    handleUpdateMember(currentProject?._id, memberId, res, onClose);
+  const handleAfterAddSuccess = () => {
+    handleClick();
+    getAll();
   };
 
   const onSubmit = handleSubmit(async (data: any) => {
-    console.log({ data });
     const member = {
       role: data?.role?.value,
     };
-    handleUpdate(member);
+    // handleUpdate(member);
+
+    handleUpdateMember(currentProject?._id, memberId, member, handleAfterAddSuccess);
   });
 
   const renderForm = (

@@ -30,9 +30,10 @@ const style = {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  getAll: () => void;
 }
 
-export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
+export default function AddMemberModal({ isOpen, onClose, getAll }: ModalProps) {
   const { handleCreateMember } = useMemberHook();
   const { currentProject } = useProjectHook();
   const LanguageSchema = Yup.object().shape({
@@ -73,13 +74,17 @@ export default function AddMemberModal({ isOpen, onClose }: ModalProps) {
     onClose();
   };
 
+  const handleAfterAddSuccess = () => {
+    handleClick();
+    getAll();
+  };
+
   const onSubmit = handleSubmit(async (data: any) => {
-    console.log({ data });
     const member = {
       email: data?.email,
       role: data?.role?.value,
     };
-    handleCreateMember(member, currentProject?._id, onClose);
+    handleCreateMember(member, currentProject?._id, handleAfterAddSuccess);
   });
 
   const renderForm = (

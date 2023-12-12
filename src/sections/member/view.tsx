@@ -43,6 +43,7 @@ export default function MemberView() {
     setIsEditOpen(false);
   };
   const headingText = 'Member';
+
   return (
     <>
       {loading ? (
@@ -207,11 +208,20 @@ export default function MemberView() {
                   </Box>
                 </Stack>
               ))}
-            <AddMemberModal isOpen={isOpen} onClose={handleModalClose} />
+            <AddMemberModal
+              isOpen={isOpen}
+              onClose={handleModalClose}
+              getAll={() => {
+                handleGetMembers(currentProject?._id);
+              }}
+            />
             <EditMemberModal
               memberId={memberId}
               isOpen={isEditOpen}
               onClose={handleEditModalClose}
+              getAll={() => {
+                handleGetMembers(currentProject?._id);
+              }}
             />
           </Box>
         </>
