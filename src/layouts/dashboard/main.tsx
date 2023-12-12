@@ -37,6 +37,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
   useEffect(() => {
     handleGetAllProjects()
       .then((res: any) => {
+        console.log(res)
         if (res?._id) {
           handleGetLanguages(res?._id);
         } else {
