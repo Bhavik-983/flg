@@ -60,6 +60,7 @@ const useKeyHook = () => {
   ) => {
     try {
       const response = await keyService.updateKey(projectId, pageId, keyId, keyData);
+      handleGetKey(projectId, pageId);
       return response;
     } catch (error) {
       console.log(error);

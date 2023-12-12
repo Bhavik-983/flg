@@ -231,9 +231,8 @@ export default function KeyView() {
         await handleAddKey(newKey, currentProject?._id, currentPage?.value);
       } else {
         await handleUpdateKey(currentProject?._id, currentPage?.value, editingKey, newKey);
+        setEditingKey('');
       }
-
-      setEditingKey('');
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }

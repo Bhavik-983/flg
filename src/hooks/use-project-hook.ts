@@ -25,7 +25,6 @@ const useProjectHook = () => {
   const handleCreateProject = async (AddProjectData: AddProjectTypes, handleClose: any) => {
     try {
       const response = await addProjectService.addProject(AddProjectData);
-      handleClose()?.();
       enqueueSnackbar(response?.message, {
         variant: 'success',
         anchorOrigin: {
@@ -41,9 +40,12 @@ const useProjectHook = () => {
 
       handleSetCurrentProject(newProject);
       handleGetAllProjects();
+      handleClose();
+
       return newProject;
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message, {
+      handleClose();
+      enqueueSnackbar(error?.message, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'top',
