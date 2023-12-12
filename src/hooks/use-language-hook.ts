@@ -66,7 +66,6 @@ const useLanguageHook = () => {
   ) => {
     try {
       const response = await languageService.addLanguage(AddLanguageData, projectID);
-      console.log(response);
       enqueueSnackbar(response?.message, {
         variant: 'success',
         anchorOrigin: {
@@ -105,7 +104,6 @@ const useLanguageHook = () => {
   ) => {
     try {
       const response = await languageService.editLanguage(data, languageid, projectid);
-      console.log(response);
       enqueueSnackbar(response?.message, {
         variant: 'success',
         anchorOrigin: {
@@ -140,7 +138,6 @@ const useLanguageHook = () => {
   const handleDownloadData = async (projectId: string, languageId: string) => {
     try {
       const response = await languageService.jsondownload(projectId, languageId);
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);

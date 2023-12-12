@@ -63,9 +63,7 @@ export default function AddProjectModal({ isOpen, onClose, isNotClose }: ModalPr
         .then((res) => {
           fetchDefaultPage(res?._id);
         })
-        .catch((e: any) => {
-          console.log({ e });
-        });
+        .catch((e: any) => {});
     }
   });
 

@@ -20,7 +20,6 @@ import LanguageListCard from './LanguageListCard';
 
 export default function SettingView() {
   const { projectLanguage, handleDownloadData, isLoading } = useLanguageHook();
-  console.log(projectLanguage);
   const { currentProject } = useProjectHook();
 
   // const downloadData = (languageid: string) => {

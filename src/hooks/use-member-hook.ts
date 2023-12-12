@@ -74,7 +74,6 @@ const useMemberHook = () => {
       onClose();
       return response;
     } catch (error) {
-      console.log(error);
       enqueueSnackbar(error?.message, {
         variant: 'error',
         anchorOrigin: {

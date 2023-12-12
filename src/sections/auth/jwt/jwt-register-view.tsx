@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable consistent-return */
 import * as Yup from 'yup';
 import { useState } from 'react';
+import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -16,8 +19,8 @@ import { RouterLink } from 'src/routes/components';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
-import useRegisterHook from 'src/hooks/use-register-hook';
 
+import authService from 'src/services/authServices';
 import { PATH_AFTER_REGISTER } from 'src/config-global';
 
 import Iconify from 'src/components/iconify';
@@ -26,14 +29,15 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export default function JwtRegisterView() {
-  // const { register } = useAuthContext();
-  const { registerUser } = useRegisterHook();
+  // const { registerUser } = useRegisterHook();
+  const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState('');
 
   const searchParams = useSearchParams();
   const returnTo = searchParams.get('returnTo');
+  const [fetching, setIsFetching] = useState<boolean>(false);
 
   const password = useBoolean();
 
@@ -56,17 +60,33 @@ export default function JwtRegisterView() {
     defaultValues,
   });
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
+    setIsFetching(true);
     try {
-      registerUser(data);
+      const response = await authService.userRegister(data);
+      enqueueSnackbar(response?.message, {
+        variant: 'success',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
       router.push(returnTo || PATH_AFTER_REGISTER);
+      return response;
     } catch (error) {
-      setErrorMsg(typeof error === 'string' ? error : error.message);
+      enqueueSnackbar(error?.response?.data?.message, {
+        variant: 'error',
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        autoHideDuration: 3000,
+      });
+    } finally {
+      setIsFetching(false);
     }
   });
 
@@ -138,7 +158,7 @@ export default function JwtRegisterView() {
           size="large"
           type="submit"
           variant="contained"
-          loading={isSubmitting}
+          loading={fetching}
         >
           Create account
         </LoadingButton>

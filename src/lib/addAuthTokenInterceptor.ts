@@ -59,7 +59,6 @@ export default function addAuthTokenInterceptor(store: any) {
             store.dispatch(setRefreshToken(result?.data?.data));
             return client(originalConfig);
           } catch (error) {
-            console.log({ error });
             isRefreshTokenUpdating = false;
             window.location.reload();
             return handleLogOut();

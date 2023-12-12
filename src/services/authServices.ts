@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import client from '../lib/client';
-import { GET_USER, USER_LOGIN, USER_REGISTER } from '../utils/url';
+import { GET_USER } from '../utils/url';
 
 export interface RegisterTypes {
   email: string;
@@ -21,11 +21,17 @@ export interface TokenTypes {
 
 const authService = {
   userRegister: async (Registerdata: RegisterTypes): Promise<any> => {
-    const response: AxiosResponse<any> = await client.post(USER_REGISTER, Registerdata);
+    const response: AxiosResponse<any> = await axios.post(
+      'http://192.168.1.22:3000/auth/create-account',
+      Registerdata
+    );
     return response.data;
   },
   userlogin: async (LoginData: LoginTypes): Promise<any> => {
-    const response: AxiosResponse<any> = await client.post(USER_LOGIN, LoginData);
+    const response: AxiosResponse<any> = await axios.post(
+      'http://192.168.1.22:3000/auth/user-login',
+      LoginData
+    );
     return response.data;
   },
   getUser: async (): Promise<any> => {

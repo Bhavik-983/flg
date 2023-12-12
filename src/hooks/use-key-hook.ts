@@ -22,7 +22,6 @@ const useKeyHook = () => {
       });
       return response;
     } catch (error) {
-      console.log(error);
       enqueueSnackbar(error?.message, {
         variant: 'error',
         anchorOrigin: {
@@ -63,7 +62,6 @@ const useKeyHook = () => {
       handleGetKey(projectId, pageId);
       return response;
     } catch (error) {
-      console.log(error);
       enqueueSnackbar(error?.message, {
         variant: 'error',
         anchorOrigin: {

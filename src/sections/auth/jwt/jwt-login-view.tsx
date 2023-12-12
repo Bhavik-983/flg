@@ -74,7 +74,7 @@ export default function JwtLoginView() {
       setCredentialsAction(response?.data);
       router.push(returnTo || PATH_AFTER_LOGIN);
     } catch (error) {
-      enqueueSnackbar(error?.message, {
+      enqueueSnackbar(error?.response?.data?.message, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'top',

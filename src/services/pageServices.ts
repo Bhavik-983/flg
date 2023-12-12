@@ -11,7 +11,7 @@ export interface AddPageTypes {
 const pageService = {
   addPage: async (AddPageData: AddPageTypes, projectId: any): Promise<any> => {
     const response: AxiosResponse<any> = await client.post(`${ADD_PAGE}/${projectId}`, AddPageData);
-    return response.data?.data;
+    return response.data;
   },
   getPageName: async (projectId: string): Promise<any> => {
     const response: AxiosResponse<any> = await client.get(`${GET_PAGE_NAME}/${projectId}`);

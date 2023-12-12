@@ -24,7 +24,6 @@ const useRegisterHook = () => {
         },
         autoHideDuration: 3000,
       });
-      console.log(response);
       return response;
     } catch (error) {
       enqueueSnackbar(error?.message, {
@@ -35,7 +34,6 @@ const useRegisterHook = () => {
         },
         autoHideDuration: 3000,
       });
-      console.log(error);
     } finally {
       setIsFetching(false);
     }
