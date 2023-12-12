@@ -25,8 +25,6 @@ export default function addAuthTokenInterceptor(store: any) {
       const originalConfig = error?.config;
       const { refreshToken, token } = store.getState().auth;
 
-      console.log({ token });
-
       // originalConfig._retry = true;
 
       if (error.response) {
@@ -38,7 +36,6 @@ export default function addAuthTokenInterceptor(store: any) {
         ) {
           // If user login and have refresh token
 
-          console.log({ refreshToken, token });
           isRefreshTokenUpdating = true;
           originalConfig._retry = true;
 
@@ -71,7 +68,7 @@ export default function addAuthTokenInterceptor(store: any) {
           // If refresh token is updating\
           await isRefreshTokenDone();
           return client(originalConfig);
-        } else if (token && token.length === 0) {
+        } else if (!token) {
           handleLogOut();
           window.location.assign(PATH_AFTER_REGISTER);
           return Promise.reject(error.response.data);

@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'src/routes/hooks';
 
+import useAuth from 'src/hooks/use-auth-hook';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
 import { varHover } from 'src/components/animate';
@@ -43,9 +44,12 @@ export default function AccountPopover() {
 
   const popover = usePopover();
 
+  const { logoutAction } = useAuth();
+
   const handleLogout = async () => {
     try {
       popover.onClose();
+      logoutAction();
       router.replace('/auth/login');
     } catch (error) {
       console.error(error);
