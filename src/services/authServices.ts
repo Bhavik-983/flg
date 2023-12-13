@@ -22,14 +22,14 @@ export interface TokenTypes {
 const authService = {
   userRegister: async (Registerdata: RegisterTypes): Promise<any> => {
     const response: AxiosResponse<any> = await axios.post(
-      'http://192.168.1.22:3000/auth/create-account',
+      'https://lg-7oxk.onrender.com/auth/create-account',
       Registerdata
     );
     return response.data;
   },
   userlogin: async (LoginData: LoginTypes): Promise<any> => {
     const response: AxiosResponse<any> = await axios.post(
-      'http://192.168.1.22:3000/auth/user-login',
+      'https://lg-7oxk.onrender.com/auth/user-login',
       LoginData
     );
     return response.data;
