@@ -58,10 +58,16 @@ const AddLanguageModal = ({
   setIsEdit,
   selectedId,
 }: AddLanguageModalType) => {
-  const { languages, handleSearch, resetLanguages, handleAddLanguage, handleEditLanguage } =
-    useLanguageHook();
+  const {
+    languages,
+    handleSearch,
+    resetLanguages,
+    handleAddLanguage,
+    handleEditLanguage,
+    isLoading,
+  } = useLanguageHook();
   const { currentProject } = useProjectHook();
-
+  console.log({ isLoading });
   const handleLanguage = (data: any) => {
     const language = {
       name: data?.name,

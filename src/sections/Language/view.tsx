@@ -25,6 +25,7 @@ export default function LanguageView() {
   const [selectedId, setSelectedId] = useState<string>('');
 
   const { projectLanguage, isLoading } = useLanguageHook();
+
   const handleAddLanguage = () => {
     setIsEdit(false);
     setSelectedId('');
@@ -63,6 +64,7 @@ export default function LanguageView() {
                 alignItems: 'center',
               }}
             />
+
             <ResponsiveMasonry
               columnsCountBreakPoints={{
                 100: 1,
@@ -92,7 +94,7 @@ export default function LanguageView() {
               </Masonry>
             </ResponsiveMasonry>
           </Box>
-          {/* ADD LANGUAGE MODAL */}
+
           <AddLanguageModal
             isEdit={isEdit}
             open={languageModal.open}
@@ -105,5 +107,3 @@ export default function LanguageView() {
     </>
   );
 }
-
-

@@ -64,7 +64,9 @@ const useLanguageHook = () => {
     projectID: string,
     onClose?: any
   ) => {
+    setIsLoading(true);
     try {
+      onClose();
       const response = await languageService.addLanguage(AddLanguageData, projectID);
       enqueueSnackbar(response?.message, {
         variant: 'success',
@@ -80,7 +82,6 @@ const useLanguageHook = () => {
         code: response?.data?.code,
       };
       dispatch(addProjectLanguage(newLanguage));
-      onClose?.();
       handleGetLanguages(currentProject?._id);
       return response;
     } catch (error) {
@@ -93,6 +94,8 @@ const useLanguageHook = () => {
         autoHideDuration: 3000,
       });
       onClose?.();
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,6 +105,7 @@ const useLanguageHook = () => {
     projectid: string,
     onClose?: any
   ) => {
+    onClose();
     try {
       const response = await languageService.editLanguage(data, languageid, projectid);
       enqueueSnackbar(response?.message, {
@@ -120,7 +124,7 @@ const useLanguageHook = () => {
       };
       dispatch(editProjectLanguage(newLanguage));
       handleGetLanguages(currentProject?._id);
-      onClose?.();
+      // onClose?.();
       return response;
     } catch (error) {
       enqueueSnackbar(error?.message, {

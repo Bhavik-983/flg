@@ -27,8 +27,9 @@ export default function Main({ children, sx, ...other }: BoxProps) {
   const addProjectModal = useProjectModal();
 
   const { handleGetAllProjects } = useProjectHook();
-  const { handleGetLanguages } = useLanguageHook();
+  const { handleGetLanguages, isLoading } = useLanguageHook();
   const { handleGetUser } = useRegisterHook();
+  console.log(isLoading);
 
   useEffect(() => {
     handleGetUser();
