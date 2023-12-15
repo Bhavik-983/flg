@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import Box, { BoxProps } from '@mui/material/Box';
 
@@ -10,6 +10,7 @@ import useRegisterHook from 'src/hooks/use-register-hook';
 import useProjectModal from 'src/hooks/use-projects-modal';
 
 import { useSettingsContext } from 'src/components/settings';
+import { LoadingScreen } from 'src/components/loading-screen';
 import AddProjectModal from 'src/components/modal/AddProjectModal';
 
 import { NAV, HEADER } from '../config-layout';
@@ -29,22 +30,45 @@ export default function Main({ children, sx, ...other }: BoxProps) {
   const { handleGetAllProjects } = useProjectHook();
   const { handleGetLanguages, isLoading } = useLanguageHook();
   const { handleGetUser } = useRegisterHook();
-  console.log(isLoading);
+
+  useEffect(() => {}, []);
+
+  // useEffect(() => {
+  //   handleGetAllProjects()
+  //     .then((res: any) => {
+  //       if (res?._id) {
+  //         handleGetLanguages(res?._id);
+  //       } else {
+  //         addProjectModal.openAddProjectModal();
+  //       }
+  //     })
+  //     .catch((e) => {});
+  // }, []);
+
+  const [isFetching, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    handleGetUser();
-  }, []);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [res1, res]: [any, any] = await Promise.all([
+          handleGetUser(),
+          handleGetAllProjects(),
+        ]);
 
-  useEffect(() => {
-    handleGetAllProjects()
-      .then((res: any) => {
-        if (res?._id) {
+        if (res && res._id) {
           handleGetLanguages(res?._id);
         } else {
           addProjectModal.openAddProjectModal();
         }
-      })
-      .catch((e) => {});
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   if (isNavHorizontal) {
@@ -90,7 +114,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
         }}
         {...other}
       >
-        {children}
+        {isFetching || isLoading ? <LoadingScreen /> : children}
       </Box>
       <AddProjectModal
         isOpen={addProjectModal.open}

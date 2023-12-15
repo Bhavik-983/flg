@@ -67,7 +67,7 @@ const AddLanguageModal = ({
     isLoading,
   } = useLanguageHook();
   const { currentProject } = useProjectHook();
-  console.log({ isLoading });
+
   const handleLanguage = (data: any) => {
     const language = {
       name: data?.name,
