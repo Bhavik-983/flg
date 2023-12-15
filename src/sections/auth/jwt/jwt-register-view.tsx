@@ -77,7 +77,7 @@ export default function JwtRegisterView() {
       router.push(returnTo || PATH_AFTER_REGISTER);
       return response;
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message, {
+      enqueueSnackbar(error?.response?.data?.error, {
         variant: 'error',
         anchorOrigin: {
           vertical: 'top',
