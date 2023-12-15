@@ -36,15 +36,8 @@ const useKeyHook = () => {
   const handleGetKey = async (projectId: string, pageId: string) => {
     try {
       const response = await keyService.getKey(projectId, pageId);
+      console.log(response);
       setAllKeys(response);
-      enqueueSnackbar(response?.message, {
-        variant: 'success',
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'right',
-        },
-        autoHideDuration: 3000,
-      });
       return response;
     } catch (error) {
       console.log(error);

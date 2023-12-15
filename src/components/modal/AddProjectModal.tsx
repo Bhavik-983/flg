@@ -43,13 +43,9 @@ export default function AddProjectModal({ isOpen, onClose, isNotClose }: ModalPr
     defaultValues,
   });
 
-  const {
-    reset,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { reset, handleSubmit } = methods;
 
-  const { handleCreateProject } = useProjectHook();
+  const { handleCreateProject, isLoading } = useProjectHook();
   const { fetchDefaultPage } = usePageHook();
 
   const handleClose = () => {
@@ -76,7 +72,7 @@ export default function AddProjectModal({ isOpen, onClose, isNotClose }: ModalPr
           size="medium"
           type="submit"
           variant="contained"
-          loading={isSubmitting}
+          loading={isLoading}
         >
           Save
         </LoadingButton>

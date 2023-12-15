@@ -29,7 +29,6 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export default function JwtRegisterView() {
-  // const { registerUser } = useRegisterHook();
   const { enqueueSnackbar } = useSnackbar();
 
   const router = useRouter();
@@ -66,7 +65,7 @@ export default function JwtRegisterView() {
     setIsFetching(true);
     try {
       const response = await authService.userRegister(data);
-      enqueueSnackbar(response?.message, {
+      enqueueSnackbar(response?.data?.message, {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',

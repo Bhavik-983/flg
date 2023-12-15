@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable import/no-extraneous-dependencies */
+import { useState } from 'react';
 /* eslint-disable consistent-return */
 import { useSnackbar } from 'notistack';
 
@@ -14,6 +15,7 @@ import {
 } from 'src/store/slices/projectSlice';
 
 const useProjectHook = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const currentProject: ProjectType = useAppSelector(currentProjects);
@@ -23,6 +25,7 @@ const useProjectHook = () => {
   };
 
   const handleCreateProject = async (AddProjectData: AddProjectTypes, handleClose: any) => {
+    setIsLoading(true);
     try {
       const response = await addProjectService.addProject(AddProjectData);
       enqueueSnackbar(response?.message, {
@@ -54,6 +57,8 @@ const useProjectHook = () => {
         autoHideDuration: 3000,
       });
       throw new Error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,6 +102,7 @@ const useProjectHook = () => {
     handleGetAllProjects,
     handleDeleteProject,
     handleCreateProject,
+    isLoading,
   };
 };
 

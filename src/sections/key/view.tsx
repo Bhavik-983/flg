@@ -93,8 +93,11 @@ export default function KeyView() {
     usePageHook();
 
   const { handleGetKey, allKeys, handleAddKey, setAllKeys, handleUpdateKey } = useKeyHook();
+  console.log(allKeys);
   const handleChange = (event: React.SyntheticEvent, newValue: LabelValue | null) => {
+    console.log({ newValue });
     if (newValue !== null) setcurrentPage(newValue);
+    handleGetKey(currentProject?._id, String(newValue?.value));
   };
 
   const [loading, setLoading] = useState<boolean>(false);
