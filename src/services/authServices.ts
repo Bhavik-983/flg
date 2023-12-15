@@ -25,7 +25,7 @@ const authService = {
       'https://lg-7oxk.onrender.com/auth/create-account',
       Registerdata
     );
-    return response.data;
+    return response;
   },
   userlogin: async (LoginData: LoginTypes): Promise<any> => {
     const response: AxiosResponse<any> = await axios.post(
