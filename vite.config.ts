@@ -6,6 +6,8 @@ import checker from 'vite-plugin-checker';
 // ----------------------------------------------------------------------
 
 export default defineConfig({
+
+  
   plugins: [
     react(),
     checker({
@@ -29,11 +31,14 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 8081,
+    port: 3000,
   },
   preview: {
-    port: 8081,
+    port: 3000,
   },
-  
+  build: {
+    chunkSizeWarningLimit: 1000, // Adjust the limit as needed
+  },
+
 
 });

@@ -30,6 +30,7 @@ export default function LanguageView() {
     setIsEdit(false);
     setSelectedId('');
     languageModal.openAddLanguage();
+    
   };
 
   const handleEditLanguage = (id: string) => {

@@ -1,4 +1,4 @@
-import { FiDownload } from 'react-icons/Fi';
+import { FiDownload } from 'react-icons/fi';
 
 import { Box, Card, Button, Typography, CardContent, CardActions } from '@mui/material';
 

@@ -1,4 +1,4 @@
-import { BsSearch } from 'react-icons/Bs';
+import { BsSearch } from 'react-icons/bs';
 
 import { IconButton, FormControl, OutlinedInput, InputAdornment } from '@mui/material';
 

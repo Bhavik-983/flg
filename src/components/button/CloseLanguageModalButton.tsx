@@ -1,4 +1,4 @@
-import { AiOutlineClose } from 'react-icons/Ai';
+import { AiOutlineClose } from 'react-icons/ai';
 
 import { Box } from '@mui/material';
 

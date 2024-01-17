@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
 
+import { BASE_URL } from 'src/utils/environments';
+
 import client from '../lib/client';
 import { GET_USER } from '../utils/url';
+
+axios.defaults.baseURL = BASE_URL;
 
 export interface RegisterTypes {
   email: string;
@@ -22,14 +26,14 @@ export interface TokenTypes {
 const authService = {
   userRegister: async (Registerdata: RegisterTypes): Promise<any> => {
     const response: AxiosResponse<any> = await axios.post(
-      'http://192.168.1.22:3000/auth/create-account',
+      '/auth/create-account',
       Registerdata
     );
     return response;
   },
   userlogin: async (LoginData: LoginTypes): Promise<any> => {
     const response: AxiosResponse<any> = await axios.post(
-      'http://192.168.1.22:3000/auth/user-login',
+      '/auth/user-login',
       LoginData
     );
     return response.data;

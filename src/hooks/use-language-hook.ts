@@ -66,7 +66,7 @@ const useLanguageHook = () => {
   ) => {
     setIsLoading(true);
     try {
-      onClose();
+       await onClose();
       const response = await languageService.addLanguage(AddLanguageData, projectID);
       enqueueSnackbar(response?.message, {
         variant: 'success',
@@ -95,7 +95,7 @@ const useLanguageHook = () => {
       });
       onClose?.();
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 

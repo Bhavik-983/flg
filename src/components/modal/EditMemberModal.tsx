@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { BsSend } from 'react-icons/Bs';
+import { BsSend } from 'react-icons/bs';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 

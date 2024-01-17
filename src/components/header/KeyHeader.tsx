@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BiPlus } from 'react-icons/bi';
-import { AiOutlineFileAdd } from 'react-icons/Ai';
+import { AiOutlineFileAdd } from 'react-icons/ai';
 
 import { Box, AppBar, Toolbar } from '@mui/material';
 
